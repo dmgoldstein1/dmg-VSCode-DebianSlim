@@ -182,4 +182,33 @@ else
     }
   }' "$SCOUT_CVES_LOG" | tee -a "$SCOUT_CVES_LOG"
 fi
-echo "\nSee $SCOUT_CVES_LOG and $SCOUT_RECOMMENDATIONS_LOG for full details." | tee -a "$SCOUT_CVES_LOG"
+
+# --- Copilot (GPT-4) generated: Launch container and display VS Code Tunnel token ---
+# This section ensures the container is running and the user sees the tunnel auth code and link in the terminal output.
+
+CONTAINER_NAME="vscode-server-tunnel"
+
+# Stop and remove any previous container with the same name
+if docker ps -a --format '{{.Names}}' | grep -q "^$CONTAINER_NAME$"; then
+  echo "Stopping and removing previous container $CONTAINER_NAME..."
+  docker stop "$CONTAINER_NAME" >/dev/null 2>&1 || true
+  docker rm "$CONTAINER_NAME" >/dev/null 2>&1 || true
+fi
+
+# Launch the container in detached mode
+echo "Launching VS Code Server container as $CONTAINER_NAME..."
+docker run -d --name "$CONTAINER_NAME" -p 8080:8080 "$FULL_TAG"
+
+# Wait for the tunnel server to start and print the auth code and tunnel link
+echo "\n--- VS Code Tunnel Auth Token and Link ---"
+echo "(If not already authenticated, copy the code and link below to set up your GitHub tunnel.)"
+echo "-------------------------------------------------"
+# Copilot (GPT-4): Print both the auth code and tunnel link, then exit after the tunnel link is seen
+docker logs -f "$CONTAINER_NAME" 2>&1 | \
+  awk '
+    /use code [A-Z0-9-]{4,}/ { print "Auth code: "$0; seen_code=1; fflush(); }
+    /Tunnel link: Open this link in your browser https:\/\/vscode\.dev\/tunnel\/[a-zA-Z0-9]+/ { print "Tunnel link: "$0; fflush(); exit 0; }
+  '
+
+echo "\nTunnel established. You can now connect using the above link."
+echo "Container $CONTAINER_NAME is running. To stop it: docker stop $CONTAINER_NAME && docker rm $CONTAINER_NAME"
