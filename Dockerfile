@@ -53,4 +53,4 @@ EXPOSE 8080
 #
 # For future developers: If you want a shell instead, override CMD at runtime.
 # If TUNNEL_NAME is set, use it for the tunnel name; otherwise, do not set a name.
-CMD bash -c 'if [ -n "$TUNNEL_NAME" ]; then exec /usr/share/code/bin/code tunnel --accept-server-license-terms --log info --name "$TUNNEL_NAME"; else exec /usr/share/code/bin/code tunnel --accept-server-license-terms --log info; fi'
+CMD ["bash", "-c", "if [ -n \"$TUNNEL_NAME\" ]; then exec /usr/share/code/bin/code tunnel --accept-server-license-terms --log info --name \"$TUNNEL_NAME\"; else exec /usr/share/code/bin/code tunnel --accept-server-license-terms --log info; fi"]
