@@ -195,9 +195,28 @@ if docker ps -a --format '{{.Names}}' | grep -q "^$CONTAINER_NAME$"; then
   docker rm "$CONTAINER_NAME" >/dev/null 2>&1 || true
 fi
 
-# Launch the container in detached mode
+
+# --- Copilot (GPT-4): Copy local VS Code settings.json into the container before tunnel starts ---
+MAC_SETTINGS_JSON="$HOME/Library/Application Support/Code/User/settings.json"
+CONTAINER_SETTINGS_DIR="/home/devuser/.config/Code/User"
+CONTAINER_SETTINGS_JSON="$CONTAINER_SETTINGS_DIR/settings.json"
+
 echo "Launching VS Code Server container as $CONTAINER_NAME..."
 docker run -d --name "$CONTAINER_NAME" -p 8080:8080 "$FULL_TAG"
+
+# Wait a moment for the container to start
+sleep 2
+
+# If the local settings.json exists, copy it into the container
+if [ -f "$MAC_SETTINGS_JSON" ]; then
+  echo "Copying local VS Code settings.json to container..."
+  docker exec "$CONTAINER_NAME" mkdir -p "$CONTAINER_SETTINGS_DIR"
+  docker cp "$MAC_SETTINGS_JSON" "$CONTAINER_NAME":"$CONTAINER_SETTINGS_JSON"
+  # Ensure devuser owns the file
+  docker exec -u root "$CONTAINER_NAME" chown devuser:devuser "$CONTAINER_SETTINGS_JSON"
+else
+  echo "No local VS Code settings.json found at $MAC_SETTINGS_JSON. Skipping copy."
+fi
 
 # Wait for the tunnel server to start and print the auth code and tunnel link
 echo "\n--- VS Code Tunnel Auth Token and Link ---"
