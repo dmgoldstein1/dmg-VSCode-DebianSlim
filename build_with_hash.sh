@@ -6,7 +6,7 @@
 set -e
 
 DOCKERFILE=Dockerfile
-IMAGE_NAME=dmg-VSCode-DebianSlim
+IMAGE_NAME=dmg-vs-code-debian-slim
 
 # Extract the base image version (debian:stable-slim)
 BASE_IMAGE=$(grep '^FROM' "$DOCKERFILE" | awk '{print $2}')
@@ -17,9 +17,17 @@ BASE_DIGEST=$(docker pull "$BASE_IMAGE" | grep 'Digest:' | awk '{print $2}')
 # Get all dependency lines (RUN, ADD, COPY)
 DEPENDENCY_LINES=$(grep -E '^(RUN|ADD|COPY)' "$DOCKERFILE")
 
-# Compute hash from base image + digest + dependency lines
+
+# Compute hash from base image + digest + dependency lines (cross-platform)
 HASH_INPUT="$BASE_IMAGE@$BASE_DIGEST\n$DEPENDENCY_LINES"
-TAG=$(echo -n "$HASH_INPUT" | sha256sum | cut -c1-12)
+if command -v sha256sum >/dev/null 2>&1; then
+	TAG=$(echo -n "$HASH_INPUT" | sha256sum | awk '{print $1}' | cut -c1-12)
+elif command -v shasum >/dev/null 2>&1; then
+	TAG=$(echo -n "$HASH_INPUT" | shasum -a 256 | awk '{print $1}' | cut -c1-12)
+else
+	echo "Error: Neither sha256sum nor shasum found. Please install one of them." >&2
+	exit 1
+fi
 
 # Build the image with the computed tag
 FULL_TAG="$IMAGE_NAME:$TAG"
