@@ -5,6 +5,7 @@
 
 set -e
 
+
 DOCKERFILE=Dockerfile
 IMAGE_NAME=dmg-vs-code-debian-slim
 
@@ -28,6 +29,15 @@ else
   exit 1
 fi
 
+FULL_TAG="$IMAGE_NAME:$TAG"
+
+# --- Build the container if it does not exist ---
+if ! docker image inspect "$FULL_TAG" >/dev/null 2>&1; then
+  echo "Container image $FULL_TAG not found. Building..."
+  docker build -t "$FULL_TAG" -f "$DOCKERFILE" .
+else
+  echo "Container image $FULL_TAG already exists."
+fi
 
 # --- Security Remediation Steps ---
 # 1. Run npm audit fix in a temp container (if npm is present)
