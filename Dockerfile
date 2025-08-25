@@ -52,4 +52,5 @@ EXPOSE 8080
 # This enables easy GitHub tunnel setup and remote access via vscode.dev.
 #
 # For future developers: If you want a shell instead, override CMD at runtime.
-CMD ["/usr/share/code/bin/code", "tunnel", "--accept-server-license-terms", "--log", "info"]
+# If TUNNEL_NAME is set, use it for the tunnel name; otherwise, do not set a name.
+CMD bash -c 'if [ -n "$TUNNEL_NAME" ]; then exec /usr/share/code/bin/code tunnel --accept-server-license-terms --log info --name "$TUNNEL_NAME"; else exec /usr/share/code/bin/code tunnel --accept-server-license-terms --log info; fi'
