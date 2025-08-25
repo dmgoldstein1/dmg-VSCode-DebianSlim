@@ -61,19 +61,25 @@ if command -v gawk >/dev/null 2>&1; then
       t = sevlist[i];
       total[t]=0; fixed[t]=0; unfixed[t]=0;
     }
-    inblock=0; blocksev=""; blockpatch="";
+    inblock=0;
+    blockcounts["CRITICAL"]=0; blockcounts["HIGH"]=0; blockcounts["MEDIUM"]=0; blockcounts["LOW"]=0; blockcounts["UNSPECIFIED"]=0;
+    blockpatch="";
   }
   {
     print "DEBUG: Processing line: " $0 > "/dev/stderr";
     if ($0 ~ /^[[:space:]]*[0-9]+[CHMLU]/) {
       # Start of a new block
-      inblock=1; blocksev=""; blockpatch="not fixed";
-      if (match($0, /([0-9]+)C/, arr)) { total["CRITICAL"] += arr[1]; blocksev="CRITICAL"; blockcount=arr[1]; }
-      if (match($0, /([0-9]+)H/, arr)) { total["HIGH"] += arr[1]; blocksev="HIGH"; blockcount=arr[1]; }
-      if (match($0, /([0-9]+)M/, arr)) { total["MEDIUM"] += arr[1]; blocksev="MEDIUM"; blockcount=arr[1]; }
-      if (match($0, /([0-9]+)L/, arr)) { total["LOW"] += arr[1]; blocksev="LOW"; blockcount=arr[1]; }
-      if (match($0, /([0-9]+)\?/, arr)) { total["UNSPECIFIED"] += arr[1]; blocksev="UNSPECIFIED"; blockcount=arr[1]; }
-      print "DEBUG: Block start, severity=" blocksev ", count=" blockcount > "/dev/stderr";
+      inblock=1;
+      blockpatch="not fixed";
+      blockcounts["CRITICAL"]=0; blockcounts["HIGH"]=0; blockcounts["MEDIUM"]=0; blockcounts["LOW"]=0; blockcounts["UNSPECIFIED"]=0;
+      while (match($0, /([0-9]+)([CHMLU\?])/, arr)) {
+        sev = (arr[2]=="C") ? "CRITICAL" : (arr[2]=="H") ? "HIGH" : (arr[2]=="M") ? "MEDIUM" : (arr[2]=="L") ? "LOW" : "UNSPECIFIED";
+        blockcounts[sev] = arr[1];
+        $0 = substr($0, RSTART + RLENGTH);
+      }
+      for (s in blockcounts) {
+        if (blockcounts[s] > 0) print "DEBUG: Block start, severity=" s ", count=" blockcounts[s] > "/dev/stderr";
+      }
     } else if (inblock && $0 ~ /Fixed version[ ]*:[ ]*not fixed/) {
       blockpatch="not fixed";
       print "DEBUG: Patch status: not fixed" > "/dev/stderr";
@@ -82,18 +88,26 @@ if command -v gawk >/dev/null 2>&1; then
       print "DEBUG: Patch status: fixed" > "/dev/stderr";
     } else if (inblock && $0 ~ /^$/) {
       # End of block
-      if (blocksev!="" && blockcount>0) {
-        if (blockpatch=="fixed") fixed[blocksev]+=blockcount;
-        else unfixed[blocksev]+=blockcount;
-        print "DEBUG: Counted " blockcount " " blocksev " (" blockpatch ")" > "/dev/stderr";
+      for (s in blockcounts) {
+        if (blockcounts[s]>0) {
+          if (blockpatch=="fixed") fixed[s]+=blockcounts[s];
+          else unfixed[s]+=blockcounts[s];
+          total[s]+=blockcounts[s];
+          print "DEBUG: Counted " blockcounts[s] " " s " (" blockpatch ")" > "/dev/stderr";
+        }
       }
-      inblock=0; blocksev=""; blockpatch=""; blockcount=0;
+      inblock=0;
+      blockpatch="";
+      blockcounts["CRITICAL"]=0; blockcounts["HIGH"]=0; blockcounts["MEDIUM"]=0; blockcounts["LOW"]=0; blockcounts["UNSPECIFIED"]=0;
     }
   }
   END {
     for (i in sevlist) {
       t = sevlist[i];
       printf "  %s: total=%d, fixed=%d, unfixed=%d\n", t, total[t], fixed[t], unfixed[t];
+      if (total[t] != fixed[t] + unfixed[t]) {
+        printf "  ERROR: Arithmetic mismatch for %s: total=%d, fixed+unfixed=%d\n", t, total[t], fixed[t]+unfixed[t] > "/dev/stderr";
+      }
     }
   }' "$SCOUT_CVES_LOG" | tee -a "$SCOUT_CVES_LOG"
 else
@@ -104,25 +118,29 @@ else
       t = sevlist[i];
       total[t]=0; fixed[t]=0; unfixed[t]=0;
     }
-    inblock=0; blocksev=""; blockpatch="";
+    inblock=0;
+    blockcounts["CRITICAL"]=0; blockcounts["HIGH"]=0; blockcounts["MEDIUM"]=0; blockcounts["LOW"]=0; blockcounts["UNSPECIFIED"]=0;
+    blockpatch="";
   }
   {
     print "DEBUG: Processing line: " $0 > "/dev/stderr";
     if ($0 ~ /^[[:space:]]*[0-9]+[CHMLU]/) {
       # Start of a new block
-      inblock=1; blocksev=""; blockpatch="not fixed";
+      inblock=1;
+      blockpatch="not fixed";
       c = h = m = l = u = 0;
       line = $0;
       n = split(line, fields, /[[:space:]]+/);
       for (i = 1; i <= n; i++) {
-        if (fields[i] ~ /C$/) { c = substr(fields[i], 1, length(fields[i])-1); blocksev="CRITICAL"; blockcount=c; }
-        if (fields[i] ~ /H$/) { h = substr(fields[i], 1, length(fields[i])-1); blocksev="HIGH"; blockcount=h; }
-        if (fields[i] ~ /M$/) { m = substr(fields[i], 1, length(fields[i])-1); blocksev="MEDIUM"; blockcount=m; }
-        if (fields[i] ~ /L$/) { l = substr(fields[i], 1, length(fields[i])-1); blocksev="LOW"; blockcount=l; }
-        if (fields[i] ~ /\?$/) { u = substr(fields[i], 1, length(fields[i])-1); blocksev="UNSPECIFIED"; blockcount=u; }
+        if (fields[i] ~ /C$/) { c = substr(fields[i], 1, length(fields[i])-1); blockcounts["CRITICAL"]=c; }
+        if (fields[i] ~ /H$/) { h = substr(fields[i], 1, length(fields[i])-1); blockcounts["HIGH"]=h; }
+        if (fields[i] ~ /M$/) { m = substr(fields[i], 1, length(fields[i])-1); blockcounts["MEDIUM"]=m; }
+        if (fields[i] ~ /L$/) { l = substr(fields[i], 1, length(fields[i])-1); blockcounts["LOW"]=l; }
+        if (fields[i] ~ /\?$/) { u = substr(fields[i], 1, length(fields[i])-1); blockcounts["UNSPECIFIED"]=u; }
       }
-      total["CRITICAL"] += c; total["HIGH"] += h; total["MEDIUM"] += m; total["LOW"] += l; total["UNSPECIFIED"] += u;
-      print "DEBUG: Block start, severity=" blocksev ", count=" blockcount > "/dev/stderr";
+      for (s in blockcounts) {
+        if (blockcounts[s] > 0) print "DEBUG: Block start, severity=" s ", count=" blockcounts[s] > "/dev/stderr";
+      }
     } else if (inblock && $0 ~ /Fixed version[ ]*:[ ]*not fixed/) {
       blockpatch="not fixed";
       print "DEBUG: Patch status: not fixed" > "/dev/stderr";
@@ -131,18 +149,26 @@ else
       print "DEBUG: Patch status: fixed" > "/dev/stderr";
     } else if (inblock && $0 ~ /^$/) {
       # End of block
-      if (blocksev!="" && blockcount>0) {
-        if (blockpatch=="fixed") fixed[blocksev]+=blockcount;
-        else unfixed[blocksev]+=blockcount;
-        print "DEBUG: Counted " blockcount " " blocksev " (" blockpatch ")" > "/dev/stderr";
+      for (s in blockcounts) {
+        if (blockcounts[s]>0) {
+          if (blockpatch=="fixed") fixed[s]+=blockcounts[s];
+          else unfixed[s]+=blockcounts[s];
+          total[s]+=blockcounts[s];
+          print "DEBUG: Counted " blockcounts[s] " " s " (" blockpatch ")" > "/dev/stderr";
+        }
       }
-      inblock=0; blocksev=""; blockpatch=""; blockcount=0;
+      inblock=0;
+      blockpatch="";
+      blockcounts["CRITICAL"]=0; blockcounts["HIGH"]=0; blockcounts["MEDIUM"]=0; blockcounts["LOW"]=0; blockcounts["UNSPECIFIED"]=0;
     }
   }
   END {
     for (i in sevlist) {
       t = sevlist[i];
       printf "  %s: total=%d, fixed=%d, unfixed=%d\n", t, total[t], fixed[t], unfixed[t];
+      if (total[t] != fixed[t] + unfixed[t]) {
+        printf "  ERROR: Arithmetic mismatch for %s: total=%d, fixed+unfixed=%d\n", t, total[t], fixed[t]+unfixed[t] > "/dev/stderr";
+      }
     }
   }' "$SCOUT_CVES_LOG" | tee -a "$SCOUT_CVES_LOG"
 fi
