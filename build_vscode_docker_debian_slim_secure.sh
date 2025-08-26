@@ -14,11 +14,6 @@ TUNNEL_NAME_ARG=""
 if [ $# -ge 1 ]; then
   TUNNEL_NAME_ARG="$1"
   echo "Tunnel name argument provided: $TUNNEL_NAME_ARG"
-  # Validate: only numbers, lowercase letters, and underscores allowed
-  if ! echo "$TUNNEL_NAME_ARG" | grep -Eq '^[a-z0-9_]+$'; then
-    echo "Error: Tunnel name '$TUNNEL_NAME_ARG' is invalid. Only numbers, lowercase letters, and underscores are allowed. No capital letters or special characters permitted."
-    exit 2
-  fi
 fi
 
 
