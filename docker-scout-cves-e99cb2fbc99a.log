@@ -1977,3 +1977,10 @@ pkg:golang/github.com/go-chi/chi@4.1.2%2Bincompatible
 What's next:
     View base image update recommendations → docker scout recommendations dmg-vs-code-debian-slim:e99cb2fbc99a
 
+
+Vulnerability summary for dmg-vs-code-debian-slim:e99cb2fbc99a:
+  HIGH: total=60, fixed=0, unfixed=60
+  MEDIUM: total=49, fixed=0, unfixed=49
+  LOW: total=125, fixed=0, unfixed=125
+  UNSPECIFIED: total=5, fixed=0, unfixed=5
+  CRITICAL: total=13, fixed=0, unfixed=13
