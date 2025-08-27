@@ -219,11 +219,19 @@ CONTAINER_SETTINGS_DIR="/home/devuser/.config/Code/User"
 CONTAINER_SETTINGS_JSON="$CONTAINER_SETTINGS_DIR/settings.json"
 
 
+
+# Find a free host port starting at 8080
+HOST_PORT=8080
+while lsof -iTCP:$HOST_PORT -sTCP:LISTEN >/dev/null 2>&1; do
+  HOST_PORT=$((HOST_PORT+1))
+done
+echo "Using host port $HOST_PORT for container $CONTAINER_NAME (host:$HOST_PORT -> container:8080)"
+
 echo "Launching VS Code Server container as $CONTAINER_NAME..."
 if [ -n "$TUNNEL_NAME_ARG" ]; then
-  docker run -d --name "$CONTAINER_NAME" -e TUNNEL_NAME="$TUNNEL_NAME_ARG" -p 8080:8080 "$FULL_TAG"
+  docker run -d --name "$CONTAINER_NAME" -e TUNNEL_NAME="$TUNNEL_NAME_ARG" -p "$HOST_PORT":8080 "$FULL_TAG"
 else
-  docker run -d --name "$CONTAINER_NAME" -p 8080:8080 "$FULL_TAG"
+  docker run -d --name "$CONTAINER_NAME" -p "$HOST_PORT":8080 "$FULL_TAG"
 fi
 
 # Wait a moment for the container to start
