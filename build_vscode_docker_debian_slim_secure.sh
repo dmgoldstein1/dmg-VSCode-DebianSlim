@@ -8,6 +8,7 @@
 set -e
 
 # Usage: ./build_vscode_docker_debian_slim_secure.sh [TunnelName] [--force-analysis] [--logging]
+#   --logging: Enables verbose logging output for debugging and detailed progress.
 
 # Parse optional tunnel name argument and flags
 TUNNEL_NAME_ARG=""
@@ -82,24 +83,24 @@ if [ "$IMAGE_ALREADY_EXISTS" = "false" ]; then
   if [ "$VERBOSE_LOGGING" = "true" ]; then
     echo "Running npm audit fix in a temp container (if npm is present)..."
     docker run --rm -it "$FULL_TAG" sh -c 'if command -v npm >/dev/null 2>&1; then find / -type d -name node_modules 2>/dev/null | while read d; do cd "$d" && npm audit fix --force || true; done; fi' || true
-  else
-    echo "Running security remediation..."
-    docker run --rm "$FULL_TAG" sh -c 'if command -v npm >/dev/null 2>&1; then find / -type d -name node_modules 2>/dev/null | while read d; do cd "$d" && npm audit fix --force >/dev/null 2>&1 || true; done; fi' >/dev/null 2>&1 || true
+    else
+    docker run --rm "$FULL_TAG" sh -c 'if command -v npm >/dev/null 2>&1; then find / -type d -name node_modules 2>/dev/null | while read d; do cd "$d" && npm audit fix --force || true; done; fi' || true
+    fi
+  
+    docker run --rm "$FULL_TAG" sh -c '\
+      if command -v apt-get >/dev/null 2>&1; then \
+        apt-get update >/dev/null 2>&1 && \
+        apt-get upgrade -y >/dev/null 2>&1 || true; \
+      fi' >/dev/null 2>&1 || true
+  
   fi
 
   # 2. Run apt-get update/upgrade in a temp container (if apt is present)
-  if [ "$VERBOSE_LOGGING" = "true" ]; then
-    echo "Running apt-get update/upgrade in a temp container (if apt is present)..."
-    docker run --rm -it "$FULL_TAG" sh -c 'if command -v apt-get >/dev/null 2>&1; then apt-get update && apt-get upgrade -y || true; fi' || true
-  else
-    docker run --rm "$FULL_TAG" sh -c 'if command -v apt-get >/dev/null 2>&1; then apt-get update >/dev/null 2>&1 && apt-get upgrade -y >/dev/null 2>&1 || true; fi' >/dev/null 2>&1 || true
-  fi
-else
-  if [ "$VERBOSE_LOGGING" = "true" ]; then
-    echo "Skipping security remediation steps (image already exists and analyzed)."
-  fi
 fi
 
+if [ "$IMAGE_ALREADY_EXISTS" = "true" ]; then
+  echo "Skipping security remediation steps (image already exists and analyzed)."
+fi
 # --- Rebuild image after remediation steps (optional: user may want to commit these changes in a Dockerfile for persistence) ---
 # (Not rebuilding here, just analyzing the original build)
 
