@@ -7,15 +7,20 @@
 
 set -e
 
-# Usage: ./build_vscode_docker_debian_slim_secure.sh [TunnelName] [--force-analysis]
+# Usage: ./build_vscode_docker_debian_slim_secure.sh [TunnelName] [--force-analysis] [--logging]
 
 # Parse optional tunnel name argument and flags
 TUNNEL_NAME_ARG=""
 FORCE_ANALYSIS=false
+VERBOSE_LOGGING=false
 for arg in "$@"; do
   case $arg in
     --force-analysis)
       FORCE_ANALYSIS=true
+      shift
+      ;;
+    --logging)
+      VERBOSE_LOGGING=true
       shift
       ;;
     *)
@@ -74,14 +79,25 @@ fi
 # --- Security Remediation Steps (skip if image already exists) ---
 if [ "$IMAGE_ALREADY_EXISTS" = "false" ]; then
   # 1. Run npm audit fix in a temp container (if npm is present)
-  echo "Running npm audit fix in a temp container (if npm is present)..."
-  docker run --rm -it "$FULL_TAG" sh -c 'if command -v npm >/dev/null 2>&1; then find / -type d -name node_modules 2>/dev/null | while read d; do cd "$d" && npm audit fix --force || true; done; fi' || true
+  if [ "$VERBOSE_LOGGING" = "true" ]; then
+    echo "Running npm audit fix in a temp container (if npm is present)..."
+    docker run --rm -it "$FULL_TAG" sh -c 'if command -v npm >/dev/null 2>&1; then find / -type d -name node_modules 2>/dev/null | while read d; do cd "$d" && npm audit fix --force || true; done; fi' || true
+  else
+    echo "Running security remediation..."
+    docker run --rm "$FULL_TAG" sh -c 'if command -v npm >/dev/null 2>&1; then find / -type d -name node_modules 2>/dev/null | while read d; do cd "$d" && npm audit fix --force >/dev/null 2>&1 || true; done; fi' >/dev/null 2>&1 || true
+  fi
 
   # 2. Run apt-get update/upgrade in a temp container (if apt is present)
-  echo "Running apt-get update/upgrade in a temp container (if apt is present)..."
-  docker run --rm -it "$FULL_TAG" sh -c 'if command -v apt-get >/dev/null 2>&1; then apt-get update && apt-get upgrade -y || true; fi' || true
+  if [ "$VERBOSE_LOGGING" = "true" ]; then
+    echo "Running apt-get update/upgrade in a temp container (if apt is present)..."
+    docker run --rm -it "$FULL_TAG" sh -c 'if command -v apt-get >/dev/null 2>&1; then apt-get update && apt-get upgrade -y || true; fi' || true
+  else
+    docker run --rm "$FULL_TAG" sh -c 'if command -v apt-get >/dev/null 2>&1; then apt-get update >/dev/null 2>&1 && apt-get upgrade -y >/dev/null 2>&1 || true; fi' >/dev/null 2>&1 || true
+  fi
 else
-  echo "Skipping security remediation steps (image already exists and analyzed)."
+  if [ "$VERBOSE_LOGGING" = "true" ]; then
+    echo "Skipping security remediation steps (image already exists and analyzed)."
+  fi
 fi
 
 # --- Rebuild image after remediation steps (optional: user may want to commit these changes in a Dockerfile for persistence) ---
@@ -92,136 +108,250 @@ SCOUT_CVES_LOG="docker-scout-cves-$TAG.log"
 SCOUT_RECOMMENDATIONS_LOG="docker-scout-recommendations-$TAG.log"
 
 if [ "$IMAGE_ALREADY_EXISTS" = "true" ] && [ -f "$SCOUT_CVES_LOG" ] && [ -f "$SCOUT_RECOMMENDATIONS_LOG" ] && [ "$FORCE_ANALYSIS" = "false" ]; then
-  echo "Using existing Docker Scout analysis for $FULL_TAG (use --force-analysis to re-run)..."
+  if [ "$VERBOSE_LOGGING" = "true" ]; then
+    echo "Using existing Docker Scout analysis for $FULL_TAG (use --force-analysis to re-run)..."
+  fi
 else
-  echo "Running Docker Scout analysis for $FULL_TAG..."
-  docker scout cves "$FULL_TAG" | tee "$SCOUT_CVES_LOG"
-  docker scout recommendations "$FULL_TAG" | tee "$SCOUT_RECOMMENDATIONS_LOG"
+  if [ "$VERBOSE_LOGGING" = "true" ]; then
+    echo "Running Docker Scout analysis for $FULL_TAG..."
+    docker scout cves "$FULL_TAG" | tee "$SCOUT_CVES_LOG"
+    docker scout recommendations "$FULL_TAG" | tee "$SCOUT_RECOMMENDATIONS_LOG"
+  else
+    echo "Running vulnerability analysis..."
+    docker scout cves "$FULL_TAG" > "$SCOUT_CVES_LOG" 2>&1
+    docker scout recommendations "$FULL_TAG" > "$SCOUT_RECOMMENDATIONS_LOG" 2>&1
+  fi
 fi
 
 # --- Enhanced Vulnerability Summary ---
 # For each tier, count total and how many have/don't have a public patch
-echo "\nVulnerability summary for $FULL_TAG:" | tee -a "$SCOUT_CVES_LOG"
+if [ "$VERBOSE_LOGGING" = "true" ]; then
+  echo "\nVulnerability summary for $FULL_TAG:" | tee -a "$SCOUT_CVES_LOG"
+else
+  echo "Analyzing vulnerabilities..."
+fi
 
 # Use gawk if available, otherwise use BSD awk-compatible logic
 if command -v gawk >/dev/null 2>&1; then
-  gawk '
-  BEGIN {
-    split("CRITICAL HIGH MEDIUM LOW UNSPECIFIED", sevlist, " ");
-    for (i in sevlist) {
-      t = sevlist[i];
-      total[t]=0; fixed[t]=0; unfixed[t]=0;
-    }
-    inblock=0;
-    blockcounts["CRITICAL"]=0; blockcounts["HIGH"]=0; blockcounts["MEDIUM"]=0; blockcounts["LOW"]=0; blockcounts["UNSPECIFIED"]=0;
-    blockpatch="";
-  }
-  {
-    print "DEBUG: Processing line: " $0 > "/dev/stderr";
-    if ($0 ~ /^[[:space:]]*[0-9]+[CHMLU]/) {
-      # Start of a new block
-      inblock=1;
-      blockpatch="not fixed";
-      blockcounts["CRITICAL"]=0; blockcounts["HIGH"]=0; blockcounts["MEDIUM"]=0; blockcounts["LOW"]=0; blockcounts["UNSPECIFIED"]=0;
-      while (match($0, /([0-9]+)([CHMLU\?])/, arr)) {
-        sev = (arr[2]=="C") ? "CRITICAL" : (arr[2]=="H") ? "HIGH" : (arr[2]=="M") ? "MEDIUM" : (arr[2]=="L") ? "LOW" : "UNSPECIFIED";
-        blockcounts[sev] = arr[1];
-        $0 = substr($0, RSTART + RLENGTH);
-      }
-      for (s in blockcounts) {
-        if (blockcounts[s] > 0) print "DEBUG: Block start, severity=" s ", count=" blockcounts[s] > "/dev/stderr";
-      }
-    } else if (inblock && $0 ~ /Fixed version[ ]*:[ ]*not fixed/) {
-      blockpatch="not fixed";
-      print "DEBUG: Patch status: not fixed" > "/dev/stderr";
-    } else if (inblock && $0 ~ /Fixed version[ ]*:[ ]*[0-9a-zA-Z.\-+]+/) {
-      blockpatch="fixed";
-      print "DEBUG: Patch status: fixed" > "/dev/stderr";
-    } else if (inblock && $0 ~ /^$/) {
-      # End of block
-      for (s in blockcounts) {
-        if (blockcounts[s]>0) {
-          if (blockpatch=="fixed") fixed[s]+=blockcounts[s];
-          else unfixed[s]+=blockcounts[s];
-          total[s]+=blockcounts[s];
-          print "DEBUG: Counted " blockcounts[s] " " s " (" blockpatch ")" > "/dev/stderr";
-        }
+  if [ "$VERBOSE_LOGGING" = "true" ]; then
+    gawk '
+    BEGIN {
+      split("CRITICAL HIGH MEDIUM LOW UNSPECIFIED", sevlist, " ");
+      for (i in sevlist) {
+        t = sevlist[i];
+        total[t]=0; fixed[t]=0; unfixed[t]=0;
       }
       inblock=0;
-      blockpatch="";
       blockcounts["CRITICAL"]=0; blockcounts["HIGH"]=0; blockcounts["MEDIUM"]=0; blockcounts["LOW"]=0; blockcounts["UNSPECIFIED"]=0;
+      blockpatch="";
     }
-  }
-  END {
-    for (i in sevlist) {
-      t = sevlist[i];
-      printf "  %s: total=%d, fixed=%d, unfixed=%d\n", t, total[t], fixed[t], unfixed[t];
-      if (total[t] != fixed[t] + unfixed[t]) {
-        printf "  ERROR: Arithmetic mismatch for %s: total=%d, fixed+unfixed=%d\n", t, total[t], fixed[t]+unfixed[t] > "/dev/stderr";
+    {
+      print "DEBUG: Processing line: " $0 > "/dev/stderr";
+      if ($0 ~ /^[[:space:]]*[0-9]+[CHMLU]/) {
+        # Start of a new block
+        inblock=1;
+        blockpatch="not fixed";
+        blockcounts["CRITICAL"]=0; blockcounts["HIGH"]=0; blockcounts["MEDIUM"]=0; blockcounts["LOW"]=0; blockcounts["UNSPECIFIED"]=0;
+        while (match($0, /([0-9]+)([CHMLU\?])/, arr)) {
+          sev = (arr[2]=="C") ? "CRITICAL" : (arr[2]=="H") ? "HIGH" : (arr[2]=="M") ? "MEDIUM" : (arr[2]=="L") ? "LOW" : "UNSPECIFIED";
+          blockcounts[sev] = arr[1];
+          $0 = substr($0, RSTART + RLENGTH);
+        }
+        for (s in blockcounts) {
+          if (blockcounts[s] > 0) print "DEBUG: Block start, severity=" s ", count=" blockcounts[s] > "/dev/stderr";
+        }
+      } else if (inblock && $0 ~ /Fixed version[ ]*:[ ]*not fixed/) {
+        blockpatch="not fixed";
+        print "DEBUG: Patch status: not fixed" > "/dev/stderr";
+      } else if (inblock && $0 ~ /Fixed version[ ]*:[ ]*[0-9a-zA-Z.\-+]+/) {
+        blockpatch="fixed";
+        print "DEBUG: Patch status: fixed" > "/dev/stderr";
+      } else if (inblock && $0 ~ /^$/) {
+        # End of block
+        for (s in blockcounts) {
+          if (blockcounts[s]>0) {
+            if (blockpatch=="fixed") fixed[s]+=blockcounts[s];
+            else unfixed[s]+=blockcounts[s];
+            total[s]+=blockcounts[s];
+            print "DEBUG: Counted " blockcounts[s] " " s " (" blockpatch ")" > "/dev/stderr";
+          }
+        }
+        inblock=0;
+        blockpatch="";
+        blockcounts["CRITICAL"]=0; blockcounts["HIGH"]=0; blockcounts["MEDIUM"]=0; blockcounts["LOW"]=0; blockcounts["UNSPECIFIED"]=0;
       }
     }
-  }' "$SCOUT_CVES_LOG" | tee -a "$SCOUT_CVES_LOG"
+    END {
+      for (i in sevlist) {
+        t = sevlist[i];
+        printf "  %s: total=%d, fixed=%d, unfixed=%d\n", t, total[t], fixed[t], unfixed[t];
+        if (total[t] != fixed[t] + unfixed[t]) {
+          printf "  ERROR: Arithmetic mismatch for %s: total=%d, fixed+unfixed=%d\n", t, total[t], fixed[t]+unfixed[t] > "/dev/stderr";
+        }
+      }
+    }' "$SCOUT_CVES_LOG" | tee -a "$SCOUT_CVES_LOG"
+  else
+    gawk '
+    BEGIN {
+      split("CRITICAL HIGH MEDIUM LOW UNSPECIFIED", sevlist, " ");
+      for (i in sevlist) {
+        t = sevlist[i];
+        total[t]=0; fixed[t]=0; unfixed[t]=0;
+      }
+      inblock=0;
+      blockcounts["CRITICAL"]=0; blockcounts["HIGH"]=0; blockcounts["MEDIUM"]=0; blockcounts["LOW"]=0; blockcounts["UNSPECIFIED"]=0;
+      blockpatch="";
+    }
+    {
+      if ($0 ~ /^[[:space:]]*[0-9]+[CHMLU]/) {
+        # Start of a new block
+        inblock=1;
+        blockpatch="not fixed";
+        blockcounts["CRITICAL"]=0; blockcounts["HIGH"]=0; blockcounts["MEDIUM"]=0; blockcounts["LOW"]=0; blockcounts["UNSPECIFIED"]=0;
+        while (match($0, /([0-9]+)([CHMLU\?])/, arr)) {
+          sev = (arr[2]=="C") ? "CRITICAL" : (arr[2]=="H") ? "HIGH" : (arr[2]=="M") ? "MEDIUM" : (arr[2]=="L") ? "LOW" : "UNSPECIFIED";
+          blockcounts[sev] = arr[1];
+          $0 = substr($0, RSTART + RLENGTH);
+        }
+      } else if (inblock && $0 ~ /Fixed version[ ]*:[ ]*not fixed/) {
+        blockpatch="not fixed";
+      } else if (inblock && $0 ~ /Fixed version[ ]*:[ ]*[0-9a-zA-Z.\-+]+/) {
+        blockpatch="fixed";
+      } else if (inblock && $0 ~ /^$/) {
+        # End of block
+        for (s in blockcounts) {
+          if (blockcounts[s]>0) {
+            if (blockpatch=="fixed") fixed[s]+=blockcounts[s];
+            else unfixed[s]+=blockcounts[s];
+            total[s]+=blockcounts[s];
+          }
+        }
+        inblock=0;
+        blockpatch="";
+        blockcounts["CRITICAL"]=0; blockcounts["HIGH"]=0; blockcounts["MEDIUM"]=0; blockcounts["LOW"]=0; blockcounts["UNSPECIFIED"]=0;
+      }
+    }
+    END {
+      for (i in sevlist) {
+        t = sevlist[i];
+        printf "  %s: total=%d, fixed=%d, unfixed=%d\n", t, total[t], fixed[t], unfixed[t];
+      }
+    }' "$SCOUT_CVES_LOG"
+  fi
 else
-  awk '
-  BEGIN {
-    split("CRITICAL HIGH MEDIUM LOW UNSPECIFIED", sevlist, " ");
-    for (i in sevlist) {
-      t = sevlist[i];
-      total[t]=0; fixed[t]=0; unfixed[t]=0;
-    }
-    inblock=0;
-    blockcounts["CRITICAL"]=0; blockcounts["HIGH"]=0; blockcounts["MEDIUM"]=0; blockcounts["LOW"]=0; blockcounts["UNSPECIFIED"]=0;
-    blockpatch="";
-  }
-  {
-    print "DEBUG: Processing line: " $0 > "/dev/stderr";
-    if ($0 ~ /^[[:space:]]*[0-9]+[CHMLU]/) {
-      # Start of a new block
-      inblock=1;
-      blockpatch="not fixed";
-      c = h = m = l = u = 0;
-      line = $0;
-      n = split(line, fields, /[[:space:]]+/);
-      for (i = 1; i <= n; i++) {
-        if (fields[i] ~ /C$/) { c = substr(fields[i], 1, length(fields[i])-1); blockcounts["CRITICAL"]=c; }
-        if (fields[i] ~ /H$/) { h = substr(fields[i], 1, length(fields[i])-1); blockcounts["HIGH"]=h; }
-        if (fields[i] ~ /M$/) { m = substr(fields[i], 1, length(fields[i])-1); blockcounts["MEDIUM"]=m; }
-        if (fields[i] ~ /L$/) { l = substr(fields[i], 1, length(fields[i])-1); blockcounts["LOW"]=l; }
-        if (fields[i] ~ /\?$/) { u = substr(fields[i], 1, length(fields[i])-1); blockcounts["UNSPECIFIED"]=u; }
-      }
-      for (s in blockcounts) {
-        if (blockcounts[s] > 0) print "DEBUG: Block start, severity=" s ", count=" blockcounts[s] > "/dev/stderr";
-      }
-    } else if (inblock && $0 ~ /Fixed version[ ]*:[ ]*not fixed/) {
-      blockpatch="not fixed";
-      print "DEBUG: Patch status: not fixed" > "/dev/stderr";
-    } else if (inblock && $0 ~ /Fixed version[ ]*:[ ]*[0-9a-zA-Z.\-+]+/) {
-      blockpatch="fixed";
-      print "DEBUG: Patch status: fixed" > "/dev/stderr";
-    } else if (inblock && $0 ~ /^$/) {
-      # End of block
-      for (s in blockcounts) {
-        if (blockcounts[s]>0) {
-          if (blockpatch=="fixed") fixed[s]+=blockcounts[s];
-          else unfixed[s]+=blockcounts[s];
-          total[s]+=blockcounts[s];
-          print "DEBUG: Counted " blockcounts[s] " " s " (" blockpatch ")" > "/dev/stderr";
-        }
+  if [ "$VERBOSE_LOGGING" = "true" ]; then
+    awk '
+    BEGIN {
+      split("CRITICAL HIGH MEDIUM LOW UNSPECIFIED", sevlist, " ");
+      for (i in sevlist) {
+        t = sevlist[i];
+        total[t]=0; fixed[t]=0; unfixed[t]=0;
       }
       inblock=0;
-      blockpatch="";
       blockcounts["CRITICAL"]=0; blockcounts["HIGH"]=0; blockcounts["MEDIUM"]=0; blockcounts["LOW"]=0; blockcounts["UNSPECIFIED"]=0;
+      blockpatch="";
     }
-  }
-  END {
-    for (i in sevlist) {
-      t = sevlist[i];
-      printf "  %s: total=%d, fixed=%d, unfixed=%d\n", t, total[t], fixed[t], unfixed[t];
-      if (total[t] != fixed[t] + unfixed[t]) {
-        printf "  ERROR: Arithmetic mismatch for %s: total=%d, fixed+unfixed=%d\n", t, total[t], fixed[t]+unfixed[t] > "/dev/stderr";
+    {
+      print "DEBUG: Processing line: " $0 > "/dev/stderr";
+      if ($0 ~ /^[[:space:]]*[0-9]+[CHMLU]/) {
+        # Start of a new block
+        inblock=1;
+        blockpatch="not fixed";
+        c = h = m = l = u = 0;
+        line = $0;
+        n = split(line, fields, /[[:space:]]+/);
+        for (i = 1; i <= n; i++) {
+          if (fields[i] ~ /C$/) { c = substr(fields[i], 1, length(fields[i])-1); blockcounts["CRITICAL"]=c; }
+          if (fields[i] ~ /H$/) { h = substr(fields[i], 1, length(fields[i])-1); blockcounts["HIGH"]=h; }
+          if (fields[i] ~ /M$/) { m = substr(fields[i], 1, length(fields[i])-1); blockcounts["MEDIUM"]=m; }
+          if (fields[i] ~ /L$/) { l = substr(fields[i], 1, length(fields[i])-1); blockcounts["LOW"]=l; }
+          if (fields[i] ~ /\?$/) { u = substr(fields[i], 1, length(fields[i])-1); blockcounts["UNSPECIFIED"]=u; }
+        }
+        for (s in blockcounts) {
+          if (blockcounts[s] > 0) print "DEBUG: Block start, severity=" s ", count=" blockcounts[s] > "/dev/stderr";
+        }
+      } else if (inblock && $0 ~ /Fixed version[ ]*:[ ]*not fixed/) {
+        blockpatch="not fixed";
+        print "DEBUG: Patch status: not fixed" > "/dev/stderr";
+      } else if (inblock && $0 ~ /Fixed version[ ]*:[ ]*[0-9a-zA-Z.\-+]+/) {
+        blockpatch="fixed";
+        print "DEBUG: Patch status: fixed" > "/dev/stderr";
+      } else if (inblock && $0 ~ /^$/) {
+        # End of block
+        for (s in blockcounts) {
+          if (blockcounts[s]>0) {
+            if (blockpatch=="fixed") fixed[s]+=blockcounts[s];
+            else unfixed[s]+=blockcounts[s];
+            total[s]+=blockcounts[s];
+            print "DEBUG: Counted " blockcounts[s] " " s " (" blockpatch ")" > "/dev/stderr";
+          }
+        }
+        inblock=0;
+        blockpatch="";
+        blockcounts["CRITICAL"]=0; blockcounts["HIGH"]=0; blockcounts["MEDIUM"]=0; blockcounts["LOW"]=0; blockcounts["UNSPECIFIED"]=0;
       }
     }
-  }' "$SCOUT_CVES_LOG" | tee -a "$SCOUT_CVES_LOG"
+    END {
+      for (i in sevlist) {
+        t = sevlist[i];
+        printf "  %s: total=%d, fixed=%d, unfixed=%d\n", t, total[t], fixed[t], unfixed[t];
+        if (total[t] != fixed[t] + unfixed[t]) {
+          printf "  ERROR: Arithmetic mismatch for %s: total=%d, fixed+unfixed=%d\n", t, total[t], fixed[t]+unfixed[t] > "/dev/stderr";
+        }
+      }
+    }' "$SCOUT_CVES_LOG" | tee -a "$SCOUT_CVES_LOG"
+  else
+    awk '
+    BEGIN {
+      split("CRITICAL HIGH MEDIUM LOW UNSPECIFIED", sevlist, " ");
+      for (i in sevlist) {
+        t = sevlist[i];
+        total[t]=0; fixed[t]=0; unfixed[t]=0;
+      }
+      inblock=0;
+      blockcounts["CRITICAL"]=0; blockcounts["HIGH"]=0; blockcounts["MEDIUM"]=0; blockcounts["LOW"]=0; blockcounts["UNSPECIFIED"]=0;
+      blockpatch="";
+    }
+    {
+      if ($0 ~ /^[[:space:]]*[0-9]+[CHMLU]/) {
+        # Start of a new block
+        inblock=1;
+        blockpatch="not fixed";
+        c = h = m = l = u = 0;
+        line = $0;
+        n = split(line, fields, /[[:space:]]+/);
+        for (i = 1; i <= n; i++) {
+          if (fields[i] ~ /C$/) { c = substr(fields[i], 1, length(fields[i])-1); blockcounts["CRITICAL"]=c; }
+          if (fields[i] ~ /H$/) { h = substr(fields[i], 1, length(fields[i])-1); blockcounts["HIGH"]=h; }
+          if (fields[i] ~ /M$/) { m = substr(fields[i], 1, length(fields[i])-1); blockcounts["MEDIUM"]=m; }
+          if (fields[i] ~ /L$/) { l = substr(fields[i], 1, length(fields[i])-1); blockcounts["LOW"]=l; }
+          if (fields[i] ~ /\?$/) { u = substr(fields[i], 1, length(fields[i])-1); blockcounts["UNSPECIFIED"]=u; }
+        }
+      } else if (inblock && $0 ~ /Fixed version[ ]*:[ ]*not fixed/) {
+        blockpatch="not fixed";
+      } else if (inblock && $0 ~ /Fixed version[ ]*:[ ]*[0-9a-zA-Z.\-+]+/) {
+        blockpatch="fixed";
+      } else if (inblock && $0 ~ /^$/) {
+        # End of block
+        for (s in blockcounts) {
+          if (blockcounts[s]>0) {
+            if (blockpatch=="fixed") fixed[s]+=blockcounts[s];
+            else unfixed[s]+=blockcounts[s];
+            total[s]+=blockcounts[s];
+          }
+        }
+        inblock=0;
+        blockpatch="";
+        blockcounts["CRITICAL"]=0; blockcounts["HIGH"]=0; blockcounts["MEDIUM"]=0; blockcounts["LOW"]=0; blockcounts["UNSPECIFIED"]=0;
+      }
+    }
+    END {
+      for (i in sevlist) {
+        t = sevlist[i];
+        printf "  %s: total=%d, fixed=%d, unfixed=%d\n", t, total[t], fixed[t], unfixed[t];
+      }
+    }' "$SCOUT_CVES_LOG"
+  fi
 fi
 
 # --- Copilot (GPT-4) generated: Launch container and display VS Code Tunnel token ---
@@ -255,13 +385,23 @@ HOST_PORT=8080
 while lsof -iTCP:$HOST_PORT -sTCP:LISTEN >/dev/null 2>&1; do
   HOST_PORT=$((HOST_PORT+1))
 done
-echo "Using host port $HOST_PORT for container $CONTAINER_NAME (host:$HOST_PORT -> container:8080)"
+if [ "$VERBOSE_LOGGING" = "true" ]; then
+  echo "Using host port $HOST_PORT for container $CONTAINER_NAME (host:$HOST_PORT -> container:8080)"
+fi
 
 echo "Launching VS Code Server container as $CONTAINER_NAME..."
 if [ -n "$TUNNEL_NAME_ARG" ]; then
-  docker run -d --name "$CONTAINER_NAME" -e TUNNEL_NAME="$TUNNEL_NAME_ARG" -p "$HOST_PORT":8080 "$FULL_TAG"
+  if [ "$VERBOSE_LOGGING" = "true" ]; then
+    docker run -d --name "$CONTAINER_NAME" -e TUNNEL_NAME="$TUNNEL_NAME_ARG" -p "$HOST_PORT":8080 "$FULL_TAG"
+  else
+    docker run -d --name "$CONTAINER_NAME" -e TUNNEL_NAME="$TUNNEL_NAME_ARG" -p "$HOST_PORT":8080 "$FULL_TAG" >/dev/null 2>&1
+  fi
 else
-  docker run -d --name "$CONTAINER_NAME" -p "$HOST_PORT":8080 "$FULL_TAG"
+  if [ "$VERBOSE_LOGGING" = "true" ]; then
+    docker run -d --name "$CONTAINER_NAME" -p "$HOST_PORT":8080 "$FULL_TAG"
+  else
+    docker run -d --name "$CONTAINER_NAME" -p "$HOST_PORT":8080 "$FULL_TAG" >/dev/null 2>&1
+  fi
 fi
 
 # Wait a moment for the container to start
@@ -269,19 +409,30 @@ sleep 2
 
 # If the local settings.json exists, copy it into the container
 if [ -f "$MAC_SETTINGS_JSON" ]; then
-  echo "Copying local VS Code settings.json to container..."
-  docker exec "$CONTAINER_NAME" mkdir -p "$CONTAINER_SETTINGS_DIR"
-  docker cp "$MAC_SETTINGS_JSON" "$CONTAINER_NAME":"$CONTAINER_SETTINGS_JSON"
-  # Ensure devuser owns the file
-  docker exec -u root "$CONTAINER_NAME" chown devuser:devuser "$CONTAINER_SETTINGS_JSON"
+  if [ "$VERBOSE_LOGGING" = "true" ]; then
+    echo "Copying local VS Code settings.json to container..."
+    docker exec "$CONTAINER_NAME" mkdir -p "$CONTAINER_SETTINGS_DIR"
+    docker cp "$MAC_SETTINGS_JSON" "$CONTAINER_NAME":"$CONTAINER_SETTINGS_JSON"
+    # Ensure devuser owns the file
+    docker exec -u root "$CONTAINER_NAME" chown devuser:devuser "$CONTAINER_SETTINGS_JSON"
+  else
+    docker exec "$CONTAINER_NAME" mkdir -p "$CONTAINER_SETTINGS_DIR" >/dev/null 2>&1
+    docker cp "$MAC_SETTINGS_JSON" "$CONTAINER_NAME":"$CONTAINER_SETTINGS_JSON" >/dev/null 2>&1
+    # Ensure devuser owns the file
+    docker exec -u root "$CONTAINER_NAME" chown devuser:devuser "$CONTAINER_SETTINGS_JSON" >/dev/null 2>&1
+  fi
 else
-  echo "No local VS Code settings.json found at $MAC_SETTINGS_JSON. Skipping copy."
+  if [ "$VERBOSE_LOGGING" = "true" ]; then
+    echo "No local VS Code settings.json found at $MAC_SETTINGS_JSON. Skipping copy."
+  fi
 fi
 
 # Wait for the tunnel server to start and print the auth code and tunnel link
-echo "\n--- VS Code Tunnel Auth Token and Link ---"
-echo "(If not already authenticated, copy the code and link below to set up your GitHub tunnel.)"
-echo "-------------------------------------------------"
+if [ "$VERBOSE_LOGGING" = "true" ]; then
+  echo "\n--- VS Code Tunnel Auth Token and Link ---"
+  echo "(If not already authenticated, copy the code and link below to set up your GitHub tunnel.)"
+  echo "-------------------------------------------------"
+fi
 # Copilot (GPT-4): Print both the auth code and tunnel link, then exit after the tunnel link is seen
 docker logs -f "$CONTAINER_NAME" 2>&1 | \
   awk '
@@ -290,4 +441,8 @@ docker logs -f "$CONTAINER_NAME" 2>&1 | \
   '
 
 echo "\nTunnel established. You can now connect using the above link."
-echo "Container $CONTAINER_NAME is running. To stop it: docker stop $CONTAINER_NAME && docker rm $CONTAINER_NAME"
+if [ "$VERBOSE_LOGGING" = "true" ]; then
+  echo "Container $CONTAINER_NAME is running on port $HOST_PORT. To stop it: docker stop $CONTAINER_NAME && docker rm $CONTAINER_NAME"
+else
+  echo "Container $CONTAINER_NAME is running on port $HOST_PORT."
+fi
