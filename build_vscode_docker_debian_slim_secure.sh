@@ -7,13 +7,32 @@
 
 set -e
 
-# Usage: ./build_vscode_docker_debian_slim_secure.sh [TunnelName]
+# Usage: ./build_vscode_docker_debian_slim_secure.sh [TunnelName] [--force-analysis]
 
-# Parse optional tunnel name argument
+# Parse optional tunnel name argument and flags
 TUNNEL_NAME_ARG=""
-if [ $# -ge 1 ]; then
-  TUNNEL_NAME_ARG="$1"
+FORCE_ANALYSIS=false
+for arg in "$@"; do
+  case $arg in
+    --force-analysis)
+      FORCE_ANALYSIS=true
+      shift
+      ;;
+    *)
+      if [ -z "$TUNNEL_NAME_ARG" ]; then
+        TUNNEL_NAME_ARG="$arg"
+      fi
+      ;;
+  esac
+done
+
+if [ -n "$TUNNEL_NAME_ARG" ]; then
   echo "Tunnel name argument provided: $TUNNEL_NAME_ARG"
+  # Validate: only numbers, lowercase letters, and underscores allowed
+  if ! echo "$TUNNEL_NAME_ARG" | grep -Eq '^[a-z0-9_]+$'; then
+    echo "Error: Tunnel name '$TUNNEL_NAME_ARG' is invalid. Only numbers, lowercase letters, and underscores are allowed. No capital letters or special characters permitted."
+    exit 2
+  fi
 fi
 
 
@@ -43,31 +62,42 @@ fi
 FULL_TAG="$IMAGE_NAME:$TAG"
 
 # --- Build the container if it does not exist ---
+IMAGE_ALREADY_EXISTS=false
 if ! docker image inspect "$FULL_TAG" >/dev/null 2>&1; then
   echo "Container image $FULL_TAG not found. Building..."
   docker build -t "$FULL_TAG" -f "$DOCKERFILE" .
 else
   echo "Container image $FULL_TAG already exists."
+  IMAGE_ALREADY_EXISTS=true
 fi
 
-# --- Security Remediation Steps ---
-# 1. Run npm audit fix in a temp container (if npm is present)
-echo "Running npm audit fix in a temp container (if npm is present)..."
-docker run --rm -it "$FULL_TAG" sh -c 'if command -v npm >/dev/null 2>&1; then find / -type d -name node_modules 2>/dev/null | while read d; do cd "$d" && npm audit fix --force || true; done; fi' || true
+# --- Security Remediation Steps (skip if image already exists) ---
+if [ "$IMAGE_ALREADY_EXISTS" = "false" ]; then
+  # 1. Run npm audit fix in a temp container (if npm is present)
+  echo "Running npm audit fix in a temp container (if npm is present)..."
+  docker run --rm -it "$FULL_TAG" sh -c 'if command -v npm >/dev/null 2>&1; then find / -type d -name node_modules 2>/dev/null | while read d; do cd "$d" && npm audit fix --force || true; done; fi' || true
 
-# 2. Run apt-get update/upgrade in a temp container (if apt is present)
-echo "Running apt-get update/upgrade in a temp container (if apt is present)..."
-docker run --rm -it "$FULL_TAG" sh -c 'if command -v apt-get >/dev/null 2>&1; then apt-get update && apt-get upgrade -y || true; fi' || true
+  # 2. Run apt-get update/upgrade in a temp container (if apt is present)
+  echo "Running apt-get update/upgrade in a temp container (if apt is present)..."
+  docker run --rm -it "$FULL_TAG" sh -c 'if command -v apt-get >/dev/null 2>&1; then apt-get update && apt-get upgrade -y || true; fi' || true
+else
+  echo "Skipping security remediation steps (image already exists and analyzed)."
+fi
 
 # --- Rebuild image after remediation steps (optional: user may want to commit these changes in a Dockerfile for persistence) ---
 # (Not rebuilding here, just analyzing the original build)
 
-# --- Docker Scout Analysis ---
-SCOUT_CVES_LOG="docker-scout-cves-$(date +%s).log"
-docker scout cves "$FULL_TAG" | tee "$SCOUT_CVES_LOG"
+# --- Docker Scout Analysis (skip if image already exists and logs exist) ---
+SCOUT_CVES_LOG="docker-scout-cves-$TAG.log"
+SCOUT_RECOMMENDATIONS_LOG="docker-scout-recommendations-$TAG.log"
 
-SCOUT_RECOMMENDATIONS_LOG="docker-scout-recommendations-$(date +%s).log"
-docker scout recommendations "$FULL_TAG" | tee "$SCOUT_RECOMMENDATIONS_LOG"
+if [ "$IMAGE_ALREADY_EXISTS" = "true" ] && [ -f "$SCOUT_CVES_LOG" ] && [ -f "$SCOUT_RECOMMENDATIONS_LOG" ] && [ "$FORCE_ANALYSIS" = "false" ]; then
+  echo "Using existing Docker Scout analysis for $FULL_TAG (use --force-analysis to re-run)..."
+else
+  echo "Running Docker Scout analysis for $FULL_TAG..."
+  docker scout cves "$FULL_TAG" | tee "$SCOUT_CVES_LOG"
+  docker scout recommendations "$FULL_TAG" | tee "$SCOUT_RECOMMENDATIONS_LOG"
+fi
 
 # --- Enhanced Vulnerability Summary ---
 # For each tier, count total and how many have/don't have a public patch
