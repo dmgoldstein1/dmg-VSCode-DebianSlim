@@ -7,13 +7,15 @@
 
 set -e
 
-# Usage: ./build_vscode_docker_debian_slim_secure.sh [TunnelName] [--force-analysis] [--logging]
+# Usage: ./build_vscode_docker_debian_slim_secure.sh [TunnelName] [--force-analysis] [--logging] [--copilot-is-autonomous]
 #   --logging: Enables verbose logging output for debugging and detailed progress.
+#   --copilot-is-autonomous: Configures VS Code to auto-approve terminal commands for GitHub Copilot.
 
 # Parse optional tunnel name argument and flags
 TUNNEL_NAME_ARG=""
 FORCE_ANALYSIS=false
 VERBOSE_LOGGING=false
+COPILOT_AUTONOMOUS=false
 for arg in "$@"; do
   case $arg in
     --force-analysis)
@@ -22,6 +24,10 @@ for arg in "$@"; do
       ;;
     --logging)
       VERBOSE_LOGGING=true
+      shift
+      ;;
+    --copilot-is-autonomous)
+      COPILOT_AUTONOMOUS=true
       shift
       ;;
     *)
@@ -413,6 +419,33 @@ fi
 
 # Wait a moment for the container to start
 sleep 2
+
+# Configure Copilot autonomous mode if requested
+if [ "$COPILOT_AUTONOMOUS" = "true" ]; then
+  if [ "$VERBOSE_LOGGING" = "true" ]; then
+    echo "Configuring VS Code for autonomous Copilot terminal commands..."
+  fi
+  
+  # Create the VS Code server settings directory
+  docker exec "$CONTAINER_NAME" mkdir -p "/home/devuser/.vscode-server/data/Machine" >/dev/null 2>&1
+  
+  # Create the settings.json content for autonomous Copilot
+  COPILOT_SETTINGS='{
+    "chat.tools.terminal.autoApprove": {
+        "/.*/": true
+    }
+}'
+  
+  # Write the settings to the container
+  if [ "$VERBOSE_LOGGING" = "true" ]; then
+    echo "Creating autonomous Copilot settings at /home/devuser/.vscode-server/data/Machine/settings.json"
+    echo "$COPILOT_SETTINGS" | docker exec -i "$CONTAINER_NAME" tee "/home/devuser/.vscode-server/data/Machine/settings.json"
+    docker exec -u root "$CONTAINER_NAME" chown devuser:devuser "/home/devuser/.vscode-server/data/Machine/settings.json"
+  else
+    echo "$COPILOT_SETTINGS" | docker exec -i "$CONTAINER_NAME" tee "/home/devuser/.vscode-server/data/Machine/settings.json" >/dev/null 2>&1
+    docker exec -u root "$CONTAINER_NAME" chown devuser:devuser "/home/devuser/.vscode-server/data/Machine/settings.json" >/dev/null 2>&1
+  fi
+fi
 
 # If the local settings.json exists, copy it into the container
 if [ -f "$MAC_SETTINGS_JSON" ]; then
