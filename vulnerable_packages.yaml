@@ -15,8 +15,8 @@ summary:
     - json@1.0.0 (HIGH, fixed in 10.0.0)
     - pug@1.0.0 (MEDIUM, fixed in 3.0.3)
   - Priority for remediation:
-    1. Update or remove handlebars@1.0.0 (CRITICAL)
-    2. If feasible, update npm, grunt, ini, diff, and json to fixed versions
+      - Update or remove handlebars@1.0.0 (CRITICAL)
+      - If feasible, update npm, grunt, ini, diff, and json to fixed versions
   - These packages are bundled with the VS Code .deb and not installed directly by your Dockerfile.
   - Updating only these packages will address the most severe vulnerabilities with minimal risk of breaking VS Code.
 
@@ -26,10 +26,10 @@ vulnerable_packages:
     fixed_version: 4.7.7
   - name: npm
     version: 1.0.1
-    fixed_version: 5.7.1 (some CVEs), 6.13.4, 6.13.3, 2.15.1, 6.14.6, 1.3.3, 2.15.1, 3.8.3
+    fixed_version: "5.7.1 (some CVEs), 6.13.4, 6.13.3, 2.15.1, 6.14.6, 1.3.3, 2.15.1, 3.8.3"
   - name: grunt
     version: 1.0.0
-    fixed_version: 1.3.0, 1.5.3, 1.5.2
+    fixed_version: "1.3.0, 1.5.3, 1.5.2"
   - name: ini
     version: 1.0.0
     fixed_version: 1.3.6
@@ -41,7 +41,7 @@ vulnerable_packages:
     fixed_version: 10.0.0
   - name: pug
     version: 1.0.0
-    fixed_version: 3.0.3, 3.0.1
+    fixed_version: "3.0.3, 3.0.1"
   - name: tiff
     version: 4.7.0-3
     fixed_version: not fixed
