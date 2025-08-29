@@ -7,36 +7,131 @@
 
 set -e
 
-# Usage: ./build_vscode_docker_debian_slim_secure.sh [TunnelName] [--force-analysis] [--logging] [--copilot-is-autonomous]
+# Usage: ./build_vscode_docker_debian_slim_secure.sh [TunnelName] [--force-analysis] [--logging] [--copilot-is-autonomous] [--git-user-name NAME] [--git-user-email EMAIL] [--use-yaml]
 #   --logging: Enables verbose logging output for debugging and detailed progress.
 #   --copilot-is-autonomous: Configures VS Code to auto-approve terminal commands for GitHub Copilot.
+#   --git-user-name: Git user.name to pass into the container (exported as GIT_USER_NAME).
+#   --git-user-email: Git user.email to pass into the container (exported as GIT_USER_EMAIL).
+#   --use-yaml: Ignore other flags/args and load configuration from build_variables.yaml in this directory.
 
-# Parse optional tunnel name argument and flags
+# Parse arguments and (optionally) a YAML config file
+# If --use-yaml is present, ignore all other flags/args and source values from build_variables.yaml
+
+# Defaults
 TUNNEL_NAME_ARG=""
 FORCE_ANALYSIS=false
 VERBOSE_LOGGING=false
 COPILOT_AUTONOMOUS=false
-for arg in "$@"; do
-  case $arg in
-    --force-analysis)
-      FORCE_ANALYSIS=true
-      shift
-      ;;
-    --logging)
-      VERBOSE_LOGGING=true
-      shift
-      ;;
-    --copilot-is-autonomous)
-      COPILOT_AUTONOMOUS=true
-      shift
-      ;;
-    *)
-      if [ -z "$TUNNEL_NAME_ARG" ]; then
-        TUNNEL_NAME_ARG="$arg"
-      fi
-      ;;
-  esac
+GIT_USER_NAME=""
+GIT_USER_EMAIL=""
+GH_TOKEN=""
+AUTO_UPDATE_ON_START=""
+UPDATE_CHECK_INTERVAL_SECONDS=""
+APPROVAL_FILE=""
+USE_YAML=false
+YAML_FILE="build_variables.yaml"
+
+# Pre-scan to detect --use-yaml
+for pre in "$@"; do
+  [ "$pre" = "--use-yaml" ] && USE_YAML=true && break
 done
+
+parse_bool() {
+  case "$1" in
+    true|TRUE|True|1|yes|YES|y|Y) echo "true" ;;
+    false|FALSE|False|0|no|NO|n|N|"") echo "false" ;;
+    *) echo "$1" ;;
+  esac
+}
+
+load_yaml_config() {
+  local file="$1"
+  if [ ! -f "$file" ]; then
+    echo "Error: --use-yaml specified but $file not found." >&2
+    exit 3
+  fi
+  # Simple YAML (key: value) parser; ignores comments and nested structures
+  # Supported keys:
+  #   tunnel_name, force_analysis, logging, copilot_is_autonomous,
+  #   git_user_name, git_user_email, gh_token,
+  #   auto_update_on_start, update_check_interval_seconds, approval_file
+  while IFS= read -r line; do
+    # strip comments
+    line="${line%%#*}"
+    # trim
+    line="$(echo "$line" | sed -e 's/^\s*//' -e 's/\s*$//')"
+    [ -z "$line" ] && continue
+    key="${line%%:*}"
+    val="${line#*:}"
+    key="$(echo "$key" | sed -e 's/^\s*//' -e 's/\s*$//')"
+    val="$(echo "$val" | sed -e 's/^\s*//' -e 's/\s*$//')"
+    # remove optional surrounding quotes
+    val="$(echo "$val" | sed -e 's/^"\(.*\)"$/\1/' -e "s/^'\(.*\)'$/\1/")"
+    case "$key" in
+      tunnel_name) TUNNEL_NAME_ARG="$val" ;;
+      force_analysis) FORCE_ANALYSIS=$(parse_bool "$val") ;;
+      logging) VERBOSE_LOGGING=$(parse_bool "$val") ;;
+      copilot_is_autonomous) COPILOT_AUTONOMOUS=$(parse_bool "$val") ;;
+      git_user_name) GIT_USER_NAME="$val" ;;
+      git_user_email) GIT_USER_EMAIL="$val" ;;
+      gh_token) GH_TOKEN="$val" ;;
+      auto_update_on_start) AUTO_UPDATE_ON_START="$val" ;;
+      update_check_interval_seconds) UPDATE_CHECK_INTERVAL_SECONDS="$val" ;;
+      approval_file) APPROVAL_FILE="$val" ;;
+      *)
+        # unknown key ignored (forward compatibility)
+        ;;
+    esac
+  done < "$file"
+}
+
+if [ "$USE_YAML" = "true" ]; then
+  load_yaml_config "$YAML_FILE"
+else
+  # Flag parser (no YAML). Supports positional TunnelName and explicit flags
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --force-analysis)
+        FORCE_ANALYSIS=true
+        shift ;;
+      --logging)
+        VERBOSE_LOGGING=true
+        shift ;;
+      --copilot-is-autonomous)
+        COPILOT_AUTONOMOUS=true
+        shift ;;
+      --git-user-name)
+        GIT_USER_NAME="$2"; shift 2 ;;
+      --git-user-email)
+        GIT_USER_EMAIL="$2"; shift 2 ;;
+      --gh-token)
+        GH_TOKEN="$2"; shift 2 ;;
+      --auto-update-on-start)
+        AUTO_UPDATE_ON_START="$2"; shift 2 ;;
+      --update-check-interval-seconds)
+        UPDATE_CHECK_INTERVAL_SECONDS="$2"; shift 2 ;;
+      --approval-file)
+        APPROVAL_FILE="$2"; shift 2 ;;
+      --use-yaml)
+        # Handled earlier; ensure we ignore the rest by loading and breaking
+        USE_YAML=true
+        shift
+        load_yaml_config "$YAML_FILE"
+        break ;;
+      --)
+        shift; break ;;
+      -*)
+        echo "Warning: Unknown flag '$1' ignored" >&2
+        shift ;;
+      *)
+        # first non-flag token = tunnel name (if not set yet)
+        if [ -z "$TUNNEL_NAME_ARG" ]; then
+          TUNNEL_NAME_ARG="$1"
+        fi
+        shift ;;
+    esac
+  done
+fi
 
 if [ -n "$TUNNEL_NAME_ARG" ]; then
   echo "Tunnel name argument provided: $TUNNEL_NAME_ARG"
@@ -45,6 +140,20 @@ if [ -n "$TUNNEL_NAME_ARG" ]; then
     echo "Error: Tunnel name '$TUNNEL_NAME_ARG' is invalid. Only numbers, lowercase letters, and underscores are allowed. No capital letters or special characters permitted."
     exit 2
   fi
+fi
+
+if [ "$USE_YAML" = "true" ] && [ "$VERBOSE_LOGGING" = "true" ]; then
+  echo "Loaded configuration from $YAML_FILE."
+  echo "- force_analysis=$FORCE_ANALYSIS"
+  echo "- logging=$VERBOSE_LOGGING"
+  echo "- copilot_is_autonomous=$COPILOT_AUTONOMOUS"
+  echo "- tunnel_name=$TUNNEL_NAME_ARG"
+  echo "- git_user_name set? $( [ -n \"$GIT_USER_NAME\" ] && echo yes || echo no )"
+  echo "- git_user_email set? $( [ -n \"$GIT_USER_EMAIL\" ] && echo yes || echo no )"
+  echo "- gh_token set? $( [ -n \"$GH_TOKEN\" ] && echo yes || echo no )"
+  echo "- auto_update_on_start=$AUTO_UPDATE_ON_START"
+  echo "- update_check_interval_seconds=$UPDATE_CHECK_INTERVAL_SECONDS"
+  echo "- approval_file=$APPROVAL_FILE"
 fi
 
 
@@ -403,18 +512,22 @@ if [ "$VERBOSE_LOGGING" = "true" ]; then
 fi
 
 echo "Launching VS Code Server container as $CONTAINER_NAME..."
-if [ -n "$TUNNEL_NAME_ARG" ]; then
-  if [ "$VERBOSE_LOGGING" = "true" ]; then
-    docker run -d --name "$CONTAINER_NAME" -e TUNNEL_NAME="$TUNNEL_NAME_ARG" -p "$HOST_PORT":8080 "$FULL_TAG"
-  else
-    docker run -d --name "$CONTAINER_NAME" -e TUNNEL_NAME="$TUNNEL_NAME_ARG" -p "$HOST_PORT":8080 "$FULL_TAG" >/dev/null 2>&1
-  fi
+
+# Build environment list for docker run
+RUN_ENVS=( )
+[ -n "$TUNNEL_NAME_ARG" ] && RUN_ENVS+=( -e "TUNNEL_NAME=$TUNNEL_NAME_ARG" )
+[ -n "$GIT_USER_NAME" ] && RUN_ENVS+=( -e "GIT_USER_NAME=$GIT_USER_NAME" )
+[ -n "$GIT_USER_EMAIL" ] && RUN_ENVS+=( -e "GIT_USER_EMAIL=$GIT_USER_EMAIL" )
+[ -n "$GH_TOKEN" ] && RUN_ENVS+=( -e "GH_TOKEN=$GH_TOKEN" )
+[ -n "$AUTO_UPDATE_ON_START" ] && RUN_ENVS+=( -e "AUTO_UPDATE_ON_START=$AUTO_UPDATE_ON_START" )
+[ -n "$UPDATE_CHECK_INTERVAL_SECONDS" ] && RUN_ENVS+=( -e "UPDATE_CHECK_INTERVAL_SECONDS=$UPDATE_CHECK_INTERVAL_SECONDS" )
+[ -n "$APPROVAL_FILE" ] && RUN_ENVS+=( -e "APPROVAL_FILE=$APPROVAL_FILE" )
+
+if [ "$VERBOSE_LOGGING" = "true" ]; then
+  echo "docker run envs: ${RUN_ENVS[*]}"
+  docker run -d --name "$CONTAINER_NAME" "${RUN_ENVS[@]}" -p "$HOST_PORT":8080 "$FULL_TAG"
 else
-  if [ "$VERBOSE_LOGGING" = "true" ]; then
-    docker run -d --name "$CONTAINER_NAME" -p "$HOST_PORT":8080 "$FULL_TAG"
-  else
-    docker run -d --name "$CONTAINER_NAME" -p "$HOST_PORT":8080 "$FULL_TAG" >/dev/null 2>&1
-  fi
+  docker run -d --name "$CONTAINER_NAME" "${RUN_ENVS[@]}" -p "$HOST_PORT":8080 "$FULL_TAG" >/dev/null 2>&1
 fi
 
 # Wait a moment for the container to start
