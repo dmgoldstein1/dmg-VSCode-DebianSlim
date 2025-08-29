@@ -10,6 +10,9 @@ set -euo pipefail
 
 VERBOSE="${VERBOSE:-false}"
 SKIP_TUNNEL="${SKIP_TUNNEL:-false}"
+AUTO_UPDATE_ON_START="${AUTO_UPDATE_ON_START:-true}"
+UPDATE_CHECK_INTERVAL_SECONDS="${UPDATE_CHECK_INTERVAL_SECONDS:-3600}"
+APPROVAL_FILE="$HOME/APPROVE_CODE_UPDATE"
 LOG_DIR="$HOME/LOGS"
 mkdir -p "$LOG_DIR"
 TS="$(date +%s)"
@@ -24,6 +27,95 @@ vlog() {
     log "[VERBOSE] $*"
   fi
 }
+
+# --- VS Code CLI update helpers (apt-based) ---
+have_apt() { command -v apt-get >/dev/null 2>&1; }
+
+get_installed_code_version() {
+  dpkg-query -W -f='${Version}\n' code 2>/dev/null || true
+}
+
+get_candidate_code_version() {
+  # apt-cache policy returns Candidate version; handle missing gracefully
+  apt-cache policy code 2>/dev/null | awk '/Candidate:/ {print $2}'
+}
+
+refresh_apt_indexes() {
+  sudo apt-get update >>"$LOG_FILE" 2>&1 || true
+}
+
+code_update_available() {
+  local installed candidate
+  installed="$(get_installed_code_version)" || installed=""
+  candidate="$(get_candidate_code_version)" || candidate=""
+  if [[ -z "$installed" || -z "$candidate" || "$candidate" == "(none)" ]]; then
+    return 1
+  fi
+  [[ "$installed" != "$candidate" ]]
+}
+
+install_code_update() {
+  log "Attempting to upgrade 'code' from apt..."
+  if sudo apt-get install -y --only-upgrade code >>"$LOG_FILE" 2>&1; then
+    log "VS Code CLI upgraded to version $(get_installed_code_version)."
+    return 0
+  else
+    log "Warning: 'code' upgrade failed; see log for details."
+    return 1
+  fi
+}
+
+start_update_watcher() {
+  (
+    while true; do
+      sleep "$UPDATE_CHECK_INTERVAL_SECONDS"
+      if ! have_apt; then
+        vlog "apt-get not found; skipping periodic update checks."
+        continue
+      fi
+      refresh_apt_indexes
+      if code_update_available; then
+        local installed candidate
+        installed="$(get_installed_code_version)"
+        candidate="$(get_candidate_code_version)"
+        log "Update available for VS Code CLI (installed: ${installed:-unknown}, candidate: ${candidate:-unknown})."
+        if [[ -f "$APPROVAL_FILE" ]]; then
+          log "Approval file detected ($APPROVAL_FILE). Proceeding with upgrade."
+          if install_code_update; then
+            rm -f "$APPROVAL_FILE" || true
+          fi
+        else
+          log "To upgrade now, exec inside the container and create $APPROVAL_FILE (e.g., 'touch $APPROVAL_FILE')."
+        fi
+      else
+        vlog "No VS Code CLI update available."
+      fi
+    done
+  ) >/dev/null 2>&1 &
+}
+
+# 0) On startup, attempt to auto-update VS Code CLI if an update is available
+if have_apt; then
+  if [[ "$AUTO_UPDATE_ON_START" == "true" ]]; then
+    vlog "Checking for VS Code CLI updates at startup..."
+    refresh_apt_indexes
+    if code_update_available; then
+      local installed candidate
+      installed="$(get_installed_code_version)"
+      candidate="$(get_candidate_code_version)"
+      log "Startup upgrade: updating VS Code CLI from ${installed:-unknown} to ${candidate:-unknown}."
+      install_code_update || log "Startup upgrade failed; continuing with current version."
+    else
+      vlog "VS Code CLI is up-to-date at startup."
+    fi
+  else
+    vlog "AUTO_UPDATE_ON_START=false; skipping startup update."
+  fi
+  # Always start periodic watcher
+  start_update_watcher
+else
+  vlog "apt-get not found; skipping VS Code CLI update checks."
+fi
 
 # 1) Authenticate GitHub CLI if token provided
 TOKEN="${GH_TOKEN:-${GITHUB_TOKEN:-}}"
