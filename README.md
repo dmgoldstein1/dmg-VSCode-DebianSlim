@@ -101,7 +101,7 @@ When using `--copilot-is-autonomous`, the container is configured to automatical
 ```json
 {
     "chat.tools.terminal.autoApprove": {
-        "*": true
+        "/*/": true
     }
 }
 ```
