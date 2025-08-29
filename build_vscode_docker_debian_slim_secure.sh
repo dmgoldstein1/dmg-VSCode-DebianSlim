@@ -139,7 +139,7 @@ fi
 # --- Enhanced Vulnerability Summary ---
 # For each tier, count total and how many have/don't have a public patch
 if [ "$VERBOSE_LOGGING" = "true" ]; then
-  echo "\nVulnerability summary for $FULL_TAG:" | tee -a "$SCOUT_CVES_LOG"
+  echo -e "\nVulnerability summary for $FULL_TAG:" | tee -a "$SCOUT_CVES_LOG"
 else
   echo "Analyzing vulnerabilities..."
 fi
@@ -469,7 +469,7 @@ fi
 
 # Wait for the tunnel server to start and print the auth code and tunnel link
 if [ "$VERBOSE_LOGGING" = "true" ]; then
-  echo "\n--- VS Code Tunnel Auth Token and Link ---"
+  echo -e "\n--- VS Code Tunnel Auth Token and Link ---"
   echo "(If not already authenticated, copy the code and link below to set up your GitHub tunnel.)"
   echo "-------------------------------------------------"
 fi
@@ -480,7 +480,7 @@ docker logs -f "$CONTAINER_NAME" 2>&1 | \
     /Tunnel link: Open this link in your browser https:\/\/vscode\.dev\/tunnel\/[a-zA-Z0-9]+/ { print "Tunnel link: "$0; fflush(); exit 0; }
   '
 
-echo "\nTunnel established. You can now connect using the above link."
+echo -e "\nTunnel established. You can now connect using the above link."
 if [ "$VERBOSE_LOGGING" = "true" ]; then
   echo "Container $CONTAINER_NAME is running on port $HOST_PORT. To stop it: docker stop $CONTAINER_NAME && docker rm $CONTAINER_NAME"
 else
