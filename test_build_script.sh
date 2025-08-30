@@ -34,7 +34,8 @@ run_test() {
     
     log_info "Running test: $test_name"
     
-    if eval "$test_command" >> "$TEST_LOG" 2>&1; then
+    # Run the test with output going to both console and log file
+    if eval "$test_command" 2>&1 | tee -a "$TEST_LOG"; then
         log_success "$test_name passed"
         return 0
     else
@@ -48,23 +49,61 @@ test_shellcheck() {
     log_info "Testing shell scripts with shellcheck..."
     
     # Test main build script
+    log_info "  → Checking build_vscode_docker_debian_slim_secure.sh..."
     if ! shellcheck build_vscode_docker_debian_slim_secure.sh; then
         log_error "build_vscode_docker_debian_slim_secure.sh failed shellcheck"
         return 1
     fi
+    log_info "  ✓ build_vscode_docker_debian_slim_secure.sh passed shellcheck"
     
     # Test entrypoint scripts  
+    log_info "  → Checking scripts/vscode-tunnel-entrypoint.sh..."
     if ! shellcheck scripts/vscode-tunnel-entrypoint.sh; then
         log_error "vscode-tunnel-entrypoint.sh failed shellcheck"
         return 1
     fi
+    log_info "  ✓ scripts/vscode-tunnel-entrypoint.sh passed shellcheck"
     
+    log_info "  → Checking entrypoint-legacy.sh..."
     if ! shellcheck entrypoint-legacy.sh; then
         log_error "entrypoint-legacy.sh failed shellcheck"
         return 1
     fi
+    log_info "  ✓ entrypoint-legacy.sh passed shellcheck"
     
     log_success "All shell scripts passed shellcheck"
+    return 0
+}
+
+# Test 1.5: Validate shell script syntax
+test_syntax() {
+    log_info "Testing shell script syntax..."
+    
+    # Test main build script syntax
+    log_info "  → Checking syntax of build_vscode_docker_debian_slim_secure.sh..."
+    if ! bash -n build_vscode_docker_debian_slim_secure.sh; then
+        log_error "build_vscode_docker_debian_slim_secure.sh has syntax errors"
+        return 1
+    fi
+    log_info "  ✓ build_vscode_docker_debian_slim_secure.sh syntax OK"
+    
+    # Test entrypoint script syntax
+    log_info "  → Checking syntax of scripts/vscode-tunnel-entrypoint.sh..."
+    if ! bash -n scripts/vscode-tunnel-entrypoint.sh; then
+        log_error "scripts/vscode-tunnel-entrypoint.sh has syntax errors"
+        return 1
+    fi
+    log_info "  ✓ scripts/vscode-tunnel-entrypoint.sh syntax OK"
+    
+    # Test legacy entrypoint syntax
+    log_info "  → Checking syntax of entrypoint-legacy.sh..."
+    if ! bash -n entrypoint-legacy.sh; then
+        log_error "entrypoint-legacy.sh has syntax errors"
+        return 1
+    fi
+    log_info "  ✓ entrypoint-legacy.sh syntax OK"
+    
+    log_success "All shell scripts have valid syntax"
     return 0
 }
 
@@ -73,10 +112,12 @@ test_yaml_validation() {
     log_info "Testing YAML file validation..."
     
     # Check if build_variables.yaml is valid
+    log_info "  → Checking build_variables.yaml syntax..."
     if ! python3 -c "import yaml; yaml.safe_load(open('build_variables.yaml'))" 2>/dev/null; then
         log_error "build_variables.yaml is not valid YAML"
         return 1
     fi
+    log_info "  ✓ build_variables.yaml is valid YAML"
     
     log_success "YAML files are valid"
     return 0
@@ -116,15 +157,19 @@ EOF
 test_docker_requirements() {
     log_info "Testing Docker requirements..."
     
+    log_info "  → Checking if Docker is installed..."
     if ! command -v docker >/dev/null 2>&1; then
         log_error "Docker is not installed or not in PATH"
         return 1
     fi
+    log_info "  ✓ Docker command found"
     
+    log_info "  → Checking if Docker daemon is accessible..."
     if ! docker info >/dev/null 2>&1; then
         log_error "Docker daemon is not running or not accessible"
         return 1
     fi
+    log_info "  ✓ Docker daemon is accessible"
     
     log_success "Docker requirements met"
     return 0
@@ -160,20 +205,26 @@ test_dockerfile_syntax() {
 test_vscode_extension() {
     log_info "Testing VS Code extension structure..."
     
+    log_info "  → Checking if package.json exists..."
     if [ ! -f "vscode-container-updater/package.json" ]; then
         log_error "VS Code extension package.json not found"
         return 1
     fi
+    log_info "  ✓ package.json found"
     
+    log_info "  → Validating package.json syntax..."
     if ! python3 -c "import json; json.load(open('vscode-container-updater/package.json'))" 2>/dev/null; then
         log_error "VS Code extension package.json is not valid JSON"
         return 1
     fi
+    log_info "  ✓ package.json is valid JSON"
     
+    log_info "  → Checking if tsconfig.json exists..."
     if [ ! -f "vscode-container-updater/tsconfig.json" ]; then
         log_error "VS Code extension tsconfig.json not found"
         return 1
     fi
+    log_info "  ✓ tsconfig.json found"
     
     log_success "VS Code extension structure is valid"
     return 0
@@ -215,6 +266,7 @@ main() {
     
     # Run all tests
     run_test "Shell script linting" "test_shellcheck"
+    run_test "Shell script syntax" "test_syntax"
     run_test "YAML validation" "test_yaml_validation" 
     run_test "Argument parsing" "test_argument_parsing"
     run_test "Docker requirements" "test_docker_requirements"

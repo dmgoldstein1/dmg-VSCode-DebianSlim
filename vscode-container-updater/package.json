@@ -3,6 +3,11 @@
   "displayName": "VS Code Container Updater",
   "description": "Monitor and approve VS Code CLI updates in this containerized environment",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dmgoldstein1/dmg-VSCode-DebianSlim"
+  },
+  "license": "MIT",
   "engines": {
     "vscode": "^1.103.0"
   },

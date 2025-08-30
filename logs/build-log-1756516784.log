@@ -1,0 +1,28 @@
+[INFO] Verbose logging enabled. All output will be saved to logs/build-log-1756516784.log
+Container image dmg-vs-code-debian-slim:cf91ace487cd already exists.
+Skipping security remediation steps (image already exists and analyzed).
+Using existing Docker Scout analysis for dmg-vs-code-debian-slim:cf91ace487cd (use --force-analysis to re-run)...
+CVEs log: logs/docker-scout-cves-cf91ace487cd.log
+Recommendations log: logs/docker-scout-recommendations-cf91ace487cd.log
+
+Vulnerability summary for dmg-vs-code-debian-slim:cf91ace487cd:
+=== Vulnerability Summary for dmg-vs-code-debian-slim:cf91ace487cd ===
+Critical:     4
+High:         17
+Medium:       7
+Low:          87
+Unspecified:  4
+Fixable:      114
+============================================
+Full CVE analysis saved to: logs/docker-scout-cves-cf91ace487cd.log
+Recommendations saved to: logs/docker-scout-recommendations-cf91ace487cd.log
+Using host port 8080 for container test_yaml_mode (host:8080 -> container:8080)
+Launching VS Code Server container as test_yaml_mode...
+docker run envs: -e TUNNEL_NAME=test_yaml_mode -e GIT_USER_NAME=Test User -e GIT_USER_EMAIL=test@example.com -e AUTO_UPDATE_ON_START=false -e UPDATE_CHECK_INTERVAL_SECONDS=1800
+84945e3570c6787e324db34d5e0a7626bdf107e2c52e499a1e529b0b11bdeb14
+[INFO] Docker run log saved to logs/docker-run-test_yaml_mode-cf91ace487cd.log
+Copying local VS Code settings.json to container...
+Test mode enabled - container test_yaml_mode started successfully.
+Container is running on port 8080.
+To view logs: docker logs test_yaml_mode
+To stop: docker stop test_yaml_mode && docker rm test_yaml_mode
