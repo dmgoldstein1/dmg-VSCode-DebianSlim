@@ -195,23 +195,25 @@ fi
 # --- Security Remediation Steps (skip if image already exists) ---
 if [ "$IMAGE_ALREADY_EXISTS" = "false" ]; then
   # 1. Run npm audit fix in a temp container (if npm is present)
+  NPM_REMEDIATE_NAME="${CONTAINER_NAME}-npm-remediate"
   if [ "$VERBOSE_LOGGING" = "true" ]; then
     echo "Running npm audit fix in a temp container (if npm is present)..."
-    docker run --rm -it "$FULL_TAG" sh -c 'if command -v npm >/dev/null 2>&1; then find / -type d -name node_modules 2>/dev/null | while read d; do cd "$d" && npm audit fix --force || true; done; fi' || true
+    docker run --rm --name "$NPM_REMEDIATE_NAME" -it "$FULL_TAG" sh -c 'if command -v npm >/dev/null 2>&1; then find / -type d -name node_modules 2>/dev/null | while read d; do cd "$d" && npm audit fix --force || true; done; fi' || true
   else
-    docker run --rm "$FULL_TAG" sh -c 'if command -v npm >/dev/null 2>&1; then find / -type d -name node_modules 2>/dev/null | while read d; do cd "$d" && npm audit fix --force || true; done; fi' >/dev/null 2>&1 || true
+    docker run --rm --name "$NPM_REMEDIATE_NAME" "$FULL_TAG" sh -c 'if command -v npm >/dev/null 2>&1; then find / -type d -name node_modules 2>/dev/null | while read d; do cd "$d" && npm audit fix --force || true; done; fi' >/dev/null 2>&1 || true
   fi
   
   # 2. Run apt-get update/upgrade in a temp container (if apt is present)
+  APT_REMEDIATE_NAME="${CONTAINER_NAME}-apt-remediate"
   if [ "$VERBOSE_LOGGING" = "true" ]; then
     echo "Running apt-get update/upgrade in a temp container (if apt is present)..."
-    docker run --rm "$FULL_TAG" sh -c '\
+    docker run --rm --name "$APT_REMEDIATE_NAME" "$FULL_TAG" sh -c '\
       if command -v apt-get >/dev/null 2>&1; then \
         apt-get update && \
         apt-get upgrade -y || true; \
       fi' || true
   else
-    docker run --rm "$FULL_TAG" sh -c '\
+    docker run --rm --name "$APT_REMEDIATE_NAME" "$FULL_TAG" sh -c '\
       if command -v apt-get >/dev/null 2>&1; then \
         apt-get update >/dev/null 2>&1 && \
         apt-get upgrade -y >/dev/null 2>&1 || true; \
@@ -488,13 +490,13 @@ else
   CONTAINER_NAME="vscode-server-tunnel"
 fi
 
-# Production: Do not stop/remove running containers automatically.
-# Instead, if a container with the same name exists, print an error and exit.
+# Production: Check if a container with the same name exists.
+# If it does, append a timestamp to make it unique instead of failing.
+ORIGINAL_CONTAINER_NAME="$CONTAINER_NAME"
 if docker ps -a --format '{{.Names}}' | grep -q "^$CONTAINER_NAME$"; then
-  echo "Error: A container named '$CONTAINER_NAME' already exists. Please stop and remove it manually before running this script again."
-  echo "To stop:   docker stop $CONTAINER_NAME"
-  echo "To remove: docker rm $CONTAINER_NAME"
-  exit 4
+  TIMESTAMP=$(date +%s)
+  CONTAINER_NAME="${ORIGINAL_CONTAINER_NAME}-${TIMESTAMP}"
+  echo "Container '$ORIGINAL_CONTAINER_NAME' already exists. Using unique name: $CONTAINER_NAME"
 fi
 
 
@@ -589,22 +591,24 @@ if [ "$VERBOSE_LOGGING" = "true" ]; then
   echo "(If not already authenticated, copy the code and link below to set up your GitHub tunnel.)"
   echo "-------------------------------------------------"
 fi
-# Print both the device code and tunnel link, regardless of exact log phrasing
+# Print both the device code and tunnel link, using portable awk (BSD/GNU compatible)
 docker logs -f "$CONTAINER_NAME" 2>&1 | \
   awk '
     /use code [A-Z0-9-]{4,}/ {
-      match($0, /use code ([A-Z0-9-]{4,})/, m);
-      if (m[1] != "") {
-        print "Device authorization code: " m[1];
+      # Extract device code using sub() - portable across BSD/GNU awk
+      line = $0;
+      if (sub(/.*use code /, "", line) && sub(/ .*/, "", line)) {
+        print "Device authorization code: " line;
       } else {
         print $0;
       }
       seen_code=1; fflush();
     }
     /vscode\.dev\/tunnel\// {
-      match($0, /(https:\/\/vscode\.dev\/tunnel\/[a-zA-Z0-9_-]+)/, m);
-      if (m[1] != "") {
-        print "Tunnel link: " m[1];
+      # Extract tunnel link using sub() - portable across BSD/GNU awk
+      line = $0;
+      if (sub(/.*https:\/\/vscode\.dev\/tunnel\//, "https://vscode.dev/tunnel/", line) && sub(/ .*/, "", line)) {
+        print "Tunnel link: " line;
       } else {
         print $0;
       }
