@@ -6,7 +6,7 @@ This directory contains the comprehensive testing infrastructure for the VS Code
 
 ## 📁 Directory Structure
 
-```
+```text
 tests/
 ├── run_tests.sh                 # Master test runner script
 ├── package.json                 # Test dependencies and npm scripts
@@ -26,6 +26,7 @@ tests/
 ## 🚀 Quick Start
 
 ### Run All Tests
+
 ```bash
 # From the tests directory
 ./run_tests.sh
@@ -35,6 +36,7 @@ tests/run_tests.sh
 ```
 
 ### Run Specific Test Types
+
 ```bash
 ./run_tests.sh unit          # Unit tests only
 ./run_tests.sh integration   # Integration tests only
@@ -43,6 +45,7 @@ tests/run_tests.sh
 ```
 
 ### Advanced Options
+
 ```bash
 ./run_tests.sh --verbose all     # Verbose output
 ./run_tests.sh --parallel all    # Parallel execution
@@ -52,24 +55,28 @@ tests/run_tests.sh
 ## 📋 Test Categories
 
 ### 1. Unit Tests (`unit/`)
+
 - **Purpose:** Test individual functions and components
 - **Scope:** Shell script functions, YAML parsing, Docker utilities
 - **Runtime:** ~30 seconds
 - **Dependencies:** bash, basic Unix utilities
 
 **Key Tests:**
+
 - YAML configuration parsing
 - Docker container name generation
 - Logging function validation
 - Error handling mechanisms
 
 ### 2. Integration Tests (`integration/`)
+
 - **Purpose:** Test complete build system workflows
 - **Scope:** Full Docker build process, VS Code tunnel setup, security analysis
 - **Runtime:** ~5-15 minutes
 - **Dependencies:** Docker, shellcheck, build scripts
 
 **Key Tests:**
+
 - Complete container build process
 - Shell script syntax validation
 - YAML configuration validation
@@ -77,12 +84,14 @@ tests/run_tests.sh
 - Tunnel creation and detection
 
 ### 3. Extension Tests (`extension/`)
+
 - **Purpose:** Test VS Code extension functionality
 - **Scope:** TypeScript compilation, extension packaging, API integration
 - **Runtime:** ~1-2 minutes
 - **Dependencies:** Node.js, npm, VS Code extension tools
 
 **Key Tests:**
+
 - Extension activation and loading
 - Log parsing functionality
 - Configuration management
@@ -90,12 +99,14 @@ tests/run_tests.sh
 - Command registration
 
 ### 4. Security Tests (Built into `run_tests.sh`)
+
 - **Purpose:** Security validation and vulnerability scanning
 - **Scope:** Secret detection, shell script security, YAML validation
 - **Runtime:** ~1 minute
 - **Dependencies:** shellcheck, optional yamllint
 
 **Key Tests:**
+
 - ShellCheck security analysis
 - Secret pattern detection
 - YAML file validation
@@ -106,6 +117,7 @@ tests/run_tests.sh
 ### Test Configurations (`configs/`)
 
 **`test_config.yaml`** - Primary test configuration:
+
 ```yaml
 tunnel_name: test_yaml_mode
 force_analysis: false
@@ -115,6 +127,7 @@ test_mode: true
 ```
 
 **`test_yaml_config.yaml`** - Debug test configuration:
+
 ```yaml
 tunnel_name: test_tunnel_debug
 force_analysis: false
@@ -144,11 +157,13 @@ The testing infrastructure integrates seamlessly with GitHub Actions through mul
 #### 1. **Main CI/CD Pipeline** (`.github/workflows/ci-cd.yml`)
 
 **Trigger Events:**
+
 - Push to `main` or `develop` branches
 - Pull requests to `main`
 - Weekly security scans (Sundays 2 AM UTC)
 
 **Test Stages:**
+
 ```mermaid
 graph TD
     A[Lint & Validate] --> B[Unit Tests]
@@ -160,6 +175,7 @@ graph TD
 ```
 
 **Key Features:**
+
 - Multi-architecture Docker builds (amd64, arm64)
 - Automated artifact uploads
 - Security vulnerability scanning
@@ -168,6 +184,7 @@ graph TD
 #### 2. **Security Pipeline** (`.github/workflows/security.yml`)
 
 **Comprehensive Security Analysis:**
+
 - **SAST:** CodeQL static analysis
 - **Dependencies:** npm audit, Snyk scanning
 - **Secrets:** TruffleHog detection
@@ -175,6 +192,7 @@ graph TD
 - **Container Security:** Dockle linting, structure tests
 
 **Automated Reporting:**
+
 - Security summary generation
 - SARIF upload to GitHub Security tab
 - Pull request security comments
@@ -191,6 +209,7 @@ SNYK_TOKEN=your_snyk_token_here
 #### Branch Protection Rules
 
 Recommended settings for `main` branch:
+
 - ✅ Require status checks to pass
 - ✅ Require up-to-date branches
 - ✅ Include administrators
@@ -204,6 +223,7 @@ Recommended settings for `main` branch:
 #### Auto-merge Configuration
 
 For automated dependency updates:
+
 ```yaml
 # .github/dependabot.yml
 version: 2
@@ -223,6 +243,7 @@ updates:
 ### Common Issues and Solutions
 
 #### 1. **Shell Script Failures**
+
 ```bash
 # Check syntax manually
 bash -n script_name.sh
@@ -235,6 +256,7 @@ shellcheck script_name.sh
 ```
 
 #### 2. **Docker Build Issues**
+
 ```bash
 # Build with verbose output
 docker build --no-cache --progress=plain .
@@ -247,6 +269,7 @@ docker system prune -a
 ```
 
 #### 3. **Extension Test Failures**
+
 ```bash
 # Clean and reinstall dependencies
 cd vscode-container-updater
@@ -261,6 +284,7 @@ npx @vscode/vsce package --allow-missing-repository
 ```
 
 #### 4. **Permission Issues**
+
 ```bash
 # Fix script permissions
 find tests/ -name "*.sh" -exec chmod +x {} \;
@@ -272,11 +296,13 @@ ls -la tests/
 ### Log Analysis
 
 **Test logs are stored in:** `logs/`
+
 - `test-run-{timestamp}.log` - Integration test logs
 - `unit-test-{timestamp}.log` - Unit test logs
 - `test-runner-{timestamp}.log` - Master test runner logs
 
 **Log Parsing Commands:**
+
 ```bash
 # Find recent test failures
 grep -r "ERROR\|FAIL" logs/ | tail -20

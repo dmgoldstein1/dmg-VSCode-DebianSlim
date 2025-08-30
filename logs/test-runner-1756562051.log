@@ -1,0 +1,17 @@
+[0;34m[INFO][0m Starting test runner...
+[0;34m[INFO][0m Test type: extension
+[0;34m[INFO][0m Project root: /Users/danielgoldstein/Documents/VibeCoding/VSCodeServerFromDebian/tests/..
+[0;34m[INFO][0m Logs directory: /Users/danielgoldstein/Documents/VibeCoding/VSCodeServerFromDebian/tests/../logs
+[0;34m[INFO][0m Test log: /Users/danielgoldstein/Documents/VibeCoding/VSCodeServerFromDebian/tests/../logs/test-runner-1756562051.log
+[0;34m[INFO][0m Running VS Code extension tests...
+[0;34m[INFO][0m Compiling TypeScript...
+[0;32m[SUCCESS][0m TypeScript compilation passed
+[0;34m[INFO][0m Packaging extension...
+[0;32m[SUCCESS][0m Extension packaging passed
+[0;34m[INFO][0m ==================== TEST SUMMARY ====================
+[0;34m[INFO][0m Test type: extension
+[0;34m[INFO][0m Duration: 4s
+[0;34m[INFO][0m Failures: 0
+[0;32m[SUCCESS][0m 🎉 All tests passed!
+[0;34m[INFO][0m View detailed logs: /Users/danielgoldstein/Documents/VibeCoding/VSCodeServerFromDebian/tests/../logs/test-runner-1756562051.log
+[0;34m[INFO][0m Cleaning up test artifacts...
