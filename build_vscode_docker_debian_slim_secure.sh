@@ -583,17 +583,33 @@ else
   fi
 fi
 
-# Wait for the tunnel server to start and print the auth code and tunnel link
+# Wait for the tunnel server to start and print the device code and tunnel link robustly
 if [ "$VERBOSE_LOGGING" = "true" ]; then
   echo -e "\n--- VS Code Tunnel Auth Token and Link ---"
   echo "(If not already authenticated, copy the code and link below to set up your GitHub tunnel.)"
   echo "-------------------------------------------------"
 fi
-# Copilot (GPT-4): Print both the auth code and tunnel link, then exit after the tunnel link is seen
+# Print both the device code and tunnel link, regardless of exact log phrasing
 docker logs -f "$CONTAINER_NAME" 2>&1 | \
   awk '
-    /use code [A-Z0-9-]{4,}/ { print "Auth code: "$0; seen_code=1; fflush(); }
-    /Tunnel link: Open this link in your browser https:\/\/vscode\.dev\/tunnel\/[a-zA-Z0-9]+/ { print "Tunnel link: "$0; fflush(); exit 0; }
+    /use code [A-Z0-9-]{4,}/ {
+      match($0, /use code ([A-Z0-9-]{4,})/, m);
+      if (m[1] != "") {
+        print "Device authorization code: " m[1];
+      } else {
+        print $0;
+      }
+      seen_code=1; fflush();
+    }
+    /vscode\.dev\/tunnel\// {
+      match($0, /(https:\/\/vscode\.dev\/tunnel\/[a-zA-Z0-9_-]+)/, m);
+      if (m[1] != "") {
+        print "Tunnel link: " m[1];
+      } else {
+        print $0;
+      }
+      fflush(); exit 0;
+    }
   '
 
 echo -e "\nTunnel established. You can now connect using the above link."
