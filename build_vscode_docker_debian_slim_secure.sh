@@ -90,7 +90,7 @@ load_yaml_config() {
   # Supported keys:
   #   tunnel_name, force_analysis, logging, copilot_is_autonomous,
   #   git_user_name, git_user_email, gh_token,
-  #   auto_update_on_start, update_check_interval_seconds, approval_file
+  #   auto_update_on_start, update_check_interval_seconds, approval_file, test_mode
   while IFS= read -r line; do
     # strip comments
     line="${line%%#*}"
@@ -108,6 +108,7 @@ load_yaml_config() {
       force_analysis) FORCE_ANALYSIS=$(parse_bool "$val") ;;
       logging) VERBOSE_LOGGING=$(parse_bool "$val") ;;
       copilot_is_autonomous) COPILOT_AUTONOMOUS=$(parse_bool "$val") ;;
+      test_mode) TEST_MODE=$(parse_bool "$val") ;;
       git_user_name) GIT_USER_NAME="$val" ;;
       git_user_email) GIT_USER_EMAIL="$val" ;;
       gh_token) GH_TOKEN="$val" ;;
@@ -470,11 +471,34 @@ if [ "$VERBOSE_LOGGING" = "true" ]; then
   echo "-------------------------------------------------"
 fi
 # Copilot (GPT-4): Print both the auth code and tunnel link, then exit after the tunnel link is seen
-docker logs -f "$CONTAINER_NAME" 2>&1 | \
-  awk '
-    /use code [A-Z0-9-]{4,}/ { print "Auth code: "$0; seen_code=1; fflush(); }
-    /Tunnel link: Open this link in your browser https:\/\/vscode\.dev\/tunnel\/[a-zA-Z0-9]+/ { print "Tunnel link: "$0; fflush(); exit 0; }
-  '
+# Add timeout mechanism to prevent infinite waiting
+{
+  docker logs -f "$CONTAINER_NAME" 2>&1 | \
+    awk '
+      /use code [A-Z0-9-]{4,}/ { print "Auth code: "$0; seen_code=1; fflush(); }
+      /Open this link in your browser https:\/\/vscode\.dev\/tunnel\/[a-zA-Z0-9]+/ { print "Tunnel link: "$0; fflush(); exit 0; }
+      /Creating tunnel with the name:/ { print "Tunnel created: "$0; fflush(); }
+    '
+} &
+LOG_PID=$!
+
+# Wait up to 120 seconds for the tunnel link to appear
+for _ in $(seq 1 120); do
+  if ! kill -0 $LOG_PID 2>/dev/null; then
+    # Process ended (tunnel link found)
+    wait $LOG_PID
+    break
+  fi
+  sleep 1
+done
+
+# If still running after timeout, kill it
+if kill -0 $LOG_PID 2>/dev/null; then
+  kill $LOG_PID 2>/dev/null
+  echo "Timeout waiting for tunnel link. The tunnel may still be working."
+  echo "Check container logs: docker logs $CONTAINER_NAME"
+  echo "Or check if tunnel is listed at: https://vscode.dev/tunnels"
+fi
 
 echo -e "\nTunnel established. You can now connect using the above link."
 if [ "$VERBOSE_LOGGING" = "true" ]; then
