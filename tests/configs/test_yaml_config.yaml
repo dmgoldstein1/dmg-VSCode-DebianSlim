@@ -1,0 +1,10 @@
+# Test YAML configuration for debugging
+tunnel_name: test_tunnel_debug
+force_analysis: false
+logging: true
+copilot_is_autonomous: false
+git_user_name: "Test User"
+git_user_email: "test@example.com"
+auto_update_on_start: true
+update_check_interval_seconds: 3600
+approval_file: "/home/devuser/APPROVE_CODE_UPDATE"

@@ -7,12 +7,20 @@
 set -euo pipefail
 
 # Test configuration
-LOGS_DIR="logs"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$SCRIPT_DIR/../.."
+LOGS_DIR="$PROJECT_ROOT/logs"
 TEST_LOG="$LOGS_DIR/test-run-$(date +%s).log"
 TEST_YAML="validation_test.yaml"
 ERRORS_FOUND=0
 
 mkdir -p "$LOGS_DIR"
+
+# Change to project root for testing
+cd "$PROJECT_ROOT" || {
+    echo "Error: Cannot change to project root directory: $PROJECT_ROOT"
+    exit 1
+}
 
 # Logging functions
 log_info() {
