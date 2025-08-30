@@ -8,6 +8,11 @@ import { promisify } from 'util';
 
 const execAsync = promisify(exec);
 
+// Shell escaping function to prevent command injection
+function shellEscape(arg: string): string {
+  return "'" + arg.replace(/'/g, "'\"'\"'") + "'";
+}
+
 interface UpdateStatus {
   updateAvailable: boolean;
   installedVersion?: string;
@@ -117,7 +122,7 @@ class ContainerUpdater {
 
   private async isContainerRunning(containerName: string): Promise<boolean> {
     try {
-      const cmd = 'docker ps --format "{{.Names}}" | grep "^' + containerName + '$"';
+      const cmd = 'docker ps --format "{{.Names}}" | grep "^' + shellEscape(containerName) + '$"';
       const { stdout } = await execAsync(cmd);
       return stdout.trim() === containerName;
     } catch {
@@ -128,7 +133,7 @@ class ContainerUpdater {
   private async parseContainerLogs(containerName: string): Promise<UpdateStatus> {
     try {
       // Get recent logs (last 50 lines)
-      const cmd = 'docker logs --tail 50 ' + containerName + ' 2>&1';
+      const cmd = 'docker logs --tail 50 ' + shellEscape(containerName) + ' 2>&1';
       const { stdout } = await execAsync(cmd);
       
       // Look for update notification pattern
@@ -179,7 +184,7 @@ class ContainerUpdater {
 
       // Create approval file in container
       const approvalFile = '$HOME/APPROVE_CODE_UPDATE';
-      const cmd = 'docker exec ' + containerName + ' bash -c "touch ' + approvalFile + '"';
+      const cmd = 'docker exec ' + shellEscape(containerName) + ' bash -c "touch ' + shellEscape(approvalFile) + '"';
       await execAsync(cmd);
 
       vscode.window.showInformationMessage(
