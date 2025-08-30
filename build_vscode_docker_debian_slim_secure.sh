@@ -480,7 +480,8 @@ fi
 # This section ensures the container is running and the user sees the tunnel auth code and link in the terminal output.
 
 
-# Use a unique container name if tunnel name is provided, else default
+# Set the container name: if a tunnel name is provided (via YAML or CLI), use it; otherwise, use the default.
+# This ensures the container name always matches the tunnel name if specified.
 if [ -n "$TUNNEL_NAME_ARG" ]; then
   CONTAINER_NAME="$TUNNEL_NAME_ARG"
 else
