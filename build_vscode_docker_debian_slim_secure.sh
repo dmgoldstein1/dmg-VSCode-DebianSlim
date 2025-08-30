@@ -1,5 +1,19 @@
-# --- Helper: Get unique log filename in /logs (already defined above) ---
-# get_unique_logfile() { ... }
+# --- Ensure /logs directory exists ---
+LOGS_DIR="logs"
+mkdir -p "$LOGS_DIR"
+
+# --- Helper: Get unique log filename in /logs ---
+get_unique_logfile() {
+  local base="$1"
+  local ext="$2"
+  local path="$LOGS_DIR/${base}${ext}"
+  local n=1
+  while [ -f "$path" ]; do
+    path="$LOGS_DIR/${base}_$n${ext}"
+    n=$((n+1))
+  done
+  echo "$path"
+}
 
 # --- Build log file for this run ---
 BUILD_LOG_BASE="build-log-$(date +%s)"
@@ -72,12 +86,12 @@ load_yaml_config() {
     # strip comments
     line="${line%%#*}"
     # trim
-    line="$(echo "$line" | sed -e 's/^\s*//' -e 's/\s*$//')"
+    line="$(echo "$line" | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')"
     [ -z "$line" ] && continue
     key="${line%%:*}"
     val="${line#*:}"
-    key="$(echo "$key" | sed -e 's/^\s*//' -e 's/\s*$//')"
-    val="$(echo "$val" | sed -e 's/^\s*//' -e 's/\s*$//')"
+    key="$(echo "$key" | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')"
+    val="$(echo "$val" | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')"
     # remove optional surrounding quotes
     val="$(echo "$val" | sed -e 's/^"\(.*\)"$/\1/' -e "s/^'\(.*\)'$/\1/")"
     case "$key" in
@@ -244,23 +258,6 @@ fi
 # --- Rebuild image after remediation steps (optional: user may want to commit these changes in a Dockerfile for persistence) ---
 # (Not rebuilding here, just analyzing the original build)
 
-
-# --- Ensure /logs directory exists ---
-LOGS_DIR="logs"
-mkdir -p "$LOGS_DIR"
-
-# --- Helper: Get unique log filename in /logs ---
-get_unique_logfile() {
-  local base="$1"
-  local ext="$2"
-  local path="$LOGS_DIR/${base}${ext}"
-  local n=1
-  while [ -f "$path" ]; do
-    path="$LOGS_DIR/${base}_$n${ext}"
-    n=$((n+1))
-  done
-  echo "$path"
-}
 
 # --- Docker Scout Analysis (skip if image already exists and logs exist) ---
 SCOUT_CVES_LOG_BASE="docker-scout-cves-$TAG"

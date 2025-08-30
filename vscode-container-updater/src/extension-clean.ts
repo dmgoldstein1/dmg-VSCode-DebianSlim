@@ -85,8 +85,18 @@ class ContainerUpdater {
 
   async checkForUpdates() {
     try {
-      // Check for local VS Code CLI updates (running inside the container)
-      const updateStatus = await this.parseSystemLogs();
+      const config = vscode.workspace.getConfiguration('vscode-container-updater');
+      const containerName = config.get('containerName', 'vscode-server-tunnel');
+
+      // Check if container is running
+      const isRunning = await this.isContainerRunning(containerName);
+      if (!isRunning) {
+        this.updateStatusBar('Container not running', '$(warning)');
+        return;
+      }
+
+      // Check container logs for update notifications
+      const updateStatus = await this.parseContainerLogs(containerName);
       
       if (updateStatus.updateAvailable && !this.lastUpdateStatus.updateAvailable) {
         // New update detected
@@ -105,14 +115,23 @@ class ContainerUpdater {
     }
   }
 
-  private async parseSystemLogs(): Promise<UpdateStatus> {
+  private async isContainerRunning(containerName: string): Promise<boolean> {
     try {
-      // Check the entrypoint logs for VS Code CLI update notifications
-      const logsDir = process.env.HOME + '/LOGS';
-      const cmd = 'find ' + logsDir + ' -name "entrypoint-log-*.log" -exec tail -50 {} \\; 2>/dev/null || echo ""';
+      const cmd = 'docker ps --format "{{.Names}}" | grep "^' + containerName + '$"';
+      const { stdout } = await execAsync(cmd);
+      return stdout.trim() === containerName;
+    } catch {
+      return false;
+    }
+  }
+
+  private async parseContainerLogs(containerName: string): Promise<UpdateStatus> {
+    try {
+      // Get recent logs (last 50 lines)
+      const cmd = 'docker logs --tail 50 ' + containerName + ' 2>&1';
       const { stdout } = await execAsync(cmd);
       
-      // Look for update notification pattern from the entrypoint script
+      // Look for update notification pattern
       const updatePattern = /Update available for VS Code CLI \(installed: ([^,]+), candidate: ([^)]+)\)/;
       const match = stdout.match(updatePattern);
       
@@ -127,7 +146,7 @@ class ContainerUpdater {
 
       return { updateAvailable: false, timestamp: new Date() };
     } catch (error) {
-      console.error('Error parsing system logs:', error);
+      console.error('Error parsing container logs:', error);
       return { updateAvailable: false, timestamp: new Date() };
     }
   }
@@ -155,9 +174,12 @@ class ContainerUpdater {
 
   async approveUpdate() {
     try {
-      // Create approval file in the local filesystem (inside the container)
-      const approvalFile = process.env.HOME + '/APPROVE_CODE_UPDATE';
-      const cmd = 'touch ' + approvalFile;
+      const config = vscode.workspace.getConfiguration('vscode-container-updater');
+      const containerName = config.get('containerName', 'vscode-server-tunnel');
+
+      // Create approval file in container
+      const approvalFile = '$HOME/APPROVE_CODE_UPDATE';
+      const cmd = 'docker exec ' + containerName + ' bash -c "touch ' + approvalFile + '"';
       await execAsync(cmd);
 
       vscode.window.showInformationMessage(

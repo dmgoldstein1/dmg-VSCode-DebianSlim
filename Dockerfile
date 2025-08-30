@@ -1,5 +1,5 @@
 # Dockerfile for Debian + VS Code Server + GitHub CLI
-FROM debian:bookworm-slim
+FROM debian:stable-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 # Install minimal dependencies
@@ -29,6 +29,30 @@ RUN type -p curl >/dev/null || sudo apt install curl -y && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null && \
     sudo apt update && sudo apt install -y --no-install-recommends gh && \
     sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+
+# Install Node.js 20 for building the VS Code extension
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - && \
+    sudo apt-get install -y nodejs && \
+    sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+
+# Copy and build the VS Code Container Updater extension
+COPY --chown=devuser:devuser vscode-container-updater/ /home/devuser/vscode-container-updater/
+WORKDIR /home/devuser/vscode-container-updater
+
+# Build the extension
+RUN npm install && npm run compile
+
+# Install vsce locally and package the extension
+RUN npm install @vscode/vsce && npx @vscode/vsce package --out vscode-container-updater.vsix
+
+# Install the extension into VS Code
+RUN code --install-extension vscode-container-updater.vsix --force
+
+# Clean up build artifacts but keep the extension files
+RUN rm -rf node_modules && npm cache clean --force
+
+# Return to home directory
+WORKDIR /home/devuser
 
 # Expose VS Code tunnel default port (8080 is not strictly required for tunnel, but kept for compatibility)
 EXPOSE 8080

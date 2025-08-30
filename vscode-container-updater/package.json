@@ -1,10 +1,10 @@
 {
   "name": "vscode-container-updater",
   "displayName": "VS Code Container Updater",
-  "description": "Monitor and approve VS Code CLI updates in containerized environments",
+  "description": "Monitor and approve VS Code CLI updates in this containerized environment",
   "version": "0.0.1",
   "engines": {
-    "vscode": "^1.74.0"
+    "vscode": "^1.103.0"
   },
   "categories": [
     "Other"
@@ -17,28 +17,23 @@
     "commands": [
       {
         "command": "vscode-container-updater.checkUpdates",
-        "title": "Check Container Updates",
+        "title": "Check for VS Code CLI Updates",
         "category": "Container Updater"
       },
       {
         "command": "vscode-container-updater.approveUpdate",
-        "title": "Approve VS Code Update",
+        "title": "Approve VS Code CLI Update",
         "category": "Container Updater"
       },
       {
         "command": "vscode-container-updater.configure",
-        "title": "Configure Container Settings",
+        "title": "Configure Update Settings",
         "category": "Container Updater"
       }
     ],
     "configuration": {
       "title": "VS Code Container Updater",
       "properties": {
-        "vscode-container-updater.containerName": {
-          "type": "string",
-          "default": "vscode-server-tunnel",
-          "description": "Name of the VS Code container to monitor"
-        },
         "vscode-container-updater.checkInterval": {
           "type": "number",
           "default": 300,
@@ -61,5 +56,8 @@
     "@types/node": "^16.18.126",
     "@types/vscode": "^1.103.0",
     "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "@vscode/vsce": "^3.6.0"
   }
 }
