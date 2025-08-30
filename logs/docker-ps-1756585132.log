@@ -1,0 +1,6 @@
+[INFO] Listing containers
+CONTAINER ID   IMAGE                                  STATUS         NAMES
+6293b013749f   dmg-vs-code-debian-slim:6617b23e8d3d   Up 2 minutes   vscode-server-tunnel
+874309f7f23b   dmg-vs-code-debian-slim:6617b23e8d3d   Up 7 minutes   musing_lalande
+[INFO] Capturing last 120 lines of logs for vscode-server-tunnel -> logs/docker-logs-vscode-server-tunnel-1756585132.raw.log
+[INFO] Saved stripped logs -> logs/docker-logs-vscode-server-tunnel-1756585132.stripped.log

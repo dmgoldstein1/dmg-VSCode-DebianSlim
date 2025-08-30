@@ -8,7 +8,7 @@ This directory contains two different implementations of the VS Code Container U
 
 ### `extension.ts` (PRIMARY - Currently Used)
 
-**Internal Container Monitoring**
+#### Internal Container Monitoring
 
 - **Purpose**: Monitors VS Code CLI updates from INSIDE the container
 - **Used by**: package.json → "main": "./out/extension.js"
@@ -16,7 +16,7 @@ This directory contains two different implementations of the VS Code Container U
 
 ### `extension-external-monitor.ts` (ALTERNATIVE - Reference)
 
-**External Container Monitoring**
+#### External Container Monitoring**
 
 - **Purpose**: Monitors VS Code containers from HOST machine
 - **Used by**: Alternative implementation for external monitoring

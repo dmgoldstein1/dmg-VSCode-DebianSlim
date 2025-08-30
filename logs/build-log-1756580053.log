@@ -1,0 +1,40 @@
+[INFO] Verbose logging enabled. All output will be saved to logs/build-log-1756580053.log
+Force rebuild enabled. Removing existing image dmg-vs-code-debian-slim:6617b23e8d3d...
+Building container image dmg-vs-code-debian-slim:6617b23e8d3d...
+[INFO] Docker build completed successfully
+[INFO] Docker build log saved to logs/docker-build-6617b23e8d3d_2.log
+--- Last 20 lines of build log ---
+#24 [20/22] WORKDIR /home/devuser
+#24 CACHED
+
+#25 [ 3/22] RUN useradd -ms /bin/bash devuser && echo "devuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+#25 CACHED
+
+#26 [22/22] RUN chmod +x /home/devuser/vscode-tunnel-entrypoint.sh
+#26 CACHED
+
+#27 exporting to image
+#27 exporting layers done
+#27 exporting manifest sha256:7449a38f5cfc93cbfe178c83322c33ef8162ef837dbacdd3233255fa27c1d3e4 done
+#27 exporting config sha256:2ebfceaa352b2a64551902621f8eadb05f8bf58a6f0ef063f722fe567b9fd86c done
+#27 exporting attestation manifest sha256:b4258a7a57dfe26bf8e628328bc0e14d89d55c84de11b695a68fe78f692e601b 0.0s done
+#27 exporting manifest list sha256:1d89df43e0e684b5ba9d83a6ed527b2942bb306bb0f565620a6240e772aad92a done
+#27 naming to docker.io/library/dmg-vs-code-debian-slim:6617b23e8d3d done
+#27 unpacking to docker.io/library/dmg-vs-code-debian-slim:6617b23e8d3d done
+#27 DONE 0.1s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/1igylvjf2tgaoc40y3zrm9lyd
+Running npm audit fix in a temp container (if npm is present)...
+*
+* Visual Studio Code Server
+*
+* By using the software, you agree to
+* the Visual Studio Code Server License Terms (https://aka.ms/vscode-server-license) and
+* the Microsoft Privacy Statement (https://privacy.microsoft.com/en-US/privacystatement).
+*
+[2025-08-30 18:54:17] info Using GitHub for authentication, run `code tunnel user login --provider <provider>` option to change this.
+To grant access to the server, please log into https://github.com/login/device and use code 21AA-000A
+[2025-08-30 18:54:42] info Creating tunnel with the name: a0bbed17e9d0
+
+Open this link in your browser https://vscode.dev/tunnel/a0bbed17e9d0
+

@@ -1,0 +1,95 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 4.61kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/debian:stable-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [ 1/22] FROM docker.io/library/debian:stable-slim@sha256:8810492a2dd16b7f59239c1e0cc1e56c1a1a5957d11f639776bd6798e795608b
+#4 resolve docker.io/library/debian:stable-slim@sha256:8810492a2dd16b7f59239c1e0cc1e56c1a1a5957d11f639776bd6798e795608b done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 2.04MB 0.6s done
+#5 DONE 0.6s
+
+#6 [ 4/22] WORKDIR /home/devuser
+#6 CACHED
+
+#7 [ 5/22] RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/microsoft.gpg &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null &&     sudo apt-get update && sudo apt-get install -y --no-install-recommends code &&     sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+#7 CACHED
+
+#8 [19/22] RUN rm -rf node_modules && npm cache clean --force
+#8 CACHED
+
+#9 [ 9/22] RUN npm install -g handlebars@^4.7.7 ini@^1.3.6 grunt@^1.5.3 diff@^3.5.0 || true
+#9 CACHED
+
+#10 [ 6/22] RUN type -p curl >/dev/null || sudo apt install curl -y &&     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg &&     sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null &&     sudo apt update && sudo apt install -y --no-install-recommends gh &&     sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+#10 CACHED
+
+#11 [12/22] RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends jq python3 &&     sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/*
+#11 CACHED
+
+#12 [13/22] RUN npm config set audit-level high
+#12 CACHED
+
+#13 [18/22] RUN npm install @vscode/vsce && npx @vscode/vsce package --out vscode-container-updater-updated.vsix
+#13 CACHED
+
+#14 [10/22] COPY --chown=devuser:devuser vscode-container-updater/ /home/devuser/vscode-container-updater/
+#14 CACHED
+
+#15 [17/22] RUN npm install && npm run compile
+#15 CACHED
+
+#16 [ 7/22] RUN curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - &&     sudo apt-get install -y nodejs &&     sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+#16 CACHED
+
+#17 [ 8/22] RUN npm install -g npm@latest &&     npm cache clean --force
+#17 CACHED
+
+#18 [14/22] RUN npm install && npm audit fix --force
+#18 CACHED
+
+#19 [11/22] WORKDIR /home/devuser/vscode-container-updater
+#19 CACHED
+
+#20 [16/22] RUN npm update --package-lock-only
+#20 CACHED
+
+#21 [ 2/22] RUN apt-get update &&     apt-get -y upgrade &&     apt-get install -y --no-install-recommends         curl wget sudo git openssh-client ca-certificates gpg bash coreutils         unattended-upgrades apt-listchanges &&     unattended-upgrade &&     apt-get clean && rm -rf /var/lib/apt/lists/*
+#21 CACHED
+
+#22 [15/22] RUN npm install handlebars@^4.7.7 ini@^1.3.6 grunt@^1.5.3 diff@^3.5.0 pug@^3.0.3 --save || true
+#22 CACHED
+
+#23 [21/22] COPY --chown=devuser:devuser scripts/vscode-tunnel-entrypoint.sh /home/devuser/vscode-tunnel-entrypoint.sh
+#23 CACHED
+
+#24 [20/22] WORKDIR /home/devuser
+#24 CACHED
+
+#25 [ 3/22] RUN useradd -ms /bin/bash devuser && echo "devuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+#25 CACHED
+
+#26 [22/22] RUN chmod +x /home/devuser/vscode-tunnel-entrypoint.sh
+#26 CACHED
+
+#27 exporting to image
+#27 exporting layers done
+#27 exporting manifest sha256:7449a38f5cfc93cbfe178c83322c33ef8162ef837dbacdd3233255fa27c1d3e4 done
+#27 exporting config sha256:2ebfceaa352b2a64551902621f8eadb05f8bf58a6f0ef063f722fe567b9fd86c done
+#27 exporting attestation manifest sha256:b4258a7a57dfe26bf8e628328bc0e14d89d55c84de11b695a68fe78f692e601b 0.0s done
+#27 exporting manifest list sha256:1d89df43e0e684b5ba9d83a6ed527b2942bb306bb0f565620a6240e772aad92a done
+#27 naming to docker.io/library/dmg-vs-code-debian-slim:6617b23e8d3d done
+#27 unpacking to docker.io/library/dmg-vs-code-debian-slim:6617b23e8d3d done
+#27 DONE 0.1s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/1igylvjf2tgaoc40y3zrm9lyd

@@ -1,0 +1,35 @@
+[INFO] Verbose logging enabled. All output will be saved to logs/build-log-1756586840.log
+Container image dmg-vs-code-debian-slim:6617b23e8d3d already exists.
+Skipping security remediation steps (image already exists and analyzed).
+Using existing Docker Scout analysis for dmg-vs-code-debian-slim:6617b23e8d3d (use --force-analysis to re-run)...
+CVEs log: logs/docker-scout-cves-6617b23e8d3d.log
+Recommendations log: logs/docker-scout-recommendations-6617b23e8d3d.log
+
+Vulnerability summary for dmg-vs-code-debian-slim:6617b23e8d3d:
+=== Vulnerability Summary for dmg-vs-code-debian-slim:6617b23e8d3d ===
+Critical:     4
+High:         16
+Medium:       7
+Low:          87
+Unspecified:  4
+Fixable:      113
+============================================
+Full CVE analysis saved to: logs/docker-scout-cves-6617b23e8d3d.log
+Recommendations saved to: logs/docker-scout-recommendations-6617b23e8d3d.log
+Stopping and removing previous container vscode-server-tunnel...
+Using host port 8080 for container vscode-server-tunnel (host:8080 -> container:8080)
+Launching VS Code Server container as vscode-server-tunnel...
+docker run envs: 
+ccdc458830f73a5e82e97bba5064a4393dcf68feee52d49c9ae6c99633d9b1fe
+[INFO] Docker run log saved to logs/docker-run-vscode-server-tunnel-6617b23e8d3d_17.log
+[INFO] Test mode: streaming VS Code Server output for 120 seconds.
+Container 'vscode-server-tunnel' is running on port 8080.
+--- Begin VS Code Server Output ---
+*
+* Visual Studio Code Server
+*
+* By using the software, you agree to
+* the Visual Studio Code Server License Terms (https://aka.ms/vscode-server-license) and
+* the Microsoft Privacy Statement (https://privacy.microsoft.com/en-US/privacystatement).
+*
+[2025-08-30 20:47:33] info Using GitHub for authentication, run `code tunnel user login --provider <provider>` option to change this.

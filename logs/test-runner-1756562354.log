@@ -1,0 +1,14 @@
+[0;34m[INFO][0m Starting test runner...
+[0;34m[INFO][0m Test type: unit
+[0;34m[INFO][0m Project root: /Users/danielgoldstein/Documents/VibeCoding/VSCodeServerFromDebian/tests/..
+[0;34m[INFO][0m Logs directory: /Users/danielgoldstein/Documents/VibeCoding/VSCodeServerFromDebian/tests/../logs
+[0;34m[INFO][0m Test log: /Users/danielgoldstein/Documents/VibeCoding/VSCodeServerFromDebian/tests/../logs/test-runner-1756562354.log
+[0;34m[INFO][0m Running unit tests...
+[0;32m[SUCCESS][0m Unit tests passed
+[0;34m[INFO][0m ==================== TEST SUMMARY ====================
+[0;34m[INFO][0m Test type: unit
+[0;34m[INFO][0m Duration: 0s
+[0;34m[INFO][0m Failures: 0
+[0;32m[SUCCESS][0m 🎉 All tests passed!
+[0;34m[INFO][0m View detailed logs: /Users/danielgoldstein/Documents/VibeCoding/VSCodeServerFromDebian/tests/../logs/test-runner-1756562354.log
+[0;34m[INFO][0m Cleaning up test artifacts...

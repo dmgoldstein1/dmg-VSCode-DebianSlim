@@ -1,0 +1,17 @@
+Starting unit tests...
+Testing YAML parsing functions...
+PASS: YAML tunnel_name parsing
+PASS: YAML force_analysis parsing
+Testing Docker utility functions...
+PASS: Container name generation
+PASS: Valid image tag recognition
+PASS: Invalid image tag recognition
+Testing logging functions...
+PASS: Log level formatting
+PASS: Timestamp formatting
+Testing error handling functions...
+PASS: Success exit code handling
+PASS: Error exit code handling
+Unit tests completed.
+Test failures: 0
+All unit tests passed!

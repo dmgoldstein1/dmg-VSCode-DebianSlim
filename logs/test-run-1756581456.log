@@ -1,0 +1,33 @@
+[INFO] Starting comprehensive test suite...
+[INFO] Test log: /Users/danielgoldstein/Documents/VibeCoding/VSCodeServerFromDebian/tests/integration/../../logs/test-run-1756581456.log
+[INFO] Running test: Shell script linting
+[INFO] Testing shell scripts with shellcheck...
+[INFO] Testing shell scripts with shellcheck...
+[INFO]   → Checking build_vscode_docker_debian_slim_secure.sh...
+[INFO]   → Checking build_vscode_docker_debian_slim_secure.sh...
+
+In build_vscode_docker_debian_slim_secure.sh line 374:
+    run_with_timeout 300 docker run --rm "$FULL_TAG" sh -c 'if command -v npm >/dev/null 2>&1; then find / -type d -name node_modules 2>/dev/null | while read d; do cd "$d" && npm audit fix --force || true; done; fi' | tee "$NPM_AUDIT_LOG" || true
+                                                           ^-- SC2016 (info): Expressions don't expand in single quotes, use double quotes for that.
+
+
+In build_vscode_docker_debian_slim_secure.sh line 377:
+    run_with_timeout 300 docker run --rm "$FULL_TAG" sh -c 'if command -v npm >/dev/null 2>&1; then find / -type d -name node_modules 2>/dev/null | while read d; do cd "$d" && npm audit fix --force || true; done; fi' > "$NPM_AUDIT_LOG" 2>&1 || true
+                                                           ^-- SC2016 (info): Expressions don't expand in single quotes, use double quotes for that.
+
+
+In build_vscode_docker_debian_slim_secure.sh line 562:
+    echo "\n✓ Tunnel successfully connected!"
+         ^-- SC2028 (info): echo may not expand escape sequences. Use printf.
+
+
+In build_vscode_docker_debian_slim_secure.sh line 569:
+    echo "\n[WARN] Tunnel link not detected from logs."
+         ^-- SC2028 (info): echo may not expand escape sequences. Use printf.
+
+For more information:
+  https://www.shellcheck.net/wiki/SC2016 -- Expressions don't expand in singl...
+  https://www.shellcheck.net/wiki/SC2028 -- echo may not expand escape sequen...
+[ERROR] build_vscode_docker_debian_slim_secure.sh failed shellcheck
+[ERROR] build_vscode_docker_debian_slim_secure.sh failed shellcheck
+[ERROR] Shell script linting failed

@@ -1,0 +1,39 @@
+[INFO] Verbose logging enabled. All output will be saved to logs/build-log-1756579739.log
+Container image dmg-vs-code-debian-slim:6617b23e8d3d not found. Building...
+[INFO] Docker build completed successfully
+[INFO] Docker build log saved to logs/docker-build-6617b23e8d3d_1.log
+--- Last 20 lines of build log ---
+#24 CACHED
+
+#25 [11/22] WORKDIR /home/devuser/vscode-container-updater
+#25 CACHED
+
+#26 [22/22] RUN chmod +x /home/devuser/vscode-tunnel-entrypoint.sh
+#26 CACHED
+
+#27 exporting to image
+#27 exporting layers done
+#27 exporting manifest sha256:7449a38f5cfc93cbfe178c83322c33ef8162ef837dbacdd3233255fa27c1d3e4 done
+#27 exporting config sha256:2ebfceaa352b2a64551902621f8eadb05f8bf58a6f0ef063f722fe567b9fd86c done
+#27 exporting attestation manifest sha256:7adf5b70cb701e14b181a2c3a94d97cdc08f56e24360940d16052dfdca79b9e4 0.0s done
+#27 exporting manifest list sha256:9943a029f5706227a433b77bbda50f40a77d9a96e51b38c632f9a0055e486301
+#27 exporting manifest list sha256:9943a029f5706227a433b77bbda50f40a77d9a96e51b38c632f9a0055e486301 done
+#27 naming to docker.io/library/dmg-vs-code-debian-slim:6617b23e8d3d done
+#27 unpacking to docker.io/library/dmg-vs-code-debian-slim:6617b23e8d3d done
+#27 DONE 0.1s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/q17fsz0nz9ukhs0j7wgdv15g4
+Running npm audit fix in a temp container (if npm is present)...
+*
+* Visual Studio Code Server
+*
+* By using the software, you agree to
+* the Visual Studio Code Server License Terms (https://aka.ms/vscode-server-license) and
+* the Microsoft Privacy Statement (https://privacy.microsoft.com/en-US/privacystatement).
+*
+[2025-08-30 18:49:04] info Using GitHub for authentication, run `code tunnel user login --provider <provider>` option to change this.
+To grant access to the server, please log into https://github.com/login/device and use code A92D-8A65
+[2025-08-30 18:51:00] info Creating tunnel with the name: 07dd1a82ea03
+
+Open this link in your browser https://vscode.dev/tunnel/07dd1a82ea03
+

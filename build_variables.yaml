@@ -16,6 +16,7 @@
 # ------------------------------------------------------------------------------
 # tunnel_name: ""                # (string) Optional. Default: "" (auto-generated)
 # force_analysis: false          # (bool)   Default: false
+# force_rebuild: false           # (bool)   Default: false
 # logging: false                 # (bool)   Default: false
 # copilot_is_autonomous: false   # (bool)   Default: false
 # git_user_name: ""              # (string) Optional. Default: ""
@@ -44,6 +45,9 @@
 # force_analysis: Whether to force re-running Docker Scout analysis even if logs already exist.
 # - boolean: true | false
 #
+# force_rebuild: Whether to force rebuilding the Docker image even if it already exists.
+# - boolean: true | false
+#
 # logging: Enable verbose logging output in the build script.
 # - boolean: true | false
 #
@@ -70,6 +74,7 @@
 #
 # tunnel_name: my_team_tunnel_01
 # force_analysis: false
+# force_rebuild: false
 # logging: true
 # copilot_is_autonomous: false
 # git_user_name: "Your Name"

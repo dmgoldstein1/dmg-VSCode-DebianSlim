@@ -1,0 +1,52 @@
+[INFO] Verbose logging enabled. All output will be saved to logs/build-log-1756587548.log
+Container image dmg-vs-code-debian-slim:6617b23e8d3d already exists.
+Skipping security remediation steps (image already exists and analyzed).
+Using existing Docker Scout analysis for dmg-vs-code-debian-slim:6617b23e8d3d (use --force-analysis to re-run)...
+CVEs log: logs/docker-scout-cves-6617b23e8d3d.log
+Recommendations log: logs/docker-scout-recommendations-6617b23e8d3d.log
+
+Vulnerability summary for dmg-vs-code-debian-slim:6617b23e8d3d:
+=== Vulnerability Summary for dmg-vs-code-debian-slim:6617b23e8d3d ===
+Critical:     4
+High:         16
+Medium:       7
+Low:          87
+Unspecified:  4
+Fixable:      113
+============================================
+Full CVE analysis saved to: logs/docker-scout-cves-6617b23e8d3d.log
+Recommendations saved to: logs/docker-scout-recommendations-6617b23e8d3d.log
+Stopping and removing previous container vscode-server-tunnel...
+Using host port 8080 for container vscode-server-tunnel (host:8080 -> container:8080)
+Launching VS Code Server container as vscode-server-tunnel...
+docker run envs: 
+11ed45e755270c20b90dc911e0f1a6dcb5dc0693ec3694dced0c88fb29d0c659
+[INFO] Docker run log saved to logs/docker-run-vscode-server-tunnel-6617b23e8d3d_21.log
+Copying local VS Code settings.json to container...
+
+--- VS Code Tunnel Setup ---
+The VS Code Server is starting up. All output will be shown below.
+Look for the authentication code and tunnel link in the server output.
+-------------------------------------------------
+Waiting for VS Code tunnel to start... (this may take up to 3 minutes)
+All server output will be displayed below:
+
+Starting VS Code Server output stream...
+==========================================
+*
+* Visual Studio Code Server
+*
+* By using the software, you agree to
+* the Visual Studio Code Server License Terms (https://aka.ms/vscode-server-license) and
+* the Microsoft Privacy Statement (https://privacy.microsoft.com/en-US/privacystatement).
+*
+[2025-08-30 20:59:21] info Using GitHub for authentication, run `code tunnel user login --provider <provider>` option to change this.
+To grant access to the server, please log into https://github.com/login/device and use code 40DA-E708
+
+[INFO] Still waiting for tunnel setup... (30/180 seconds)
+==========================================
+
+Received interrupt signal. Cleaning up...
+Killing log monitoring process: 53626
+Stopping container vscode-server-tunnel...
+Killing child processes: 53501

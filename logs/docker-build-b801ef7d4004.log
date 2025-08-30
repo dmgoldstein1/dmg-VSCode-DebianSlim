@@ -1,0 +1,254 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 4.85kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/debian:stable-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [ 1/23] FROM docker.io/library/debian:stable-slim@sha256:8810492a2dd16b7f59239c1e0cc1e56c1a1a5957d11f639776bd6798e795608b
+#4 resolve docker.io/library/debian:stable-slim@sha256:8810492a2dd16b7f59239c1e0cc1e56c1a1a5957d11f639776bd6798e795608b done
+#4 DONE 0.0s
+
+#5 [ 4/23] WORKDIR /home/devuser
+#5 CACHED
+
+#6 [ 7/23] RUN curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - &&     sudo apt-get install -y nodejs &&     sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+#6 CACHED
+
+#7 [ 6/23] RUN type -p curl >/dev/null || sudo apt install curl -y &&     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg &&     sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null &&     sudo apt update && sudo apt install -y --no-install-recommends gh &&     sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+#7 CACHED
+
+#8 [ 2/23] RUN apt-get update &&     apt-get -y upgrade &&     apt-get install -y --no-install-recommends         curl wget sudo git openssh-client ca-certificates gpg bash coreutils         unattended-upgrades apt-listchanges &&     unattended-upgrade &&     apt-get clean && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [ 3/23] RUN useradd -ms /bin/bash devuser && echo "devuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+#9 CACHED
+
+#10 [ 5/23] RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/microsoft.gpg &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null &&     sudo apt-get update && sudo apt-get install -y --no-install-recommends code &&     sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+#10 CACHED
+
+#11 [ 8/23] RUN npm install -g npm@latest &&     npm cache clean --force
+#11 CACHED
+
+#12 [internal] load build context
+#12 transferring context: 2.04MB 0.9s done
+#12 DONE 0.9s
+
+#13 [ 9/23] RUN npm install -g handlebars@^4.7.7 ini@^1.3.6 grunt@^1.5.3 diff@^3.5.0 || true
+#13 2.389 npm warn deprecated osenv@0.1.5: This package is no longer supported.
+#13 2.572 npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+#13 2.602 npm warn deprecated glob@7.1.7: Glob versions prior to v9 are no longer supported
+#13 2.780 
+#13 2.780 added 107 packages in 3s
+#13 2.780 
+#13 2.780 9 packages are looking for funding
+#13 2.780   run `npm fund` for details
+#13 DONE 2.9s
+
+#14 [10/23] COPY --chown=devuser:devuser vscode-container-updater/ /home/devuser/vscode-container-updater/
+#14 DONE 1.0s
+
+#15 [11/23] WORKDIR /home/devuser/vscode-container-updater
+#15 DONE 0.1s
+
+#16 [12/23] RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends jq python3 &&     sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/*
+#16 0.151 Get:1 http://deb.debian.org/debian stable InRelease [138 kB]
+#16 0.171 Get:2 https://cli.github.com/packages stable InRelease [3917 B]
+#16 0.176 Get:3 https://deb.nodesource.com/node_22.x nodistro InRelease [12.1 kB]
+#16 0.190 Get:4 https://cli.github.com/packages stable/main arm64 Packages [345 B]
+#16 0.198 Get:5 http://deb.debian.org/debian stable-updates InRelease [47.1 kB]
+#16 0.203 Get:6 https://deb.nodesource.com/node_22.x nodistro/main arm64 Packages [7667 B]
+#16 0.216 Get:7 http://deb.debian.org/debian-security stable-security InRelease [43.4 kB]
+#16 0.317 Get:8 http://deb.debian.org/debian stable/main arm64 Packages [9604 kB]
+#16 0.317 Get:9 https://packages.microsoft.com/repos/code stable InRelease [3590 B]
+#16 0.446 Get:10 https://packages.microsoft.com/repos/code stable/main amd64 Packages [20.4 kB]
+#16 0.475 Get:11 https://packages.microsoft.com/repos/code stable/main armhf Packages [20.5 kB]
+#16 0.481 Get:12 https://packages.microsoft.com/repos/code stable/main arm64 Packages [20.5 kB]
+#16 0.688 Get:13 http://deb.debian.org/debian stable-updates/main arm64 Packages [2432 B]
+#16 0.696 Get:14 http://deb.debian.org/debian-security stable-security/main arm64 Packages [32.2 kB]
+#16 1.450 Fetched 9956 kB in 1s (7435 kB/s)
+#16 1.450 Reading package lists...
+#16 1.837 W: https://deb.nodesource.com/node_22.x/dists/nodistro/InRelease: Policy will reject signature within a year, see --audit for details
+#16 1.852 Reading package lists...
+#16 2.246 Building dependency tree...
+#16 2.353 Reading state information...
+#16 2.528 python3 is already the newest version (3.13.5-1).
+#16 2.528 python3 set to manually installed.
+#16 2.528 The following additional packages will be installed:
+#16 2.528   libjq1 libonig5
+#16 2.563 The following NEW packages will be installed:
+#16 2.564   jq libjq1 libonig5
+#16 2.609 0 upgraded, 3 newly installed, 0 to remove and 0 not upgraded.
+#16 2.609 Need to get 406 kB of archives.
+#16 2.609 After this operation, 1297 kB of additional disk space will be used.
+#16 2.609 Get:1 http://deb.debian.org/debian stable/main arm64 libonig5 arm64 6.9.9-1+b1 [181 kB]
+#16 2.644 Get:2 http://deb.debian.org/debian stable/main arm64 libjq1 arm64 1.7.1-6+deb13u1 [148 kB]
+#16 2.647 Get:3 http://deb.debian.org/debian stable/main arm64 jq arm64 1.7.1-6+deb13u1 [77.2 kB]
+#16 2.791 debconf: unable to initialize frontend: Dialog
+#16 2.791 debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+#16 2.791 debconf: falling back to frontend: Readline
+#16 2.794 debconf: unable to initialize frontend: Readline
+#16 2.794 debconf: (This frontend requires a controlling tty.)
+#16 2.794 debconf: falling back to frontend: Teletype
+#16 2.796 debconf: unable to initialize frontend: Teletype
+#16 2.796 debconf: (This frontend requires a controlling tty.)
+#16 2.796 debconf: falling back to frontend: Noninteractive
+#16 3.196 Fetched 406 kB in 0s (5013 kB/s)
+#16 3.207 Selecting previously unselected package libonig5:arm64.
+#16 3.207 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 25294 files and directories currently installed.)
+#16 3.214 Preparing to unpack .../libonig5_6.9.9-1+b1_arm64.deb ...
+#16 3.216 Unpacking libonig5:arm64 (6.9.9-1+b1) ...
+#16 3.241 Selecting previously unselected package libjq1:arm64.
+#16 3.242 Preparing to unpack .../libjq1_1.7.1-6+deb13u1_arm64.deb ...
+#16 3.243 Unpacking libjq1:arm64 (1.7.1-6+deb13u1) ...
+#16 3.262 Selecting previously unselected package jq.
+#16 3.263 Preparing to unpack .../jq_1.7.1-6+deb13u1_arm64.deb ...
+#16 3.264 Unpacking jq (1.7.1-6+deb13u1) ...
+#16 3.281 Setting up libonig5:arm64 (6.9.9-1+b1) ...
+#16 3.284 Setting up libjq1:arm64 (1.7.1-6+deb13u1) ...
+#16 3.291 Setting up jq (1.7.1-6+deb13u1) ...
+#16 3.298 Processing triggers for libc-bin (2.41-12) ...
+#16 DONE 3.3s
+
+#17 [13/23] RUN npm config set audit-level high
+#17 DONE 0.3s
+
+#18 [14/23] RUN npm install && npm audit fix --force
+#18 0.894 
+#18 0.894 up to date, audited 463 packages in 761ms
+#18 0.894 
+#18 0.894 126 packages are looking for funding
+#18 0.894   run `npm fund` for details
+#18 0.895 
+#18 0.895 found 0 vulnerabilities
+#18 0.954 npm warn using --force Recommended protections disabled.
+#18 1.910 
+#18 1.910 up to date, audited 463 packages in 975ms
+#18 1.910 
+#18 1.910 126 packages are looking for funding
+#18 1.910   run `npm fund` for details
+#18 1.910 
+#18 1.910 found 0 vulnerabilities
+#18 DONE 1.9s
+
+#19 [15/23] RUN npm install handlebars@^4.7.7 ini@^1.3.6 grunt@^1.5.3 diff@^3.5.0 pug@^3.0.3 --save || true
+#19 2.642 npm warn deprecated osenv@0.1.5: This package is no longer supported.
+#19 2.935 npm warn deprecated glob@7.1.7: Glob versions prior to v9 are no longer supported
+#19 3.145 
+#19 3.145 added 102 packages, changed 1 package, and audited 565 packages in 3s
+#19 3.145 
+#19 3.145 131 packages are looking for funding
+#19 3.145   run `npm fund` for details
+#19 3.146 
+#19 3.146 found 0 vulnerabilities
+#19 DONE 3.2s
+
+#20 [16/23] RUN npm update --package-lock-only
+#20 10.96 
+#20 10.96 up to date, audited 571 packages in 11s
+#20 10.96 
+#20 10.96 131 packages are looking for funding
+#20 10.96   run `npm fund` for details
+#20 10.96 
+#20 10.96 found 0 vulnerabilities
+#20 DONE 11.1s
+
+#21 [17/23] RUN npm install && npm run compile
+#21 1.788 
+#21 1.788 added 30 packages, removed 15 packages, changed 10 packages, and audited 571 packages in 2s
+#21 1.788 
+#21 1.788 131 packages are looking for funding
+#21 1.788   run `npm fund` for details
+#21 1.789 
+#21 1.789 found 0 vulnerabilities
+#21 1.862 
+#21 1.862 > vscode-container-updater@0.0.1 compile
+#21 1.862 > tsc -p ./
+#21 1.862 
+#21 DONE 3.4s
+
+#22 [18/23] RUN npm install @vscode/vsce && npx @vscode/vsce package --out vscode-container-updater-updated.vsix
+#22 0.790 
+#22 0.790 up to date, audited 571 packages in 646ms
+#22 0.790 
+#22 0.790 131 packages are looking for funding
+#22 0.790   run `npm fund` for details
+#22 0.790 
+#22 0.790 found 0 vulnerabilities
+#22 1.288 Executing prepublish script 'npm run vscode:prepublish'...
+#22 1.354 
+#22 1.354 > vscode-container-updater@0.0.1 vscode:prepublish
+#22 1.354 > npm run compile
+#22 1.354 
+#22 1.422 
+#22 1.422 > vscode-container-updater@0.0.1 compile
+#22 1.422 > tsc -p ./
+#22 1.422 
+#22 4.223  INFO  Files included in the VSIX:
+#22 4.223 vscode-container-updater-updated.vsix
+#22 4.223 ├─ [Content_Types].xml 
+#22 4.223 ├─ extension.vsixmanifest 
+#22 4.223 └─ extension/
+#22 4.223    ├─ LICENSE.txt [1.05 KB]
+#22 4.223    ├─ package.json [2.42 KB]
+#22 4.223    ├─ readme.md 
+#22 4.223    └─ out/
+#22 4.223       ├─ extension-clean.js [7.19 KB]
+#22 4.223       ├─ extension-external-monitor.js [9.23 KB]
+#22 4.223       └─ extension.js [6.41 KB]
+#22 4.223 
+#22 4.350  DONE  Packaged: vscode-container-updater-updated.vsix (8 files, 11.68 KB)
+#22 DONE 4.4s
+
+#23 [19/23] RUN mkdir -p /home/devuser/.vscode-server/extensions &&     code --install-extension vscode-container-updater-updated.vsix --force --user-data-dir /home/devuser/.vscode-server
+#23 0.293 Installing extensions...
+#23 0.398 Extension 'vscode-container-updater-updated.vsix' was successfully installed.
+#23 0.408 FATAL ERROR: v8::ToLocalChecked Empty MaybeLocal
+#23 0.408 ----- Native stack trace -----
+#23 0.408 
+#23 0.409 
+#23 0.409 ----- JavaScript stack trace -----
+#23 0.409 
+#23 0.409 1: getPackageScopeConfig (node:internal/modules/package_json_reader:149:33)
+#23 0.409 2: getPackageJSONURL (node:internal/modules/package_json_reader:225:25)
+#23 0.409 3: packageResolve (node:internal/modules/esm/resolve:778:81)
+#23 0.409 4: moduleResolve (node:internal/modules/esm/resolve:864:18)
+#23 0.409 5: defaultResolve (node:internal/modules/esm/resolve:994:11)
+#23 0.409 6: nextResolve (node:internal/modules/esm/hooks:748:28)
+#23 0.409 7: resolve (data:text/javascript;base64,CglleHBvcnQgYXN5bmMgZnVuY3Rpb24gcmVzb2x2ZShzcGVjaWZpZXIsIGNvbnRleHQsIG5leHRSZXNvbHZlKSB7CgkJaWYgKHNwZWNpZmllciA9PT0gJ2ZzJykgewoJCQlyZXR1cm4gewoJCQkJZm9ybWF0OiAnYnVpbHRpbicsCgkJCQlzaG9ydENpcmN1aXQ6IHRydWUsCgkJCQl1cmw6ICdub2RlOm9yaWdpbmFsLWZzJwoJCQl9OwoJCX0KCgkJLy8gRGVmZXIgdG8gdGhlIG5leHQgaG9vayBpbiB0aGUgY2hhaW4sIHdoaWNoIHdvdWxkIGJlIHRoZQoJCS8vIE5vZGUuanMgZGVmYXVsdCByZXNvbHZlIGlmIHRoaXMgaXMgdGhlIGxhc3QgdXNlci1zcGVjaWZpZWQgbG9hZGVyLgoJCXJldHVybiBuZXh0UmVzb2x2ZShzcGVjaWZpZXIsIGNvbnRleHQpOwoJfQ==:13:10)
+#23 0.409 8: nextResolve (node:internal/modules/esm/hooks:748:28)
+#23 0.409 9: resolve (node:internal/modules/esm/hooks:240:30)
+#23 0.409 10: handleMessage (node:internal/modules/esm/worker:199:24)
+#23 0.409 
+#23 0.409 
+#23 0.416 Aborted
+#23 ERROR: process "/bin/sh -c mkdir -p /home/devuser/.vscode-server/extensions &&     code --install-extension vscode-container-updater-updated.vsix --force --user-data-dir /home/devuser/.vscode-server" did not complete successfully: exit code: 134
+------
+ > [19/23] RUN mkdir -p /home/devuser/.vscode-server/extensions &&     code --install-extension vscode-container-updater-updated.vsix --force --user-data-dir /home/devuser/.vscode-server:
+0.409 4: moduleResolve (node:internal/modules/esm/resolve:864:18)
+0.409 5: defaultResolve (node:internal/modules/esm/resolve:994:11)
+0.409 6: nextResolve (node:internal/modules/esm/hooks:748:28)
+0.409 7: resolve (data:text/javascript;base64,CglleHBvcnQgYXN5bmMgZnVuY3Rpb24gcmVzb2x2ZShzcGVjaWZpZXIsIGNvbnRleHQsIG5leHRSZXNvbHZlKSB7CgkJaWYgKHNwZWNpZmllciA9PT0gJ2ZzJykgewoJCQlyZXR1cm4gewoJCQkJZm9ybWF0OiAnYnVpbHRpbicsCgkJCQlzaG9ydENpcmN1aXQ6IHRydWUsCgkJCQl1cmw6ICdub2RlOm9yaWdpbmFsLWZzJwoJCQl9OwoJCX0KCgkJLy8gRGVmZXIgdG8gdGhlIG5leHQgaG9vayBpbiB0aGUgY2hhaW4sIHdoaWNoIHdvdWxkIGJlIHRoZQoJCS8vIE5vZGUuanMgZGVmYXVsdCByZXNvbHZlIGlmIHRoaXMgaXMgdGhlIGxhc3QgdXNlci1zcGVjaWZpZWQgbG9hZGVyLgoJCXJldHVybiBuZXh0UmVzb2x2ZShzcGVjaWZpZXIsIGNvbnRleHQpOwoJfQ==:13:10)
+0.409 8: nextResolve (node:internal/modules/esm/hooks:748:28)
+0.409 9: resolve (node:internal/modules/esm/hooks:240:30)
+0.409 10: handleMessage (node:internal/modules/esm/worker:199:24)
+0.409 
+0.409 
+0.416 Aborted
+------
+Dockerfile:82
+--------------------
+  81 |     # Install the extension for the devuser (not system-wide)
+  82 | >>> RUN mkdir -p /home/devuser/.vscode-server/extensions && \
+  83 | >>>     code --install-extension vscode-container-updater-updated.vsix --force --user-data-dir /home/devuser/.vscode-server
+  84 |     
+--------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c mkdir -p /home/devuser/.vscode-server/extensions &&     code --install-extension vscode-container-updater-updated.vsix --force --user-data-dir /home/devuser/.vscode-server" did not complete successfully: exit code: 134
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/jyrkcze9pgtlxvw7mpo5p2paj

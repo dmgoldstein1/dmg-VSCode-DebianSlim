@@ -1,0 +1,48 @@
+[INFO] Verbose logging enabled. All output will be saved to logs/build-log-1756579209.log
+Container image dmg-vs-code-debian-slim:6617b23e8d3d already exists.
+Skipping security remediation steps (image already exists and analyzed).
+Using existing Docker Scout analysis for dmg-vs-code-debian-slim:6617b23e8d3d (use --force-analysis to re-run)...
+CVEs log: logs/docker-scout-cves-6617b23e8d3d.log
+Recommendations log: logs/docker-scout-recommendations-6617b23e8d3d.log
+
+Vulnerability summary for dmg-vs-code-debian-slim:6617b23e8d3d:
+=== Vulnerability Summary for dmg-vs-code-debian-slim:6617b23e8d3d ===
+Critical:     4
+High:         16
+Medium:       7
+Low:          87
+Unspecified:  4
+Fixable:      113
+============================================
+Full CVE analysis saved to: logs/docker-scout-cves-6617b23e8d3d.log
+Recommendations saved to: logs/docker-scout-recommendations-6617b23e8d3d.log
+Using host port 8080 for container vscode-server-tunnel (host:8080 -> container:8080)
+Launching VS Code Server container as vscode-server-tunnel...
+docker run envs: 
+a0c127204ea1be0c47518c5a4066fd45fff7d123dba087d1ddd058d6e9237f39
+[INFO] Docker run log saved to logs/docker-run-vscode-server-tunnel-6617b23e8d3d_6.log
+[INFO] Test mode enabled - verbose logging automatically enabled
+Test mode enabled - waiting for tunnel connection before terminating...
+Container is running on port 8080.
+Monitoring logs for tunnel connection...
+
+Manual termination options:
+  - Type 'quit' or 'exit' to terminate immediately
+  - Press Ctrl+C to terminate
+  - Script will auto-terminate when tunnel connects
+
+=== VS Code Server Output ===
+
+*
+* Visual Studio Code Server
+*
+* By using the software, you agree to
+* the Visual Studio Code Server License Terms (https://aka.ms/vscode-server-license) and
+* the Microsoft Privacy Statement (https://privacy.microsoft.com/en-US/privacystatement).
+*
+[2025-08-30 18:40:12] info Using GitHub for authentication, run `code tunnel user login --provider <provider>` option to change this.
+To grant access to the server, please log into https://github.com/login/device and use code C13E-11F6
+[2025-08-30 18:41:03] info Creating tunnel with the name: a0c127204ea1
+
+Open this link in your browser https://vscode.dev/tunnel/a0c127204ea1
+

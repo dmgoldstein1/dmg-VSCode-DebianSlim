@@ -1,0 +1,2502 @@
+[INFO] Verbose logging enabled. All output will be saved to logs/build-log-1756566898.log
+Container image dmg-vs-code-debian-slim:333a3739e833 not found. Building...
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 3.47kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/debian:testing-slim
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [ 1/16] FROM docker.io/library/debian:testing-slim@sha256:12ce5b90ca703a11ebaae907649af9b000e616f49199a2115340e0cdf007e42a
+#4 resolve docker.io/library/debian:testing-slim@sha256:12ce5b90ca703a11ebaae907649af9b000e616f49199a2115340e0cdf007e42a done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 55.61MB 1.4s done
+#5 DONE 1.4s
+
+#6 [ 2/16] RUN apt-get update &&     apt-get -y upgrade &&     apt-get install -y --no-install-recommends         curl wget sudo git openssh-client ca-certificates gpg bash coreutils &&     apt-get clean && rm -rf /var/lib/apt/lists/*
+#6 0.255 Get:1 http://deb.debian.org/debian testing InRelease [146 kB]
+#6 0.283 Get:2 http://deb.debian.org/debian testing-updates InRelease [45.1 kB]
+#6 0.389 Get:3 http://deb.debian.org/debian-security testing-security InRelease [43.4 kB]
+#6 0.488 Get:4 http://deb.debian.org/debian testing/main arm64 Packages [9722 kB]
+#6 1.555 Fetched 9957 kB in 1s (7299 kB/s)
+#6 1.555 Reading package lists...
+#6 1.960 Reading package lists...
+#6 2.348 Building dependency tree...
+#6 2.461 Reading state information...
+#6 2.511 Calculating upgrade...
+#6 2.775 The following packages have been kept back:
+#6 2.775   gcc-14-base libgcc-s1 libstdc++6
+#6 2.775 The following packages will be upgraded:
+#6 2.775   apt base-files bsdutils init-system-helpers libapt-pkg7.0 libaudit-common
+#6 2.775   libaudit1 libblkid1 libgmp10 liblastlog2-2 libmount1 libpcre2-8-0
+#6 2.775   libsmartcols1 libssl3t64 libsystemd0 libudev1 libuuid1 login mount
+#6 2.776   openssl-provider-legacy tzdata util-linux
+#6 2.817 22 upgraded, 0 newly installed, 0 to remove and 3 not upgraded.
+#6 2.817 Need to get 9438 kB of archives.
+#6 2.817 After this operation, 147 kB of additional disk space will be used.
+#6 2.817 Get:1 http://deb.debian.org/debian testing/main arm64 base-files arm64 14 [72.9 kB]
+#6 2.840 Get:2 http://deb.debian.org/debian testing/main arm64 bsdutils arm64 1:2.41.1-1 [109 kB]
+#6 2.861 Get:3 http://deb.debian.org/debian testing/main arm64 liblastlog2-2 arm64 2.41.1-1 [28.4 kB]
+#6 2.861 Get:4 http://deb.debian.org/debian testing/main arm64 libuuid1 arm64 2.41.1-1 [37.5 kB]
+#6 2.863 Get:5 http://deb.debian.org/debian testing/main arm64 libblkid1 arm64 2.41.1-1 [166 kB]
+#6 2.880 Get:6 http://deb.debian.org/debian testing/main arm64 libmount1 arm64 2.41.1-1 [200 kB]
+#6 2.884 Get:7 http://deb.debian.org/debian testing/main arm64 libsmartcols1 arm64 2.41.1-1 [139 kB]
+#6 2.898 Get:8 http://deb.debian.org/debian testing/main arm64 util-linux arm64 2.41.1-1 [1195 kB]
+#6 2.927 Get:9 http://deb.debian.org/debian testing/main arm64 mount arm64 2.41.1-1 [161 kB]
+#6 2.930 Get:10 http://deb.debian.org/debian testing/main arm64 openssl-provider-legacy arm64 3.5.2-1 [305 kB]
+#6 2.938 Get:11 http://deb.debian.org/debian testing/main arm64 libssl3t64 arm64 3.5.2-1 [2750 kB]
+#6 3.002 Get:12 http://deb.debian.org/debian testing/main arm64 libsystemd0 arm64 258~rc3-1 [433 kB]
+#6 3.013 Get:13 http://deb.debian.org/debian testing/main arm64 libudev1 arm64 258~rc3-1 [148 kB]
+#6 3.014 Get:14 http://deb.debian.org/debian testing/main arm64 libapt-pkg7.0 arm64 3.1.4 [1029 kB]
+#6 3.039 Get:15 http://deb.debian.org/debian testing/main arm64 apt arm64 3.1.4 [1380 kB]
+#6 3.076 Get:16 http://deb.debian.org/debian testing/main arm64 init-system-helpers all 1.69 [39.3 kB]
+#6 3.076 Get:17 http://deb.debian.org/debian testing/main arm64 libaudit-common all 1:4.0.5-1 [13.5 kB]
+#6 3.076 Get:18 http://deb.debian.org/debian testing/main arm64 libaudit1 arm64 1:4.0.5-1 [58.9 kB]
+#6 3.076 Get:19 http://deb.debian.org/debian testing/main arm64 login arm64 1:4.16.0-2+really2.41.1-1 [116 kB]
+#6 3.077 Get:20 http://deb.debian.org/debian testing/main arm64 libgmp10 arm64 2:6.3.0+dfsg-4 [535 kB]
+#6 3.089 Get:21 http://deb.debian.org/debian testing/main arm64 libpcre2-8-0 arm64 10.46-1 [262 kB]
+#6 3.095 Get:22 http://deb.debian.org/debian testing/main arm64 tzdata all 2025b-5 [260 kB]
+#6 3.579 Preconfiguring packages ...
+#6 3.623 Fetched 9438 kB in 0s (29.6 MB/s)
+#6 3.633 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4932 files and directories currently installed.)
+#6 3.636 Preparing to unpack .../base-files_14_arm64.deb ...
+#6 3.644 Unpacking base-files (14) over (13.8) ...
+#6 3.683 Setting up base-files (14) ...
+#6 3.684 Installing new version of config file /etc/debian_version ...
+#6 3.687 Installing new version of config file /etc/issue ...
+#6 3.688 Installing new version of config file /etc/issue.net ...
+#6 3.704 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4931 files and directories currently installed.)
+#6 3.706 Preparing to unpack .../bsdutils_1%3a2.41.1-1_arm64.deb ...
+#6 3.709 Unpacking bsdutils (1:2.41.1-1) over (1:2.41-5) ...
+#6 3.738 Setting up bsdutils (1:2.41.1-1) ...
+#6 3.747 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4931 files and directories currently installed.)
+#6 3.749 Preparing to unpack .../liblastlog2-2_2.41.1-1_arm64.deb ...
+#6 3.752 Unpacking liblastlog2-2:arm64 (2.41.1-1) over (2.41-5) ...
+#6 3.766 Setting up liblastlog2-2:arm64 (2.41.1-1) ...
+#6 3.778 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4931 files and directories currently installed.)
+#6 3.780 Preparing to unpack .../libuuid1_2.41.1-1_arm64.deb ...
+#6 3.782 Unpacking libuuid1:arm64 (2.41.1-1) over (2.41-5) ...
+#6 3.799 Setting up libuuid1:arm64 (2.41.1-1) ...
+#6 3.812 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4931 files and directories currently installed.)
+#6 3.814 Preparing to unpack .../libblkid1_2.41.1-1_arm64.deb ...
+#6 3.817 Unpacking libblkid1:arm64 (2.41.1-1) over (2.41-5) ...
+#6 3.839 Setting up libblkid1:arm64 (2.41.1-1) ...
+#6 3.852 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4931 files and directories currently installed.)
+#6 3.853 Preparing to unpack .../libmount1_2.41.1-1_arm64.deb ...
+#6 3.856 Unpacking libmount1:arm64 (2.41.1-1) over (2.41-5) ...
+#6 3.881 Setting up libmount1:arm64 (2.41.1-1) ...
+#6 3.892 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4931 files and directories currently installed.)
+#6 3.894 Preparing to unpack .../libsmartcols1_2.41.1-1_arm64.deb ...
+#6 3.896 Unpacking libsmartcols1:arm64 (2.41.1-1) over (2.41-5) ...
+#6 3.918 Setting up libsmartcols1:arm64 (2.41.1-1) ...
+#6 3.931 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4931 files and directories currently installed.)
+#6 3.933 Preparing to unpack .../util-linux_2.41.1-1_arm64.deb ...
+#6 3.936 Unpacking util-linux (2.41.1-1) over (2.41-5) ...
+#6 4.065 Setting up util-linux (2.41.1-1) ...
+#6 4.072 update-alternatives: warning: forcing reinstallation of alternative /bin/more because link group pager is broken
+#6 4.073 update-alternatives: warning: skip creation of /usr/share/man/man1/pager.1.gz because associated file /usr/share/man/man1/more.1.gz (of link group pager) doesn't exist
+#6 4.139 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4932 files and directories currently installed.)
+#6 4.141 Preparing to unpack .../mount_2.41.1-1_arm64.deb ...
+#6 4.144 Unpacking mount (2.41.1-1) over (2.41-5) ...
+#6 4.170 Preparing to unpack .../openssl-provider-legacy_3.5.2-1_arm64.deb ...
+#6 4.174 Unpacking openssl-provider-legacy (3.5.2-1) over (3.5.1-1) ...
+#6 4.198 Setting up openssl-provider-legacy (3.5.2-1) ...
+#6 4.213 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4932 files and directories currently installed.)
+#6 4.214 Preparing to unpack .../libssl3t64_3.5.2-1_arm64.deb ...
+#6 4.217 Unpacking libssl3t64:arm64 (3.5.2-1) over (3.5.1-1) ...
+#6 4.329 Setting up libssl3t64:arm64 (3.5.2-1) ...
+#6 4.340 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4932 files and directories currently installed.)
+#6 4.342 Preparing to unpack .../libsystemd0_258~rc3-1_arm64.deb ...
+#6 4.347 Unpacking libsystemd0:arm64 (258~rc3-1) over (257.7-1) ...
+#6 4.400 Setting up libsystemd0:arm64 (258~rc3-1) ...
+#6 4.421 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4932 files and directories currently installed.)
+#6 4.424 Preparing to unpack .../libudev1_258~rc3-1_arm64.deb ...
+#6 4.427 Unpacking libudev1:arm64 (258~rc3-1) over (257.7-1) ...
+#6 4.448 Setting up libudev1:arm64 (258~rc3-1) ...
+#6 4.464 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4932 files and directories currently installed.)
+#6 4.466 Preparing to unpack .../libapt-pkg7.0_3.1.4_arm64.deb ...
+#6 4.468 Unpacking libapt-pkg7.0:arm64 (3.1.4) over (3.0.3) ...
+#6 4.531 Setting up libapt-pkg7.0:arm64 (3.1.4) ...
+#6 4.547 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4932 files and directories currently installed.)
+#6 4.550 Preparing to unpack .../archives/apt_3.1.4_arm64.deb ...
+#6 4.563 Unpacking apt (3.1.4) over (3.0.3) ...
+#6 4.657 Setting up apt (3.1.4) ...
+#6 4.792 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4930 files and directories currently installed.)
+#6 4.794 Preparing to unpack .../init-system-helpers_1.69_all.deb ...
+#6 4.797 Unpacking init-system-helpers (1.69) over (1.68) ...
+#6 4.815 Setting up init-system-helpers (1.69) ...
+#6 4.827 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4931 files and directories currently installed.)
+#6 4.830 Preparing to unpack .../libaudit-common_1%3a4.0.5-1_all.deb ...
+#6 4.833 Unpacking libaudit-common (1:4.0.5-1) over (1:4.0.2-2) ...
+#6 4.851 Setting up libaudit-common (1:4.0.5-1) ...
+#6 4.869 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4931 files and directories currently installed.)
+#6 4.872 Preparing to unpack .../libaudit1_1%3a4.0.5-1_arm64.deb ...
+#6 4.879 Unpacking libaudit1:arm64 (1:4.0.5-1) over (1:4.0.2-2+b2) ...
+#6 4.897 Setting up libaudit1:arm64 (1:4.0.5-1) ...
+#6 4.913 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4930 files and directories currently installed.)
+#6 4.915 Preparing to unpack .../login_1%3a4.16.0-2+really2.41.1-1_arm64.deb ...
+#6 4.926 Unpacking login (1:4.16.0-2+really2.41.1-1) over (1:4.16.0-2+really2.41-5) ...
+#6 4.954 Preparing to unpack .../libgmp10_2%3a6.3.0+dfsg-4_arm64.deb ...
+#6 4.957 Unpacking libgmp10:arm64 (2:6.3.0+dfsg-4) over (2:6.3.0+dfsg-3) ...
+#6 4.986 Setting up libgmp10:arm64 (2:6.3.0+dfsg-4) ...
+#6 5.000 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4932 files and directories currently installed.)
+#6 5.002 Preparing to unpack .../libpcre2-8-0_10.46-1_arm64.deb ...
+#6 5.004 Unpacking libpcre2-8-0:arm64 (10.46-1) over (10.45-1) ...
+#6 5.033 Setting up libpcre2-8-0:arm64 (10.46-1) ...
+#6 5.048 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4932 files and directories currently installed.)
+#6 5.050 Preparing to unpack .../tzdata_2025b-5_all.deb ...
+#6 5.052 Unpacking tzdata (2025b-5) over (2025b-4) ...
+#6 5.459 Setting up tzdata (2025b-5) ...
+#6 5.507 
+#6 5.507 Current default time zone: 'Etc/UTC'
+#6 5.509 Local time is now:      Sat Aug 30 15:15:05 UTC 2025.
+#6 5.509 Universal Time is now:  Sat Aug 30 15:15:05 UTC 2025.
+#6 5.509 Run 'dpkg-reconfigure tzdata' if you wish to change it.
+#6 5.509 
+#6 5.516 Setting up mount (2.41.1-1) ...
+#6 5.519 Setting up login (1:4.16.0-2+really2.41.1-1) ...
+#6 5.530 Processing triggers for libc-bin (2.41-12) ...
+#6 5.577 Reading package lists...
+#6 5.929 Building dependency tree...
+#6 6.021 Reading state information...
+#6 6.225 bash is already the newest version (5.2.37-2+b5).
+#6 6.225 bash set to manually installed.
+#6 6.225 coreutils is already the newest version (9.7-3).
+#6 6.225 coreutils set to manually installed.
+#6 6.225 The following additional packages will be installed:
+#6 6.226   adduser git-man gpgconf libapparmor1 libassuan9 libbrotli1 libcbor0.10
+#6 6.226   libcom-err2 libcurl3t64-gnutls libcurl4t64 libedit2 liberror-perl libexpat1
+#6 6.226   libffi8 libfido2-1 libgcrypt20 libgdbm-compat4t64 libgdbm6t64 libgnutls30t64
+#6 6.226   libgpg-error0 libgssapi-krb5-2 libidn2-0 libk5crypto3 libkeyutils1 libkrb5-3
+#6 6.226   libkrb5support0 libksba8 libldap2 libnghttp2-14 libnghttp3-9 libngtcp2-16
+#6 6.226   libngtcp2-crypto-gnutls8 libnpth0t64 libp11-kit0 libperl5.40 libpsl5t64
+#6 6.226   libreadline8t64 librtmp1 libsasl2-2 libsasl2-modules-db libssh2-1t64
+#6 6.226   libtasn1-6 libunistring5 openssl perl perl-modules-5.40 readline-common
+#6 6.227 Suggested packages:
+#6 6.227   liblocale-gettext-perl cron quota gettext-base git-doc git-email git-gui
+#6 6.227   gitk gitweb git-cvs git-mediawiki git-svn rng-tools gdbm-l10n gnutls-bin
+#6 6.227   krb5-doc krb5-user sensible-utils keychain libpam-ssh monkeysphere
+#6 6.227   ssh-askpass perl-doc libterm-readline-gnu-perl | libterm-readline-perl-perl
+#6 6.227   make libtap-harness-archive-perl readline-doc
+#6 6.227 Recommended packages:
+#6 6.227   bash-completion patch less gnupg libgpg-error-l10n krb5-locales
+#6 6.227   libldap-common publicsuffix libsasl2-modules xauth netbase
+#6 6.480 The following NEW packages will be installed:
+#6 6.480   adduser ca-certificates curl git git-man gpg gpgconf libapparmor1 libassuan9
+#6 6.480   libbrotli1 libcbor0.10 libcom-err2 libcurl3t64-gnutls libcurl4t64 libedit2
+#6 6.480   liberror-perl libexpat1 libffi8 libfido2-1 libgcrypt20 libgdbm-compat4t64
+#6 6.480   libgdbm6t64 libgnutls30t64 libgpg-error0 libgssapi-krb5-2 libidn2-0
+#6 6.480   libk5crypto3 libkeyutils1 libkrb5-3 libkrb5support0 libksba8 libldap2
+#6 6.480   libnghttp2-14 libnghttp3-9 libngtcp2-16 libngtcp2-crypto-gnutls8 libnpth0t64
+#6 6.480   libp11-kit0 libperl5.40 libpsl5t64 libreadline8t64 librtmp1 libsasl2-2
+#6 6.481   libsasl2-modules-db libssh2-1t64 libtasn1-6 libunistring5 openssh-client
+#6 6.481   openssl perl perl-modules-5.40 readline-common sudo wget
+#6 6.527 0 upgraded, 54 newly installed, 0 to remove and 3 not upgraded.
+#6 6.527 Need to get 32.0 MB of archives.
+#6 6.527 After this operation, 151 MB of additional disk space will be used.
+#6 6.527 Get:1 http://deb.debian.org/debian testing/main arm64 libexpat1 arm64 2.7.1-2 [93.3 kB]
+#6 6.561 Get:2 http://deb.debian.org/debian testing/main arm64 libapparmor1 arm64 4.1.0-1 [42.9 kB]
+#6 6.564 Get:3 http://deb.debian.org/debian testing/main arm64 sudo arm64 1.9.17p2-1 [1964 kB]
+#6 6.639 Get:4 http://deb.debian.org/debian testing/main arm64 adduser all 3.152 [191 kB]
+#6 6.643 Get:5 http://deb.debian.org/debian testing/main arm64 readline-common all 8.2-6 [69.4 kB]
+#6 6.645 Get:6 http://deb.debian.org/debian testing/main arm64 openssl arm64 3.5.2-1 [1457 kB]
+#6 6.680 Get:7 http://deb.debian.org/debian testing/main arm64 ca-certificates all 20250419 [162 kB]
+#6 6.683 Get:8 http://deb.debian.org/debian testing/main arm64 libedit2 arm64 3.1-20250104-1 [89.3 kB]
+#6 6.687 Get:9 http://deb.debian.org/debian testing/main arm64 libcbor0.10 arm64 0.10.2-2 [27.4 kB]
+#6 6.687 Get:10 http://deb.debian.org/debian testing/main arm64 libfido2-1 arm64 1.16.0-2 [74.4 kB]
+#6 6.692 Get:11 http://deb.debian.org/debian testing/main arm64 libkrb5support0 arm64 1.21.3-5 [32.4 kB]
+#6 6.692 Get:12 http://deb.debian.org/debian testing/main arm64 libcom-err2 arm64 1.47.2-3+b3 [24.9 kB]
+#6 6.692 Get:13 http://deb.debian.org/debian testing/main arm64 libk5crypto3 arm64 1.21.3-5 [81.2 kB]
+#6 6.693 Get:14 http://deb.debian.org/debian testing/main arm64 libkeyutils1 arm64 1.6.3-6 [9716 B]
+#6 6.693 Get:15 http://deb.debian.org/debian testing/main arm64 libkrb5-3 arm64 1.21.3-5 [308 kB]
+#6 6.699 Get:16 http://deb.debian.org/debian testing/main arm64 libgssapi-krb5-2 arm64 1.21.3-5 [127 kB]
+#6 6.705 Get:17 http://deb.debian.org/debian testing/main arm64 openssh-client arm64 1:10.0p1-8 [925 kB]
+#6 6.725 Get:18 http://deb.debian.org/debian testing/main arm64 perl-modules-5.40 all 5.40.1-6 [3019 kB]
+#6 6.811 Get:19 http://deb.debian.org/debian testing/main arm64 libgdbm6t64 arm64 1.26-1 [77.5 kB]
+#6 6.819 Get:20 http://deb.debian.org/debian testing/main arm64 libgdbm-compat4t64 arm64 1.26-1 [52.8 kB]
+#6 6.820 Get:21 http://deb.debian.org/debian testing/main arm64 libperl5.40 arm64 5.40.1-6 [4142 kB]
+#6 6.909 Get:22 http://deb.debian.org/debian testing/main arm64 perl arm64 5.40.1-6 [267 kB]
+#6 6.915 Get:23 http://deb.debian.org/debian testing/main arm64 libunistring5 arm64 1.3-2 [453 kB]
+#6 6.928 Get:24 http://deb.debian.org/debian testing/main arm64 libidn2-0 arm64 2.3.8-4 [108 kB]
+#6 6.931 Get:25 http://deb.debian.org/debian testing/main arm64 libffi8 arm64 3.4.8-2 [21.3 kB]
+#6 6.931 Get:26 http://deb.debian.org/debian testing/main arm64 libp11-kit0 arm64 0.25.5-3 [409 kB]
+#6 6.948 Get:27 http://deb.debian.org/debian testing/main arm64 libtasn1-6 arm64 4.20.0-2 [47.3 kB]
+#6 6.949 Get:28 http://deb.debian.org/debian testing/main arm64 libgnutls30t64 arm64 3.8.9-3 [1375 kB]
+#6 6.977 Get:29 http://deb.debian.org/debian testing/main arm64 libpsl5t64 arm64 0.21.2-1.1+b1 [57.1 kB]
+#6 6.977 Get:30 http://deb.debian.org/debian testing/main arm64 wget arm64 1.25.0-2 [970 kB]
+#6 7.003 Get:31 http://deb.debian.org/debian testing/main arm64 libbrotli1 arm64 1.1.0-2+b7 [308 kB]
+#6 7.005 Get:32 http://deb.debian.org/debian testing/main arm64 libsasl2-modules-db arm64 2.1.28+dfsg1-9 [20.1 kB]
+#6 7.007 Get:33 http://deb.debian.org/debian testing/main arm64 libsasl2-2 arm64 2.1.28+dfsg1-9 [55.6 kB]
+#6 7.009 Get:34 http://deb.debian.org/debian testing/main arm64 libldap2 arm64 2.6.10+dfsg-1 [179 kB]
+#6 7.015 Get:35 http://deb.debian.org/debian testing/main arm64 libnghttp2-14 arm64 1.64.0-1.1+b1 [71.7 kB]
+#6 7.016 Get:36 http://deb.debian.org/debian testing/main arm64 libnghttp3-9 arm64 1.8.0-1 [63.2 kB]
+#6 7.017 Get:37 http://deb.debian.org/debian testing/main arm64 librtmp1 arm64 2.4+20151223.gitfa8646d.1-3 [56.3 kB]
+#6 7.018 Get:38 http://deb.debian.org/debian testing/main arm64 libssh2-1t64 arm64 1.11.1-1 [235 kB]
+#6 7.023 Get:39 http://deb.debian.org/debian testing/main arm64 libcurl4t64 arm64 8.15.0-1 [360 kB]
+#6 7.031 Get:40 http://deb.debian.org/debian testing/main arm64 curl arm64 8.15.0-1 [261 kB]
+#6 7.047 Get:41 http://deb.debian.org/debian testing/main arm64 libngtcp2-16 arm64 1.11.0-1 [121 kB]
+#6 7.048 Get:42 http://deb.debian.org/debian testing/main arm64 libngtcp2-crypto-gnutls8 arm64 1.11.0-1 [28.2 kB]
+#6 7.048 Get:43 http://deb.debian.org/debian testing/main arm64 libcurl3t64-gnutls arm64 8.15.0-1 [355 kB]
+#6 7.049 Get:44 http://deb.debian.org/debian testing/main arm64 liberror-perl all 0.17030-1 [26.9 kB]
+#6 7.050 Get:45 http://deb.debian.org/debian testing/main arm64 git-man all 1:2.50.1-0.1 [2266 kB]
+#6 7.103 Get:46 http://deb.debian.org/debian testing/main arm64 git arm64 1:2.50.1-0.1 [8978 kB]
+#6 7.318 Get:47 http://deb.debian.org/debian testing/main arm64 libgpg-error0 arm64 1.55-2 [83.9 kB]
+#6 7.321 Get:48 http://deb.debian.org/debian testing/main arm64 libassuan9 arm64 3.0.2-2 [59.1 kB]
+#6 7.323 Get:49 http://deb.debian.org/debian testing/main arm64 libgcrypt20 arm64 1.11.2-2 [772 kB]
+#6 7.343 Get:50 http://deb.debian.org/debian testing/main arm64 libreadline8t64 arm64 8.2-6 [159 kB]
+#6 7.344 Get:51 http://deb.debian.org/debian testing/main arm64 gpgconf arm64 2.4.8-3 [122 kB]
+#6 7.348 Get:52 http://deb.debian.org/debian testing/main arm64 libksba8 arm64 1.6.7-2+b1 [125 kB]
+#6 7.351 Get:53 http://deb.debian.org/debian testing/main arm64 libnpth0t64 arm64 1.8-3 [22.9 kB]
+#6 7.351 Get:54 http://deb.debian.org/debian testing/main arm64 gpg arm64 2.4.8-3 [579 kB]
+#6 8.410 Preconfiguring packages ...
+#6 8.456 Fetched 32.0 MB in 1s (36.6 MB/s)
+#6 8.464 Selecting previously unselected package libexpat1:arm64.
+#6 8.464 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4932 files and directories currently installed.)
+#6 8.466 Preparing to unpack .../libexpat1_2.7.1-2_arm64.deb ...
+#6 8.468 Unpacking libexpat1:arm64 (2.7.1-2) ...
+#6 8.483 Selecting previously unselected package libapparmor1:arm64.
+#6 8.484 Preparing to unpack .../libapparmor1_4.1.0-1_arm64.deb ...
+#6 8.485 Unpacking libapparmor1:arm64 (4.1.0-1) ...
+#6 8.498 Selecting previously unselected package sudo.
+#6 8.498 Preparing to unpack .../sudo_1.9.17p2-1_arm64.deb ...
+#6 8.500 Unpacking sudo (1.9.17p2-1) ...
+#6 8.576 Selecting previously unselected package adduser.
+#6 8.577 Preparing to unpack .../archives/adduser_3.152_all.deb ...
+#6 8.578 Unpacking adduser (3.152) ...
+#6 8.597 Setting up adduser (3.152) ...
+#6 8.612 Selecting previously unselected package readline-common.
+#6 8.612 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 5182 files and directories currently installed.)
+#6 8.613 Preparing to unpack .../00-readline-common_8.2-6_all.deb ...
+#6 8.614 Unpacking readline-common (8.2-6) ...
+#6 8.627 Selecting previously unselected package openssl.
+#6 8.628 Preparing to unpack .../01-openssl_3.5.2-1_arm64.deb ...
+#6 8.630 Unpacking openssl (3.5.2-1) ...
+#6 8.702 Selecting previously unselected package ca-certificates.
+#6 8.703 Preparing to unpack .../02-ca-certificates_20250419_all.deb ...
+#6 8.705 Unpacking ca-certificates (20250419) ...
+#6 8.727 Selecting previously unselected package libedit2:arm64.
+#6 8.728 Preparing to unpack .../03-libedit2_3.1-20250104-1_arm64.deb ...
+#6 8.729 Unpacking libedit2:arm64 (3.1-20250104-1) ...
+#6 8.744 Selecting previously unselected package libcbor0.10:arm64.
+#6 8.745 Preparing to unpack .../04-libcbor0.10_0.10.2-2_arm64.deb ...
+#6 8.746 Unpacking libcbor0.10:arm64 (0.10.2-2) ...
+#6 8.756 Selecting previously unselected package libfido2-1:arm64.
+#6 8.756 Preparing to unpack .../05-libfido2-1_1.16.0-2_arm64.deb ...
+#6 8.757 Unpacking libfido2-1:arm64 (1.16.0-2) ...
+#6 8.770 Selecting previously unselected package libkrb5support0:arm64.
+#6 8.771 Preparing to unpack .../06-libkrb5support0_1.21.3-5_arm64.deb ...
+#6 8.772 Unpacking libkrb5support0:arm64 (1.21.3-5) ...
+#6 8.783 Selecting previously unselected package libcom-err2:arm64.
+#6 8.784 Preparing to unpack .../07-libcom-err2_1.47.2-3+b3_arm64.deb ...
+#6 8.785 Unpacking libcom-err2:arm64 (1.47.2-3+b3) ...
+#6 8.798 Selecting previously unselected package libk5crypto3:arm64.
+#6 8.798 Preparing to unpack .../08-libk5crypto3_1.21.3-5_arm64.deb ...
+#6 8.799 Unpacking libk5crypto3:arm64 (1.21.3-5) ...
+#6 8.815 Selecting previously unselected package libkeyutils1:arm64.
+#6 8.816 Preparing to unpack .../09-libkeyutils1_1.6.3-6_arm64.deb ...
+#6 8.817 Unpacking libkeyutils1:arm64 (1.6.3-6) ...
+#6 8.829 Selecting previously unselected package libkrb5-3:arm64.
+#6 8.830 Preparing to unpack .../10-libkrb5-3_1.21.3-5_arm64.deb ...
+#6 8.831 Unpacking libkrb5-3:arm64 (1.21.3-5) ...
+#6 8.858 Selecting previously unselected package libgssapi-krb5-2:arm64.
+#6 8.859 Preparing to unpack .../11-libgssapi-krb5-2_1.21.3-5_arm64.deb ...
+#6 8.860 Unpacking libgssapi-krb5-2:arm64 (1.21.3-5) ...
+#6 8.881 Selecting previously unselected package openssh-client.
+#6 8.882 Preparing to unpack .../12-openssh-client_1%3a10.0p1-8_arm64.deb ...
+#6 8.885 Unpacking openssh-client (1:10.0p1-8) ...
+#6 8.948 Selecting previously unselected package perl-modules-5.40.
+#6 8.948 Preparing to unpack .../13-perl-modules-5.40_5.40.1-6_all.deb ...
+#6 8.950 Unpacking perl-modules-5.40 (5.40.1-6) ...
+#6 9.143 Selecting previously unselected package libgdbm6t64:arm64.
+#6 9.144 Preparing to unpack .../14-libgdbm6t64_1.26-1_arm64.deb ...
+#6 9.145 Unpacking libgdbm6t64:arm64 (1.26-1) ...
+#6 9.159 Selecting previously unselected package libgdbm-compat4t64:arm64.
+#6 9.160 Preparing to unpack .../15-libgdbm-compat4t64_1.26-1_arm64.deb ...
+#6 9.162 Unpacking libgdbm-compat4t64:arm64 (1.26-1) ...
+#6 9.179 Selecting previously unselected package libperl5.40:arm64.
+#6 9.179 Preparing to unpack .../16-libperl5.40_5.40.1-6_arm64.deb ...
+#6 9.181 Unpacking libperl5.40:arm64 (5.40.1-6) ...
+#6 9.423 Selecting previously unselected package perl.
+#6 9.424 Preparing to unpack .../17-perl_5.40.1-6_arm64.deb ...
+#6 9.425 Unpacking perl (5.40.1-6) ...
+#6 9.453 Selecting previously unselected package libunistring5:arm64.
+#6 9.454 Preparing to unpack .../18-libunistring5_1.3-2_arm64.deb ...
+#6 9.455 Unpacking libunistring5:arm64 (1.3-2) ...
+#6 9.491 Selecting previously unselected package libidn2-0:arm64.
+#6 9.491 Preparing to unpack .../19-libidn2-0_2.3.8-4_arm64.deb ...
+#6 9.492 Unpacking libidn2-0:arm64 (2.3.8-4) ...
+#6 9.508 Selecting previously unselected package libffi8:arm64.
+#6 9.508 Preparing to unpack .../20-libffi8_3.4.8-2_arm64.deb ...
+#6 9.509 Unpacking libffi8:arm64 (3.4.8-2) ...
+#6 9.523 Selecting previously unselected package libp11-kit0:arm64.
+#6 9.524 Preparing to unpack .../21-libp11-kit0_0.25.5-3_arm64.deb ...
+#6 9.525 Unpacking libp11-kit0:arm64 (0.25.5-3) ...
+#6 9.553 Selecting previously unselected package libtasn1-6:arm64.
+#6 9.554 Preparing to unpack .../22-libtasn1-6_4.20.0-2_arm64.deb ...
+#6 9.555 Unpacking libtasn1-6:arm64 (4.20.0-2) ...
+#6 9.570 Selecting previously unselected package libgnutls30t64:arm64.
+#6 9.571 Preparing to unpack .../23-libgnutls30t64_3.8.9-3_arm64.deb ...
+#6 9.573 Unpacking libgnutls30t64:arm64 (3.8.9-3) ...
+#6 9.631 Selecting previously unselected package libpsl5t64:arm64.
+#6 9.632 Preparing to unpack .../24-libpsl5t64_0.21.2-1.1+b1_arm64.deb ...
+#6 9.633 Unpacking libpsl5t64:arm64 (0.21.2-1.1+b1) ...
+#6 9.645 Selecting previously unselected package wget.
+#6 9.646 Preparing to unpack .../25-wget_1.25.0-2_arm64.deb ...
+#6 9.647 Unpacking wget (1.25.0-2) ...
+#6 9.699 Selecting previously unselected package libbrotli1:arm64.
+#6 9.700 Preparing to unpack .../26-libbrotli1_1.1.0-2+b7_arm64.deb ...
+#6 9.701 Unpacking libbrotli1:arm64 (1.1.0-2+b7) ...
+#6 9.726 Selecting previously unselected package libsasl2-modules-db:arm64.
+#6 9.727 Preparing to unpack .../27-libsasl2-modules-db_2.1.28+dfsg1-9_arm64.deb ...
+#6 9.728 Unpacking libsasl2-modules-db:arm64 (2.1.28+dfsg1-9) ...
+#6 9.737 Selecting previously unselected package libsasl2-2:arm64.
+#6 9.738 Preparing to unpack .../28-libsasl2-2_2.1.28+dfsg1-9_arm64.deb ...
+#6 9.739 Unpacking libsasl2-2:arm64 (2.1.28+dfsg1-9) ...
+#6 9.754 Selecting previously unselected package libldap2:arm64.
+#6 9.755 Preparing to unpack .../29-libldap2_2.6.10+dfsg-1_arm64.deb ...
+#6 9.758 Unpacking libldap2:arm64 (2.6.10+dfsg-1) ...
+#6 9.776 Selecting previously unselected package libnghttp2-14:arm64.
+#6 9.777 Preparing to unpack .../30-libnghttp2-14_1.64.0-1.1+b1_arm64.deb ...
+#6 9.779 Unpacking libnghttp2-14:arm64 (1.64.0-1.1+b1) ...
+#6 9.792 Selecting previously unselected package libnghttp3-9:arm64.
+#6 9.793 Preparing to unpack .../31-libnghttp3-9_1.8.0-1_arm64.deb ...
+#6 9.795 Unpacking libnghttp3-9:arm64 (1.8.0-1) ...
+#6 9.809 Selecting previously unselected package librtmp1:arm64.
+#6 9.810 Preparing to unpack .../32-librtmp1_2.4+20151223.gitfa8646d.1-3_arm64.deb ...
+#6 9.811 Unpacking librtmp1:arm64 (2.4+20151223.gitfa8646d.1-3) ...
+#6 9.825 Selecting previously unselected package libssh2-1t64:arm64.
+#6 9.826 Preparing to unpack .../33-libssh2-1t64_1.11.1-1_arm64.deb ...
+#6 9.827 Unpacking libssh2-1t64:arm64 (1.11.1-1) ...
+#6 9.847 Selecting previously unselected package libcurl4t64:arm64.
+#6 9.848 Preparing to unpack .../34-libcurl4t64_8.15.0-1_arm64.deb ...
+#6 9.849 Unpacking libcurl4t64:arm64 (8.15.0-1) ...
+#6 9.878 Selecting previously unselected package curl.
+#6 9.879 Preparing to unpack .../35-curl_8.15.0-1_arm64.deb ...
+#6 9.880 Unpacking curl (8.15.0-1) ...
+#6 9.905 Selecting previously unselected package libngtcp2-16:arm64.
+#6 9.906 Preparing to unpack .../36-libngtcp2-16_1.11.0-1_arm64.deb ...
+#6 9.907 Unpacking libngtcp2-16:arm64 (1.11.0-1) ...
+#6 9.927 Selecting previously unselected package libngtcp2-crypto-gnutls8:arm64.
+#6 9.928 Preparing to unpack .../37-libngtcp2-crypto-gnutls8_1.11.0-1_arm64.deb ...
+#6 9.929 Unpacking libngtcp2-crypto-gnutls8:arm64 (1.11.0-1) ...
+#6 9.942 Selecting previously unselected package libcurl3t64-gnutls:arm64.
+#6 9.943 Preparing to unpack .../38-libcurl3t64-gnutls_8.15.0-1_arm64.deb ...
+#6 9.944 Unpacking libcurl3t64-gnutls:arm64 (8.15.0-1) ...
+#6 9.972 Selecting previously unselected package liberror-perl.
+#6 9.973 Preparing to unpack .../39-liberror-perl_0.17030-1_all.deb ...
+#6 9.975 Unpacking liberror-perl (0.17030-1) ...
+#6 9.985 Selecting previously unselected package git-man.
+#6 9.985 Preparing to unpack .../40-git-man_1%3a2.50.1-0.1_all.deb ...
+#6 9.987 Unpacking git-man (1:2.50.1-0.1) ...
+#6 10.06 Selecting previously unselected package git.
+#6 10.06 Preparing to unpack .../41-git_1%3a2.50.1-0.1_arm64.deb ...
+#6 10.07 Unpacking git (1:2.50.1-0.1) ...
+#6 10.37 Selecting previously unselected package libgpg-error0:arm64.
+#6 10.37 Preparing to unpack .../42-libgpg-error0_1.55-2_arm64.deb ...
+#6 10.37 Unpacking libgpg-error0:arm64 (1.55-2) ...
+#6 10.39 Selecting previously unselected package libassuan9:arm64.
+#6 10.39 Preparing to unpack .../43-libassuan9_3.0.2-2_arm64.deb ...
+#6 10.39 Unpacking libassuan9:arm64 (3.0.2-2) ...
+#6 10.41 Selecting previously unselected package libgcrypt20:arm64.
+#6 10.41 Preparing to unpack .../44-libgcrypt20_1.11.2-2_arm64.deb ...
+#6 10.41 Unpacking libgcrypt20:arm64 (1.11.2-2) ...
+#6 10.46 Selecting previously unselected package libreadline8t64:arm64.
+#6 10.46 Preparing to unpack .../45-libreadline8t64_8.2-6_arm64.deb ...
+#6 10.46 Adding 'diversion of /lib/aarch64-linux-gnu/libhistory.so.8 to /lib/aarch64-linux-gnu/libhistory.so.8.usr-is-merged by libreadline8t64'
+#6 10.46 Adding 'diversion of /lib/aarch64-linux-gnu/libhistory.so.8.2 to /lib/aarch64-linux-gnu/libhistory.so.8.2.usr-is-merged by libreadline8t64'
+#6 10.47 Adding 'diversion of /lib/aarch64-linux-gnu/libreadline.so.8 to /lib/aarch64-linux-gnu/libreadline.so.8.usr-is-merged by libreadline8t64'
+#6 10.47 Adding 'diversion of /lib/aarch64-linux-gnu/libreadline.so.8.2 to /lib/aarch64-linux-gnu/libreadline.so.8.2.usr-is-merged by libreadline8t64'
+#6 10.47 Unpacking libreadline8t64:arm64 (8.2-6) ...
+#6 10.49 Selecting previously unselected package gpgconf.
+#6 10.49 Preparing to unpack .../46-gpgconf_2.4.8-3_arm64.deb ...
+#6 10.49 Unpacking gpgconf (2.4.8-3) ...
+#6 10.51 Selecting previously unselected package libksba8:arm64.
+#6 10.51 Preparing to unpack .../47-libksba8_1.6.7-2+b1_arm64.deb ...
+#6 10.51 Unpacking libksba8:arm64 (1.6.7-2+b1) ...
+#6 10.52 Selecting previously unselected package libnpth0t64:arm64.
+#6 10.52 Preparing to unpack .../48-libnpth0t64_1.8-3_arm64.deb ...
+#6 10.52 Unpacking libnpth0t64:arm64 (1.8-3) ...
+#6 10.54 Selecting previously unselected package gpg.
+#6 10.54 Preparing to unpack .../49-gpg_2.4.8-3_arm64.deb ...
+#6 10.54 Unpacking gpg (2.4.8-3) ...
+#6 10.58 Setting up libexpat1:arm64 (2.7.1-2) ...
+#6 10.58 Setting up libnpth0t64:arm64 (1.8-3) ...
+#6 10.59 Setting up libkeyutils1:arm64 (1.6.3-6) ...
+#6 10.59 Setting up libapparmor1:arm64 (4.1.0-1) ...
+#6 10.59 Setting up libgdbm6t64:arm64 (1.26-1) ...
+#6 10.60 Setting up libgpg-error0:arm64 (1.55-2) ...
+#6 10.60 Setting up libgdbm-compat4t64:arm64 (1.26-1) ...
+#6 10.60 Setting up libcbor0.10:arm64 (0.10.2-2) ...
+#6 10.61 Setting up libbrotli1:arm64 (1.1.0-2+b7) ...
+#6 10.61 Setting up libedit2:arm64 (3.1-20250104-1) ...
+#6 10.62 Setting up libnghttp2-14:arm64 (1.64.0-1.1+b1) ...
+#6 10.62 Setting up libgcrypt20:arm64 (1.11.2-2) ...
+#6 10.63 Setting up libcom-err2:arm64 (1.47.2-3+b3) ...
+#6 10.63 Setting up libkrb5support0:arm64 (1.21.3-5) ...
+#6 10.63 Setting up libsasl2-modules-db:arm64 (2.1.28+dfsg1-9) ...
+#6 10.64 Setting up libunistring5:arm64 (1.3-2) ...
+#6 10.64 Setting up sudo (1.9.17p2-1) ...
+#6 10.66 invoke-rc.d: could not determine current runlevel
+#6 10.66 invoke-rc.d: policy-rc.d denied execution of start.
+#6 10.66 Setting up libk5crypto3:arm64 (1.21.3-5) ...
+#6 10.67 Setting up libsasl2-2:arm64 (2.1.28+dfsg1-9) ...
+#6 10.68 Setting up libnghttp3-9:arm64 (1.8.0-1) ...
+#6 10.68 Setting up libffi8:arm64 (3.4.8-2) ...
+#6 10.68 Setting up perl-modules-5.40 (5.40.1-6) ...
+#6 10.69 Setting up libassuan9:arm64 (3.0.2-2) ...
+#6 10.69 Setting up libtasn1-6:arm64 (4.20.0-2) ...
+#6 10.69 Setting up git-man (1:2.50.1-0.1) ...
+#6 10.70 Setting up libngtcp2-16:arm64 (1.11.0-1) ...
+#6 10.70 Setting up libkrb5-3:arm64 (1.21.3-5) ...
+#6 10.70 Setting up libssh2-1t64:arm64 (1.11.1-1) ...
+#6 10.71 Setting up libfido2-1:arm64 (1.16.0-2) ...
+#6 10.71 Setting up openssl (3.5.2-1) ...
+#6 10.72 Setting up readline-common (8.2-6) ...
+#6 10.72 Setting up libldap2:arm64 (2.6.10+dfsg-1) ...
+#6 10.72 Setting up libksba8:arm64 (1.6.7-2+b1) ...
+#6 10.73 Setting up libidn2-0:arm64 (2.3.8-4) ...
+#6 10.73 Setting up libperl5.40:arm64 (5.40.1-6) ...
+#6 10.73 Setting up ca-certificates (20250419) ...
+#6 10.98 Updating certificates in /etc/ssl/certs...
+#6 11.28 150 added, 0 removed; done.
+#6 11.29 Setting up perl (5.40.1-6) ...
+#6 11.30 Setting up libp11-kit0:arm64 (0.25.5-3) ...
+#6 11.30 Setting up libgssapi-krb5-2:arm64 (1.21.3-5) ...
+#6 11.30 Setting up libreadline8t64:arm64 (8.2-6) ...
+#6 11.31 Setting up gpgconf (2.4.8-3) ...
+#6 11.31 Setting up gpg (2.4.8-3) ...
+#6 11.38 Setting up libgnutls30t64:arm64 (3.8.9-3) ...
+#6 11.38 Setting up openssh-client (1:10.0p1-8) ...
+#6 11.49 Setting up libpsl5t64:arm64 (0.21.2-1.1+b1) ...
+#6 11.50 Setting up liberror-perl (0.17030-1) ...
+#6 11.50 Setting up librtmp1:arm64 (2.4+20151223.gitfa8646d.1-3) ...
+#6 11.51 Setting up libngtcp2-crypto-gnutls8:arm64 (1.11.0-1) ...
+#6 11.51 Setting up wget (1.25.0-2) ...
+#6 11.52 Setting up libcurl4t64:arm64 (8.15.0-1) ...
+#6 11.52 Setting up libcurl3t64-gnutls:arm64 (8.15.0-1) ...
+#6 11.53 Setting up git (1:2.50.1-0.1) ...
+#6 11.53 Setting up curl (8.15.0-1) ...
+#6 11.54 Processing triggers for libc-bin (2.41-12) ...
+#6 11.55 Processing triggers for ca-certificates (20250419) ...
+#6 11.55 Updating certificates in /etc/ssl/certs...
+#6 11.78 0 added, 0 removed; done.
+#6 11.78 Running hooks in /etc/ca-certificates/update.d...
+#6 11.78 done.
+#6 DONE 12.0s
+
+#7 [ 3/16] RUN useradd -ms /bin/bash devuser && echo "devuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+#7 DONE 0.2s
+
+#8 [ 4/16] WORKDIR /home/devuser
+#8 DONE 0.0s
+
+#9 [ 5/16] RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/microsoft.gpg &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null &&     sudo apt-get update && sudo apt-get install -y --no-install-recommends code &&     sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+#9 0.250 Get:1 http://deb.debian.org/debian testing InRelease [146 kB]
+#9 0.286 Get:2 http://deb.debian.org/debian testing-updates InRelease [45.1 kB]
+#9 0.297 Get:3 http://deb.debian.org/debian-security testing-security InRelease [43.4 kB]
+#9 0.316 Get:4 http://deb.debian.org/debian testing/main arm64 Packages [9722 kB]
+#9 0.369 Get:5 https://packages.microsoft.com/repos/code stable InRelease [3590 B]
+#9 0.439 Get:6 https://packages.microsoft.com/repos/code stable/main arm64 Packages [20.5 kB]
+#9 1.320 Fetched 9981 kB in 1s (9121 kB/s)
+#9 1.320 Reading package lists...
+#9 1.687 Reading package lists...
+#9 2.061 Building dependency tree...
+#9 2.173 Reading state information...
+#9 2.369 The following package was automatically installed and is no longer required:
+#9 2.369   gcc-14-base
+#9 2.369 Use 'sudo apt autoremove' to remove it.
+#9 2.370 The following additional packages will be installed:
+#9 2.370   adwaita-icon-theme at-spi2-common dbus dbus-bin dbus-daemon
+#9 2.370   dbus-session-bus-common dbus-system-bus-common dbus-user-session
+#9 2.370   dconf-gsettings-backend dconf-service fontconfig fontconfig-config
+#9 2.370   fonts-dejavu-core fonts-dejavu-mono gcc-15-base gtk-update-icon-cache
+#9 2.370   hicolor-icon-theme libasound2-data libasound2t64 libatk-bridge2.0-0t64
+#9 2.370   libatk1.0-0t64 libatomic1 libatspi2.0-0t64 libavahi-client3
+#9 2.370   libavahi-common-data libavahi-common3 libcairo-gobject2 libcairo2
+#9 2.370   libcloudproviders0 libcolord2 libcups2t64 libdatrie1 libdbus-1-3 libdconf1
+#9 2.370   libdeflate0 libdrm-amdgpu1 libdrm-common libdrm2 libelf1t64 libepoxy0
+#9 2.370   libfontconfig1 libfreetype6 libfribidi0 libgbm1 libgcc-s1
+#9 2.370   libgdk-pixbuf-2.0-0 libgdk-pixbuf2.0-common libglib2.0-0t64 libgraphite2-3
+#9 2.370   libgtk-3-0t64 libgtk-3-common libharfbuzz0b libjbig0 libjpeg62-turbo
+#9 2.370   liblcms2-2 liblerc4 libllvm19 libncursesw6 libnspr4 libnss3 libpam-systemd
+#9 2.370   libpango-1.0-0 libpangocairo-1.0-0 libpangoft2-1.0-0 libpixman-1-0
+#9 2.370   libpng16-16t64 libproc2-0 libsensors-config libsensors5 libsharpyuv0
+#9 2.370   libstdc++6 libsystemd-shared libthai-data libthai0 libtiff6
+#9 2.370   libwayland-client0 libwayland-cursor0 libwayland-egl1 libwayland-server0
+#9 2.370   libwebp7 libx11-6 libx11-data libx11-xcb1 libxau6 libxcb-dri3-0
+#9 2.370   libxcb-present0 libxcb-randr0 libxcb-render0 libxcb-shm0 libxcb-sync1
+#9 2.370   libxcb-xfixes0 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxdmcp6
+#9 2.370   libxext6 libxfixes3 libxi6 libxinerama1 libxkbcommon0 libxkbfile1 libxml2-16
+#9 2.370   libxrandr2 libxrender1 libxshmfence1 libz3-4 mesa-libgallium procps
+#9 2.370   shared-mime-info systemd systemd-sysv xdg-utils xkb-data
+#9 2.371 Suggested packages:
+#9 2.371   adwaita-icon-theme-legacy alsa-utils libasound2-plugins colord cups-common
+#9 2.371   low-memory-monitor gvfs liblcms2-utils libcryptsetup12 libtss2-rc0t64
+#9 2.371   lm-sensors libarchive13t64 libbpf1 libdw1t64 libip4tc2 libpwquality1
+#9 2.371   libqrencode4 systemd-container systemd-homed systemd-userdbd systemd-boot
+#9 2.371   systemd-resolved systemd-repart libtss2-tcti-device0 polkitd
+#9 2.371 Recommended packages:
+#9 2.371   librsvg2-common libvulkan1 alsa-ucm-conf alsa-topology-conf at-spi2-core
+#9 2.371   libgdk-pixbuf2.0-bin libglib2.0-data xdg-user-dirs libgtk-3-bin libgpm2
+#9 2.371   libkmod2 psmisc linux-sysctl-defaults systemd-timesyncd | time-daemon
+#9 2.371   systemd-cryptsetup libnss-systemd libfile-mimeinfo-perl libnet-dbus-perl
+#9 2.371   libx11-protocol-perl x11-utils x11-xserver-utils
+#9 2.730 The following NEW packages will be installed:
+#9 2.730   adwaita-icon-theme at-spi2-common code dbus dbus-bin dbus-daemon
+#9 2.730   dbus-session-bus-common dbus-system-bus-common dbus-user-session
+#9 2.730   dconf-gsettings-backend dconf-service fontconfig fontconfig-config
+#9 2.730   fonts-dejavu-core fonts-dejavu-mono gcc-15-base gtk-update-icon-cache
+#9 2.730   hicolor-icon-theme libasound2-data libasound2t64 libatk-bridge2.0-0t64
+#9 2.730   libatk1.0-0t64 libatomic1 libatspi2.0-0t64 libavahi-client3
+#9 2.730   libavahi-common-data libavahi-common3 libcairo-gobject2 libcairo2
+#9 2.730   libcloudproviders0 libcolord2 libcups2t64 libdatrie1 libdbus-1-3 libdconf1
+#9 2.730   libdeflate0 libdrm-amdgpu1 libdrm-common libdrm2 libelf1t64 libepoxy0
+#9 2.730   libfontconfig1 libfreetype6 libfribidi0 libgbm1 libgdk-pixbuf-2.0-0
+#9 2.730   libgdk-pixbuf2.0-common libglib2.0-0t64 libgraphite2-3 libgtk-3-0t64
+#9 2.730   libgtk-3-common libharfbuzz0b libjbig0 libjpeg62-turbo liblcms2-2 liblerc4
+#9 2.730   libllvm19 libncursesw6 libnspr4 libnss3 libpam-systemd libpango-1.0-0
+#9 2.730   libpangocairo-1.0-0 libpangoft2-1.0-0 libpixman-1-0 libpng16-16t64
+#9 2.731   libproc2-0 libsensors-config libsensors5 libsharpyuv0 libsystemd-shared
+#9 2.731   libthai-data libthai0 libtiff6 libwayland-client0 libwayland-cursor0
+#9 2.731   libwayland-egl1 libwayland-server0 libwebp7 libx11-6 libx11-data libx11-xcb1
+#9 2.731   libxau6 libxcb-dri3-0 libxcb-present0 libxcb-randr0 libxcb-render0
+#9 2.731   libxcb-shm0 libxcb-sync1 libxcb-xfixes0 libxcb1 libxcomposite1 libxcursor1
+#9 2.731   libxdamage1 libxdmcp6 libxext6 libxfixes3 libxi6 libxinerama1 libxkbcommon0
+#9 2.731   libxkbfile1 libxml2-16 libxrandr2 libxrender1 libxshmfence1 libz3-4
+#9 2.731   mesa-libgallium procps shared-mime-info systemd systemd-sysv xdg-utils
+#9 2.731   xkb-data
+#9 2.731 The following packages will be upgraded:
+#9 2.732   libgcc-s1 libstdc++6
+#9 2.779 2 upgraded, 113 newly installed, 0 to remove and 1 not upgraded.
+#9 2.779 Need to get 176 MB of archives.
+#9 2.779 After this operation, 779 MB of additional disk space will be used.
+#9 2.779 Get:1 http://deb.debian.org/debian testing/main arm64 libsystemd-shared arm64 258~rc3-1 [2000 kB]
+#9 2.840 Get:2 https://packages.microsoft.com/repos/code stable/main arm64 code arm64 1.103.2-1755710123 [104 MB]
+#9 2.887 Get:3 http://deb.debian.org/debian testing/main arm64 systemd arm64 258~rc3-1 [3034 kB]
+#9 2.971 Get:4 http://deb.debian.org/debian testing/main arm64 systemd-sysv arm64 258~rc3-1 [62.6 kB]
+#9 2.971 Get:5 http://deb.debian.org/debian testing/main arm64 libdbus-1-3 arm64 1.16.2-2 [169 kB]
+#9 2.972 Get:6 http://deb.debian.org/debian testing/main arm64 dbus-bin arm64 1.16.2-2 [78.8 kB]
+#9 2.972 Get:7 http://deb.debian.org/debian testing/main arm64 dbus-session-bus-common all 1.16.2-2 [52.3 kB]
+#9 2.972 Get:8 http://deb.debian.org/debian testing/main arm64 dbus-daemon arm64 1.16.2-2 [152 kB]
+#9 2.972 Get:9 http://deb.debian.org/debian testing/main arm64 dbus-system-bus-common all 1.16.2-2 [53.5 kB]
+#9 2.973 Get:10 http://deb.debian.org/debian testing/main arm64 dbus arm64 1.16.2-2 [70.7 kB]
+#9 2.975 Get:11 http://deb.debian.org/debian testing/main arm64 gcc-15-base arm64 15.2.0-1 [52.0 kB]
+#9 2.976 Get:12 http://deb.debian.org/debian testing/main arm64 libgcc-s1 arm64 15.2.0-1 [53.4 kB]
+#9 2.980 Get:13 http://deb.debian.org/debian testing/main arm64 libstdc++6 arm64 15.2.0-1 [647 kB]
+#9 2.997 Get:14 http://deb.debian.org/debian testing/main arm64 libncursesw6 arm64 6.5+20250216-2 [124 kB]
+#9 2.999 Get:15 http://deb.debian.org/debian testing/main arm64 libproc2-0 arm64 2:4.0.4-9 [62.8 kB]
+#9 3.000 Get:16 http://deb.debian.org/debian testing/main arm64 procps arm64 2:4.0.4-9 [871 kB]
+#9 3.021 Get:17 http://deb.debian.org/debian testing/main arm64 libpam-systemd arm64 258~rc3-1 [292 kB]
+#9 3.057 Get:18 http://deb.debian.org/debian testing/main arm64 libgdk-pixbuf2.0-common all 2.42.12+dfsg-5 [312 kB]
+#9 3.058 Get:19 http://deb.debian.org/debian testing/main arm64 libatomic1 arm64 15.2.0-1 [9960 B]
+#9 3.058 Get:20 http://deb.debian.org/debian testing/main arm64 libglib2.0-0t64 arm64 2.84.4-3 [1428 kB]
+#9 3.071 Get:21 http://deb.debian.org/debian testing/main arm64 libxml2-16 arm64 2.14.5+dfsg-0.2 [582 kB]
+#9 3.085 Get:22 http://deb.debian.org/debian testing/main arm64 shared-mime-info arm64 2.4-5+b3 [755 kB]
+#9 3.105 Get:23 http://deb.debian.org/debian testing/main arm64 libjpeg62-turbo arm64 1:2.1.5-4 [173 kB]
+#9 3.107 Get:24 http://deb.debian.org/debian testing/main arm64 libpng16-16t64 arm64 1.6.50-1 [275 kB]
+#9 3.114 Get:25 http://deb.debian.org/debian testing/main arm64 libdeflate0 arm64 1.23-2 [42.4 kB]
+#9 3.116 Get:26 http://deb.debian.org/debian testing/main arm64 libjbig0 arm64 2.1-6.1+b2 [30.4 kB]
+#9 3.117 Get:27 http://deb.debian.org/debian testing/main arm64 liblerc4 arm64 4.0.0+ds-5 [146 kB]
+#9 3.121 Get:28 http://deb.debian.org/debian testing/main arm64 libsharpyuv0 arm64 1.5.0-0.1 [114 kB]
+#9 3.122 Get:29 http://deb.debian.org/debian testing/main arm64 libwebp7 arm64 1.5.0-0.1 [271 kB]
+#9 3.134 Get:30 http://deb.debian.org/debian testing/main arm64 libtiff6 arm64 4.7.0-4 [325 kB]
+#9 3.137 Get:31 http://deb.debian.org/debian testing/main arm64 libgdk-pixbuf-2.0-0 arm64 2.42.12+dfsg-5 [131 kB]
+#9 3.140 Get:32 http://deb.debian.org/debian testing/main arm64 gtk-update-icon-cache arm64 4.18.6+ds-2 [52.3 kB]
+#9 3.142 Get:33 http://deb.debian.org/debian testing/main arm64 hicolor-icon-theme all 0.18-2 [11.8 kB]
+#9 3.142 Get:34 http://deb.debian.org/debian testing/main arm64 adwaita-icon-theme all 48.1-1 [504 kB]
+#9 3.154 Get:35 http://deb.debian.org/debian testing/main arm64 at-spi2-common all 2.57.1-1 [173 kB]
+#9 3.158 Get:36 http://deb.debian.org/debian testing/main arm64 libasound2-data all 1.2.14-1 [21.1 kB]
+#9 3.159 Get:37 http://deb.debian.org/debian testing/main arm64 libasound2t64 arm64 1.2.14-1 [342 kB]
+#9 3.167 Get:38 http://deb.debian.org/debian testing/main arm64 libatk1.0-0t64 arm64 2.57.1-1 [50.4 kB]
+#9 3.169 Get:39 http://deb.debian.org/debian testing/main arm64 libxau6 arm64 1:1.0.11-1 [20.6 kB]
+#9 3.169 Get:40 http://deb.debian.org/debian testing/main arm64 libxdmcp6 arm64 1:1.1.5-1 [27.8 kB]
+#9 3.169 Get:41 http://deb.debian.org/debian testing/main arm64 libxcb1 arm64 1.17.0-2+b1 [143 kB]
+#9 3.173 Get:42 http://deb.debian.org/debian testing/main arm64 libx11-data all 2:1.8.12-1 [343 kB]
+#9 3.181 Get:43 http://deb.debian.org/debian testing/main arm64 libx11-6 arm64 2:1.8.12-1 [795 kB]
+#9 3.203 Get:44 http://deb.debian.org/debian testing/main arm64 libxext6 arm64 2:1.3.4-1+b3 [49.2 kB]
+#9 3.204 Get:45 http://deb.debian.org/debian testing/main arm64 libxi6 arm64 2:1.8.2-1 [77.8 kB]
+#9 3.205 Get:46 http://deb.debian.org/debian testing/main arm64 libatspi2.0-0t64 arm64 2.57.1-1 [77.4 kB]
+#9 3.206 Get:47 http://deb.debian.org/debian testing/main arm64 libatk-bridge2.0-0t64 arm64 2.57.1-1 [65.7 kB]
+#9 3.208 Get:48 http://deb.debian.org/debian testing/main arm64 libfreetype6 arm64 2.13.3+dfsg-1 [422 kB]
+#9 3.226 Get:49 http://deb.debian.org/debian testing/main arm64 fonts-dejavu-mono all 2.37-8 [489 kB]
+#9 3.231 Get:50 http://deb.debian.org/debian testing/main arm64 fonts-dejavu-core all 2.37-8 [840 kB]
+#9 3.253 Get:51 http://deb.debian.org/debian testing/main arm64 fontconfig-config arm64 2.15.0-2.3 [318 kB]
+#9 3.260 Get:52 http://deb.debian.org/debian testing/main arm64 libfontconfig1 arm64 2.15.0-2.3 [387 kB]
+#9 3.269 Get:53 http://deb.debian.org/debian testing/main arm64 libpixman-1-0 arm64 0.44.0-3 [168 kB]
+#9 3.273 Get:54 http://deb.debian.org/debian testing/main arm64 libxcb-render0 arm64 1.17.0-2+b1 [115 kB]
+#9 3.278 Get:55 http://deb.debian.org/debian testing/main arm64 libxcb-shm0 arm64 1.17.0-2+b1 [105 kB]
+#9 3.279 Get:56 http://deb.debian.org/debian testing/main arm64 libxrender1 arm64 1:0.9.12-1 [27.0 kB]
+#9 3.279 Get:57 http://deb.debian.org/debian testing/main arm64 libcairo2 arm64 1.18.4-1+b1 [483 kB]
+#9 3.293 Get:58 http://deb.debian.org/debian testing/main arm64 libdrm-common all 2.4.125-2 [8576 B]
+#9 3.293 Get:59 http://deb.debian.org/debian testing/main arm64 libdrm2 arm64 2.4.125-2 [38.4 kB]
+#9 3.293 Get:60 http://deb.debian.org/debian testing/main arm64 libwayland-server0 arm64 1.23.1-3 [33.7 kB]
+#9 3.294 Get:61 http://deb.debian.org/debian testing/main arm64 libdrm-amdgpu1 arm64 2.4.125-2 [22.3 kB]
+#9 3.294 Get:62 http://deb.debian.org/debian testing/main arm64 libelf1t64 arm64 0.192-4 [189 kB]
+#9 3.303 Get:63 http://deb.debian.org/debian testing/main arm64 libz3-4 arm64 4.13.3-1 [7507 kB]
+#9 3.485 Get:64 http://deb.debian.org/debian testing/main arm64 libllvm19 arm64 1:19.1.7-3+b2 [23.3 MB]
+#9 4.152 Get:65 http://deb.debian.org/debian testing/main arm64 libsensors-config all 1:3.6.2-2 [16.2 kB]
+#9 4.152 Get:66 http://deb.debian.org/debian testing/main arm64 libsensors5 arm64 1:3.6.2-2 [36.4 kB]
+#9 4.153 Get:67 http://deb.debian.org/debian testing/main arm64 libx11-xcb1 arm64 2:1.8.12-1 [247 kB]
+#9 4.154 Get:68 http://deb.debian.org/debian testing/main arm64 libxcb-dri3-0 arm64 1.17.0-2+b1 [107 kB]
+#9 4.154 Get:69 http://deb.debian.org/debian testing/main arm64 libxcb-present0 arm64 1.17.0-2+b1 [106 kB]
+#9 4.155 Get:70 http://deb.debian.org/debian testing/main arm64 libxcb-randr0 arm64 1.17.0-2+b1 [117 kB]
+#9 4.158 Get:71 http://deb.debian.org/debian testing/main arm64 libxcb-sync1 arm64 1.17.0-2+b1 [109 kB]
+#9 4.161 Get:72 http://deb.debian.org/debian testing/main arm64 libxcb-xfixes0 arm64 1.17.0-2+b1 [110 kB]
+#9 4.163 Get:73 http://deb.debian.org/debian testing/main arm64 libxshmfence1 arm64 1.3.3-1 [11.1 kB]
+#9 4.165 Get:74 http://deb.debian.org/debian testing/main arm64 mesa-libgallium arm64 25.0.7-2 [8032 kB]
+#9 4.394 Get:75 http://deb.debian.org/debian testing/main arm64 libgbm1 arm64 25.0.7-2 [43.9 kB]
+#9 4.395 Get:76 http://deb.debian.org/debian testing/main arm64 libcairo-gobject2 arm64 1.18.4-1+b1 [130 kB]
+#9 4.399 Get:77 http://deb.debian.org/debian testing/main arm64 libcloudproviders0 arm64 0.3.6-2 [27.4 kB]
+#9 4.399 Get:78 http://deb.debian.org/debian testing/main arm64 liblcms2-2 arm64 2.16-2 [151 kB]
+#9 4.403 Get:79 http://deb.debian.org/debian testing/main arm64 libcolord2 arm64 1.4.7-3 [130 kB]
+#9 4.407 Get:80 http://deb.debian.org/debian testing/main arm64 libavahi-common-data arm64 0.8-16 [112 kB]
+#9 4.410 Get:81 http://deb.debian.org/debian testing/main arm64 libavahi-common3 arm64 0.8-16 [43.3 kB]
+#9 4.411 Get:82 http://deb.debian.org/debian testing/main arm64 libavahi-client3 arm64 0.8-16 [46.7 kB]
+#9 4.413 Get:83 http://deb.debian.org/debian testing/main arm64 libcups2t64 arm64 2.4.10-3 [235 kB]
+#9 4.421 Get:84 http://deb.debian.org/debian testing/main arm64 libepoxy0 arm64 1.5.10-2 [200 kB]
+#9 4.428 Get:85 http://deb.debian.org/debian testing/main arm64 libfribidi0 arm64 1.0.16-1 [26.5 kB]
+#9 4.428 Get:86 http://deb.debian.org/debian testing/main arm64 libgraphite2-3 arm64 1.3.14-3 [70.3 kB]
+#9 4.430 Get:87 http://deb.debian.org/debian testing/main arm64 libharfbuzz0b arm64 10.2.0-1+b1 [442 kB]
+#9 4.443 Get:88 http://deb.debian.org/debian testing/main arm64 fontconfig arm64 2.15.0-2.3 [463 kB]
+#9 4.456 Get:89 http://deb.debian.org/debian testing/main arm64 libthai-data all 0.1.29-2 [168 kB]
+#9 4.464 Get:90 http://deb.debian.org/debian testing/main arm64 libdatrie1 arm64 0.2.13-4 [37.4 kB]
+#9 4.465 Get:91 http://deb.debian.org/debian testing/main arm64 libthai0 arm64 0.1.29-2+b1 [48.4 kB]
+#9 4.466 Get:92 http://deb.debian.org/debian testing/main arm64 libpango-1.0-0 arm64 1.56.3-1 [213 kB]
+#9 4.469 Get:93 http://deb.debian.org/debian testing/main arm64 libpangoft2-1.0-0 arm64 1.56.3-1 [52.9 kB]
+#9 4.471 Get:94 http://deb.debian.org/debian testing/main arm64 libpangocairo-1.0-0 arm64 1.56.3-1 [33.7 kB]
+#9 4.471 Get:95 http://deb.debian.org/debian testing/main arm64 libwayland-client0 arm64 1.23.1-3 [26.1 kB]
+#9 4.473 Get:96 http://deb.debian.org/debian testing/main arm64 libwayland-cursor0 arm64 1.23.1-3 [11.7 kB]
+#9 4.473 Get:97 http://deb.debian.org/debian testing/main arm64 libwayland-egl1 arm64 1.23.1-3 [5952 B]
+#9 4.474 Get:98 http://deb.debian.org/debian testing/main arm64 libxcomposite1 arm64 1:0.4.6-1 [16.4 kB]
+#9 4.480 Get:99 http://deb.debian.org/debian testing/main arm64 libxfixes3 arm64 1:6.0.0-2+b4 [20.5 kB]
+#9 4.481 Get:100 http://deb.debian.org/debian testing/main arm64 libxcursor1 arm64 1:1.2.3-1 [39.3 kB]
+#9 4.485 Get:101 http://deb.debian.org/debian testing/main arm64 libxdamage1 arm64 1:1.1.6-1+b2 [15.6 kB]
+#9 4.487 Get:102 http://deb.debian.org/debian testing/main arm64 libxinerama1 arm64 2:1.1.4-3+b4 [16.0 kB]
+#9 4.489 Get:103 http://deb.debian.org/debian testing/main arm64 xkb-data all 2.42-1 [790 kB]
+#9 4.507 Get:104 http://deb.debian.org/debian testing/main arm64 libxkbcommon0 arm64 1.7.0-2.1 [106 kB]
+#9 4.510 Get:105 http://deb.debian.org/debian testing/main arm64 libxrandr2 arm64 2:1.5.4-1+b3 [35.9 kB]
+#9 4.511 Get:106 http://deb.debian.org/debian testing/main arm64 dbus-user-session arm64 1.16.2-2 [52.1 kB]
+#9 4.512 Get:107 http://deb.debian.org/debian testing/main arm64 libdconf1 arm64 0.40.0-5 [40.4 kB]
+#9 4.513 Get:108 http://deb.debian.org/debian testing/main arm64 dconf-service arm64 0.40.0-5 [30.9 kB]
+#9 4.514 Get:109 http://deb.debian.org/debian testing/main arm64 dconf-gsettings-backend arm64 0.40.0-5 [27.3 kB]
+#9 4.514 Get:110 http://deb.debian.org/debian testing/main arm64 libgtk-3-common all 3.24.50-2 [4914 kB]
+#9 4.649 Get:111 http://deb.debian.org/debian testing/main arm64 libgtk-3-0t64 arm64 3.24.50-2 [2699 kB]
+#9 4.729 Get:112 http://deb.debian.org/debian testing/main arm64 libnspr4 arm64 2:4.36-1 [102 kB]
+#9 4.735 Get:113 http://deb.debian.org/debian testing/main arm64 libnss3 arm64 2:3.114-1 [1299 kB]
+#9 4.768 Get:114 http://deb.debian.org/debian testing/main arm64 libxkbfile1 arm64 1:1.1.0-1+b4 [72.4 kB]
+#9 4.772 Get:115 http://deb.debian.org/debian testing/main arm64 xdg-utils all 1.2.1-2 [75.8 kB]
+#9 8.853 debconf: unable to initialize frontend: Dialog
+#9 8.853 debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+#9 8.853 debconf: falling back to frontend: Readline
+#9 8.856 debconf: unable to initialize frontend: Readline
+#9 8.856 debconf: (This frontend requires a controlling tty.)
+#9 8.856 debconf: falling back to frontend: Teletype
+#9 8.858 debconf: unable to initialize frontend: Teletype
+#9 8.858 debconf: (This frontend requires a controlling tty.)
+#9 8.858 debconf: falling back to frontend: Noninteractive
+#9 10.26 Preconfiguring packages ...
+#9 10.30 Fetched 176 MB in 6s (29.3 MB/s)
+#9 10.31 Selecting previously unselected package libsystemd-shared:arm64.
+#9 10.31 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 9613 files and directories currently installed.)
+#9 10.31 Preparing to unpack .../libsystemd-shared_258~rc3-1_arm64.deb ...
+#9 10.31 Unpacking libsystemd-shared:arm64 (258~rc3-1) ...
+#9 10.43 Setting up libsystemd-shared:arm64 (258~rc3-1) ...
+#9 10.44 Selecting previously unselected package systemd.
+#9 10.44 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 9621 files and directories currently installed.)
+#9 10.44 Preparing to unpack .../systemd_258~rc3-1_arm64.deb ...
+#9 10.45 Unpacking systemd (258~rc3-1) ...
+#9 10.62 Setting up systemd (258~rc3-1) ...
+#9 10.63 Created symlink '/etc/systemd/system/getty.target.wants/getty@tty1.service' → '/usr/lib/systemd/system/getty@.service'.
+#9 10.64 Created symlink '/etc/systemd/system/multi-user.target.wants/remote-fs.target' → '/usr/lib/systemd/system/remote-fs.target'.
+#9 10.64 Created symlink '/etc/systemd/system/sysinit.target.wants/systemd-pstore.service' → '/usr/lib/systemd/system/systemd-pstore.service'.
+#9 10.64 Initializing machine ID from random generator.
+#9 10.65 Creating group 'systemd-journal' with GID 999.
+#9 10.65 Creating group 'systemd-network' with GID 998.
+#9 10.65 Creating user 'systemd-network' (systemd Network Management) with UID 998 and GID 998.
+#9 10.68 Selecting previously unselected package systemd-sysv.
+#9 10.68 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 10613 files and directories currently installed.)
+#9 10.68 Preparing to unpack .../0-systemd-sysv_258~rc3-1_arm64.deb ...
+#9 10.68 Unpacking systemd-sysv (258~rc3-1) ...
+#9 10.70 Selecting previously unselected package libdbus-1-3:arm64.
+#9 10.70 Preparing to unpack .../1-libdbus-1-3_1.16.2-2_arm64.deb ...
+#9 10.70 Unpacking libdbus-1-3:arm64 (1.16.2-2) ...
+#9 10.72 Selecting previously unselected package dbus-bin.
+#9 10.72 Preparing to unpack .../2-dbus-bin_1.16.2-2_arm64.deb ...
+#9 10.72 Unpacking dbus-bin (1.16.2-2) ...
+#9 10.73 Selecting previously unselected package dbus-session-bus-common.
+#9 10.73 Preparing to unpack .../3-dbus-session-bus-common_1.16.2-2_all.deb ...
+#9 10.74 Unpacking dbus-session-bus-common (1.16.2-2) ...
+#9 10.75 Selecting previously unselected package dbus-daemon.
+#9 10.75 Preparing to unpack .../4-dbus-daemon_1.16.2-2_arm64.deb ...
+#9 10.75 Unpacking dbus-daemon (1.16.2-2) ...
+#9 10.77 Selecting previously unselected package dbus-system-bus-common.
+#9 10.77 Preparing to unpack .../5-dbus-system-bus-common_1.16.2-2_all.deb ...
+#9 10.77 Unpacking dbus-system-bus-common (1.16.2-2) ...
+#9 10.78 Selecting previously unselected package dbus.
+#9 10.78 Preparing to unpack .../6-dbus_1.16.2-2_arm64.deb ...
+#9 10.79 Unpacking dbus (1.16.2-2) ...
+#9 10.80 Selecting previously unselected package gcc-15-base:arm64.
+#9 10.80 Preparing to unpack .../7-gcc-15-base_15.2.0-1_arm64.deb ...
+#9 10.80 Unpacking gcc-15-base:arm64 (15.2.0-1) ...
+#9 10.81 Setting up gcc-15-base:arm64 (15.2.0-1) ...
+#9 10.83 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 10707 files and directories currently installed.)
+#9 10.83 Preparing to unpack .../libgcc-s1_15.2.0-1_arm64.deb ...
+#9 10.84 Unpacking libgcc-s1:arm64 (15.2.0-1) over (14.2.0-19) ...
+#9 10.85 Setting up libgcc-s1:arm64 (15.2.0-1) ...
+#9 10.87 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 10707 files and directories currently installed.)
+#9 10.87 Preparing to unpack .../libstdc++6_15.2.0-1_arm64.deb ...
+#9 10.88 Unpacking libstdc++6:arm64 (15.2.0-1) over (14.2.0-19) ...
+#9 10.93 Setting up libstdc++6:arm64 (15.2.0-1) ...
+#9 10.95 Selecting previously unselected package libncursesw6:arm64.
+#9 10.95 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 10707 files and directories currently installed.)
+#9 10.95 Preparing to unpack .../000-libncursesw6_6.5+20250216-2_arm64.deb ...
+#9 10.95 Unpacking libncursesw6:arm64 (6.5+20250216-2) ...
+#9 10.96 Selecting previously unselected package libproc2-0:arm64.
+#9 10.97 Preparing to unpack .../001-libproc2-0_2%3a4.0.4-9_arm64.deb ...
+#9 10.97 Unpacking libproc2-0:arm64 (2:4.0.4-9) ...
+#9 10.98 Selecting previously unselected package procps.
+#9 10.98 Preparing to unpack .../002-procps_2%3a4.0.4-9_arm64.deb ...
+#9 10.99 Unpacking procps (2:4.0.4-9) ...
+#9 11.04 Selecting previously unselected package libpam-systemd:arm64.
+#9 11.04 Preparing to unpack .../003-libpam-systemd_258~rc3-1_arm64.deb ...
+#9 11.04 Unpacking libpam-systemd:arm64 (258~rc3-1) ...
+#9 11.07 Selecting previously unselected package libgdk-pixbuf2.0-common.
+#9 11.07 Preparing to unpack .../004-libgdk-pixbuf2.0-common_2.42.12+dfsg-5_all.deb ...
+#9 11.07 Unpacking libgdk-pixbuf2.0-common (2.42.12+dfsg-5) ...
+#9 11.10 Selecting previously unselected package libatomic1:arm64.
+#9 11.10 Preparing to unpack .../005-libatomic1_15.2.0-1_arm64.deb ...
+#9 11.10 Unpacking libatomic1:arm64 (15.2.0-1) ...
+#9 11.11 Selecting previously unselected package libglib2.0-0t64:arm64.
+#9 11.11 Preparing to unpack .../006-libglib2.0-0t64_2.84.4-3_arm64.deb ...
+#9 11.12 Unpacking libglib2.0-0t64:arm64 (2.84.4-3) ...
+#9 11.19 Selecting previously unselected package libxml2-16:arm64.
+#9 11.19 Preparing to unpack .../007-libxml2-16_2.14.5+dfsg-0.2_arm64.deb ...
+#9 11.19 Unpacking libxml2-16:arm64 (2.14.5+dfsg-0.2) ...
+#9 11.23 Selecting previously unselected package shared-mime-info.
+#9 11.23 Preparing to unpack .../008-shared-mime-info_2.4-5+b3_arm64.deb ...
+#9 11.23 Unpacking shared-mime-info (2.4-5+b3) ...
+#9 11.28 Selecting previously unselected package libjpeg62-turbo:arm64.
+#9 11.28 Preparing to unpack .../009-libjpeg62-turbo_1%3a2.1.5-4_arm64.deb ...
+#9 11.28 Unpacking libjpeg62-turbo:arm64 (1:2.1.5-4) ...
+#9 11.30 Selecting previously unselected package libpng16-16t64:arm64.
+#9 11.30 Preparing to unpack .../010-libpng16-16t64_1.6.50-1_arm64.deb ...
+#9 11.30 Unpacking libpng16-16t64:arm64 (1.6.50-1) ...
+#9 11.32 Selecting previously unselected package libdeflate0:arm64.
+#9 11.32 Preparing to unpack .../011-libdeflate0_1.23-2_arm64.deb ...
+#9 11.32 Unpacking libdeflate0:arm64 (1.23-2) ...
+#9 11.34 Selecting previously unselected package libjbig0:arm64.
+#9 11.34 Preparing to unpack .../012-libjbig0_2.1-6.1+b2_arm64.deb ...
+#9 11.34 Unpacking libjbig0:arm64 (2.1-6.1+b2) ...
+#9 11.35 Selecting previously unselected package liblerc4:arm64.
+#9 11.35 Preparing to unpack .../013-liblerc4_4.0.0+ds-5_arm64.deb ...
+#9 11.35 Unpacking liblerc4:arm64 (4.0.0+ds-5) ...
+#9 11.37 Selecting previously unselected package libsharpyuv0:arm64.
+#9 11.37 Preparing to unpack .../014-libsharpyuv0_1.5.0-0.1_arm64.deb ...
+#9 11.37 Unpacking libsharpyuv0:arm64 (1.5.0-0.1) ...
+#9 11.39 Selecting previously unselected package libwebp7:arm64.
+#9 11.39 Preparing to unpack .../015-libwebp7_1.5.0-0.1_arm64.deb ...
+#9 11.39 Unpacking libwebp7:arm64 (1.5.0-0.1) ...
+#9 11.41 Selecting previously unselected package libtiff6:arm64.
+#9 11.41 Preparing to unpack .../016-libtiff6_4.7.0-4_arm64.deb ...
+#9 11.41 Unpacking libtiff6:arm64 (4.7.0-4) ...
+#9 11.43 Selecting previously unselected package libgdk-pixbuf-2.0-0:arm64.
+#9 11.43 Preparing to unpack .../017-libgdk-pixbuf-2.0-0_2.42.12+dfsg-5_arm64.deb ...
+#9 11.43 Unpacking libgdk-pixbuf-2.0-0:arm64 (2.42.12+dfsg-5) ...
+#9 11.45 Selecting previously unselected package gtk-update-icon-cache.
+#9 11.45 Preparing to unpack .../018-gtk-update-icon-cache_4.18.6+ds-2_arm64.deb ...
+#9 11.46 No diversion 'diversion of /usr/sbin/update-icon-caches to /usr/sbin/update-icon-caches.gtk2 by libgtk-3-bin', none removed.
+#9 11.46 No diversion 'diversion of /usr/share/man/man8/update-icon-caches.8.gz to /usr/share/man/man8/update-icon-caches.gtk2.8.gz by libgtk-3-bin', none removed.
+#9 11.46 Unpacking gtk-update-icon-cache (4.18.6+ds-2) ...
+#9 11.47 Selecting previously unselected package hicolor-icon-theme.
+#9 11.47 Preparing to unpack .../019-hicolor-icon-theme_0.18-2_all.deb ...
+#9 11.48 Unpacking hicolor-icon-theme (0.18-2) ...
+#9 11.54 Selecting previously unselected package adwaita-icon-theme.
+#9 11.54 Preparing to unpack .../020-adwaita-icon-theme_48.1-1_all.deb ...
+#9 11.54 Unpacking adwaita-icon-theme (48.1-1) ...
+#9 11.62 Selecting previously unselected package at-spi2-common.
+#9 11.62 Preparing to unpack .../021-at-spi2-common_2.57.1-1_all.deb ...
+#9 11.63 Unpacking at-spi2-common (2.57.1-1) ...
+#9 11.65 Selecting previously unselected package libasound2-data.
+#9 11.65 Preparing to unpack .../022-libasound2-data_1.2.14-1_all.deb ...
+#9 11.65 Unpacking libasound2-data (1.2.14-1) ...
+#9 11.67 Selecting previously unselected package libasound2t64:arm64.
+#9 11.67 Preparing to unpack .../023-libasound2t64_1.2.14-1_arm64.deb ...
+#9 11.67 Unpacking libasound2t64:arm64 (1.2.14-1) ...
+#9 11.70 Selecting previously unselected package libatk1.0-0t64:arm64.
+#9 11.70 Preparing to unpack .../024-libatk1.0-0t64_2.57.1-1_arm64.deb ...
+#9 11.70 Unpacking libatk1.0-0t64:arm64 (2.57.1-1) ...
+#9 11.72 Selecting previously unselected package libxau6:arm64.
+#9 11.72 Preparing to unpack .../025-libxau6_1%3a1.0.11-1_arm64.deb ...
+#9 11.72 Unpacking libxau6:arm64 (1:1.0.11-1) ...
+#9 11.73 Selecting previously unselected package libxdmcp6:arm64.
+#9 11.73 Preparing to unpack .../026-libxdmcp6_1%3a1.1.5-1_arm64.deb ...
+#9 11.74 Unpacking libxdmcp6:arm64 (1:1.1.5-1) ...
+#9 11.77 Selecting previously unselected package libxcb1:arm64.
+#9 11.77 Preparing to unpack .../027-libxcb1_1.17.0-2+b1_arm64.deb ...
+#9 11.77 Unpacking libxcb1:arm64 (1.17.0-2+b1) ...
+#9 11.78 Selecting previously unselected package libx11-data.
+#9 11.78 Preparing to unpack .../028-libx11-data_2%3a1.8.12-1_all.deb ...
+#9 11.79 Unpacking libx11-data (2:1.8.12-1) ...
+#9 11.81 Selecting previously unselected package libx11-6:arm64.
+#9 11.81 Preparing to unpack .../029-libx11-6_2%3a1.8.12-1_arm64.deb ...
+#9 11.81 Unpacking libx11-6:arm64 (2:1.8.12-1) ...
+#9 11.85 Selecting previously unselected package libxext6:arm64.
+#9 11.85 Preparing to unpack .../030-libxext6_2%3a1.3.4-1+b3_arm64.deb ...
+#9 11.86 Unpacking libxext6:arm64 (2:1.3.4-1+b3) ...
+#9 11.87 Selecting previously unselected package libxi6:arm64.
+#9 11.87 Preparing to unpack .../031-libxi6_2%3a1.8.2-1_arm64.deb ...
+#9 11.87 Unpacking libxi6:arm64 (2:1.8.2-1) ...
+#9 11.88 Selecting previously unselected package libatspi2.0-0t64:arm64.
+#9 11.88 Preparing to unpack .../032-libatspi2.0-0t64_2.57.1-1_arm64.deb ...
+#9 11.89 Unpacking libatspi2.0-0t64:arm64 (2.57.1-1) ...
+#9 11.90 Selecting previously unselected package libatk-bridge2.0-0t64:arm64.
+#9 11.90 Preparing to unpack .../033-libatk-bridge2.0-0t64_2.57.1-1_arm64.deb ...
+#9 11.90 Unpacking libatk-bridge2.0-0t64:arm64 (2.57.1-1) ...
+#9 11.92 Selecting previously unselected package libfreetype6:arm64.
+#9 11.92 Preparing to unpack .../034-libfreetype6_2.13.3+dfsg-1_arm64.deb ...
+#9 11.92 Unpacking libfreetype6:arm64 (2.13.3+dfsg-1) ...
+#9 11.95 Selecting previously unselected package fonts-dejavu-mono.
+#9 11.95 Preparing to unpack .../035-fonts-dejavu-mono_2.37-8_all.deb ...
+#9 11.95 Unpacking fonts-dejavu-mono (2.37-8) ...
+#9 11.99 Selecting previously unselected package fonts-dejavu-core.
+#9 11.99 Preparing to unpack .../036-fonts-dejavu-core_2.37-8_all.deb ...
+#9 12.00 Unpacking fonts-dejavu-core (2.37-8) ...
+#9 12.05 Selecting previously unselected package fontconfig-config.
+#9 12.05 Preparing to unpack .../037-fontconfig-config_2.15.0-2.3_arm64.deb ...
+#9 12.06 Unpacking fontconfig-config (2.15.0-2.3) ...
+#9 12.08 Selecting previously unselected package libfontconfig1:arm64.
+#9 12.08 Preparing to unpack .../038-libfontconfig1_2.15.0-2.3_arm64.deb ...
+#9 12.08 Unpacking libfontconfig1:arm64 (2.15.0-2.3) ...
+#9 12.10 Selecting previously unselected package libpixman-1-0:arm64.
+#9 12.10 Preparing to unpack .../039-libpixman-1-0_0.44.0-3_arm64.deb ...
+#9 12.10 Unpacking libpixman-1-0:arm64 (0.44.0-3) ...
+#9 12.12 Selecting previously unselected package libxcb-render0:arm64.
+#9 12.13 Preparing to unpack .../040-libxcb-render0_1.17.0-2+b1_arm64.deb ...
+#9 12.13 Unpacking libxcb-render0:arm64 (1.17.0-2+b1) ...
+#9 12.15 Selecting previously unselected package libxcb-shm0:arm64.
+#9 12.15 Preparing to unpack .../041-libxcb-shm0_1.17.0-2+b1_arm64.deb ...
+#9 12.15 Unpacking libxcb-shm0:arm64 (1.17.0-2+b1) ...
+#9 12.17 Selecting previously unselected package libxrender1:arm64.
+#9 12.17 Preparing to unpack .../042-libxrender1_1%3a0.9.12-1_arm64.deb ...
+#9 12.17 Unpacking libxrender1:arm64 (1:0.9.12-1) ...
+#9 12.18 Selecting previously unselected package libcairo2:arm64.
+#9 12.18 Preparing to unpack .../043-libcairo2_1.18.4-1+b1_arm64.deb ...
+#9 12.18 Unpacking libcairo2:arm64 (1.18.4-1+b1) ...
+#9 12.22 Selecting previously unselected package libdrm-common.
+#9 12.22 Preparing to unpack .../044-libdrm-common_2.4.125-2_all.deb ...
+#9 12.22 Unpacking libdrm-common (2.4.125-2) ...
+#9 12.23 Selecting previously unselected package libdrm2:arm64.
+#9 12.23 Preparing to unpack .../045-libdrm2_2.4.125-2_arm64.deb ...
+#9 12.23 Unpacking libdrm2:arm64 (2.4.125-2) ...
+#9 12.25 Selecting previously unselected package libwayland-server0:arm64.
+#9 12.25 Preparing to unpack .../046-libwayland-server0_1.23.1-3_arm64.deb ...
+#9 12.25 Unpacking libwayland-server0:arm64 (1.23.1-3) ...
+#9 12.26 Selecting previously unselected package libdrm-amdgpu1:arm64.
+#9 12.27 Preparing to unpack .../047-libdrm-amdgpu1_2.4.125-2_arm64.deb ...
+#9 12.27 Unpacking libdrm-amdgpu1:arm64 (2.4.125-2) ...
+#9 12.28 Selecting previously unselected package libelf1t64:arm64.
+#9 12.28 Preparing to unpack .../048-libelf1t64_0.192-4_arm64.deb ...
+#9 12.28 Unpacking libelf1t64:arm64 (0.192-4) ...
+#9 12.30 Selecting previously unselected package libz3-4:arm64.
+#9 12.30 Preparing to unpack .../049-libz3-4_4.13.3-1_arm64.deb ...
+#9 12.30 Unpacking libz3-4:arm64 (4.13.3-1) ...
+#9 12.67 Selecting previously unselected package libllvm19:arm64.
+#9 12.67 Preparing to unpack .../050-libllvm19_1%3a19.1.7-3+b2_arm64.deb ...
+#9 12.67 Unpacking libllvm19:arm64 (1:19.1.7-3+b2) ...
+#9 13.22 Selecting previously unselected package libsensors-config.
+#9 13.22 Preparing to unpack .../051-libsensors-config_1%3a3.6.2-2_all.deb ...
+#9 13.22 Unpacking libsensors-config (1:3.6.2-2) ...
+#9 13.23 Selecting previously unselected package libsensors5:arm64.
+#9 13.23 Preparing to unpack .../052-libsensors5_1%3a3.6.2-2_arm64.deb ...
+#9 13.23 Unpacking libsensors5:arm64 (1:3.6.2-2) ...
+#9 13.25 Selecting previously unselected package libx11-xcb1:arm64.
+#9 13.25 Preparing to unpack .../053-libx11-xcb1_2%3a1.8.12-1_arm64.deb ...
+#9 13.25 Unpacking libx11-xcb1:arm64 (2:1.8.12-1) ...
+#9 13.27 Selecting previously unselected package libxcb-dri3-0:arm64.
+#9 13.27 Preparing to unpack .../054-libxcb-dri3-0_1.17.0-2+b1_arm64.deb ...
+#9 13.27 Unpacking libxcb-dri3-0:arm64 (1.17.0-2+b1) ...
+#9 13.28 Selecting previously unselected package libxcb-present0:arm64.
+#9 13.28 Preparing to unpack .../055-libxcb-present0_1.17.0-2+b1_arm64.deb ...
+#9 13.29 Unpacking libxcb-present0:arm64 (1.17.0-2+b1) ...
+#9 13.30 Selecting previously unselected package libxcb-randr0:arm64.
+#9 13.30 Preparing to unpack .../056-libxcb-randr0_1.17.0-2+b1_arm64.deb ...
+#9 13.30 Unpacking libxcb-randr0:arm64 (1.17.0-2+b1) ...
+#9 13.32 Selecting previously unselected package libxcb-sync1:arm64.
+#9 13.32 Preparing to unpack .../057-libxcb-sync1_1.17.0-2+b1_arm64.deb ...
+#9 13.32 Unpacking libxcb-sync1:arm64 (1.17.0-2+b1) ...
+#9 13.34 Selecting previously unselected package libxcb-xfixes0:arm64.
+#9 13.34 Preparing to unpack .../058-libxcb-xfixes0_1.17.0-2+b1_arm64.deb ...
+#9 13.34 Unpacking libxcb-xfixes0:arm64 (1.17.0-2+b1) ...
+#9 13.36 Selecting previously unselected package libxshmfence1:arm64.
+#9 13.36 Preparing to unpack .../059-libxshmfence1_1.3.3-1_arm64.deb ...
+#9 13.36 Unpacking libxshmfence1:arm64 (1.3.3-1) ...
+#9 13.37 Selecting previously unselected package mesa-libgallium:arm64.
+#9 13.37 Preparing to unpack .../060-mesa-libgallium_25.0.7-2_arm64.deb ...
+#9 13.37 Unpacking mesa-libgallium:arm64 (25.0.7-2) ...
+#9 13.75 Selecting previously unselected package libgbm1:arm64.
+#9 13.75 Preparing to unpack .../061-libgbm1_25.0.7-2_arm64.deb ...
+#9 13.76 Unpacking libgbm1:arm64 (25.0.7-2) ...
+#9 13.77 Selecting previously unselected package libcairo-gobject2:arm64.
+#9 13.77 Preparing to unpack .../062-libcairo-gobject2_1.18.4-1+b1_arm64.deb ...
+#9 13.77 Unpacking libcairo-gobject2:arm64 (1.18.4-1+b1) ...
+#9 13.79 Selecting previously unselected package libcloudproviders0:arm64.
+#9 13.79 Preparing to unpack .../063-libcloudproviders0_0.3.6-2_arm64.deb ...
+#9 13.79 Unpacking libcloudproviders0:arm64 (0.3.6-2) ...
+#9 13.80 Selecting previously unselected package liblcms2-2:arm64.
+#9 13.80 Preparing to unpack .../064-liblcms2-2_2.16-2_arm64.deb ...
+#9 13.80 Unpacking liblcms2-2:arm64 (2.16-2) ...
+#9 13.82 Selecting previously unselected package libcolord2:arm64.
+#9 13.82 Preparing to unpack .../065-libcolord2_1.4.7-3_arm64.deb ...
+#9 13.82 Unpacking libcolord2:arm64 (1.4.7-3) ...
+#9 13.84 Selecting previously unselected package libavahi-common-data:arm64.
+#9 13.84 Preparing to unpack .../066-libavahi-common-data_0.8-16_arm64.deb ...
+#9 13.84 Unpacking libavahi-common-data:arm64 (0.8-16) ...
+#9 13.86 Selecting previously unselected package libavahi-common3:arm64.
+#9 13.86 Preparing to unpack .../067-libavahi-common3_0.8-16_arm64.deb ...
+#9 13.86 Unpacking libavahi-common3:arm64 (0.8-16) ...
+#9 13.87 Selecting previously unselected package libavahi-client3:arm64.
+#9 13.87 Preparing to unpack .../068-libavahi-client3_0.8-16_arm64.deb ...
+#9 13.87 Unpacking libavahi-client3:arm64 (0.8-16) ...
+#9 13.88 Selecting previously unselected package libcups2t64:arm64.
+#9 13.88 Preparing to unpack .../069-libcups2t64_2.4.10-3_arm64.deb ...
+#9 13.89 Unpacking libcups2t64:arm64 (2.4.10-3) ...
+#9 13.91 Selecting previously unselected package libepoxy0:arm64.
+#9 13.91 Preparing to unpack .../070-libepoxy0_1.5.10-2_arm64.deb ...
+#9 13.91 Unpacking libepoxy0:arm64 (1.5.10-2) ...
+#9 13.93 Selecting previously unselected package libfribidi0:arm64.
+#9 13.93 Preparing to unpack .../071-libfribidi0_1.0.16-1_arm64.deb ...
+#9 13.94 Unpacking libfribidi0:arm64 (1.0.16-1) ...
+#9 13.95 Selecting previously unselected package libgraphite2-3:arm64.
+#9 13.95 Preparing to unpack .../072-libgraphite2-3_1.3.14-3_arm64.deb ...
+#9 13.95 Unpacking libgraphite2-3:arm64 (1.3.14-3) ...
+#9 13.97 Selecting previously unselected package libharfbuzz0b:arm64.
+#9 13.97 Preparing to unpack .../073-libharfbuzz0b_10.2.0-1+b1_arm64.deb ...
+#9 13.97 Unpacking libharfbuzz0b:arm64 (10.2.0-1+b1) ...
+#9 14.01 Selecting previously unselected package fontconfig.
+#9 14.01 Preparing to unpack .../074-fontconfig_2.15.0-2.3_arm64.deb ...
+#9 14.01 Unpacking fontconfig (2.15.0-2.3) ...
+#9 14.03 Selecting previously unselected package libthai-data.
+#9 14.03 Preparing to unpack .../075-libthai-data_0.1.29-2_all.deb ...
+#9 14.03 Unpacking libthai-data (0.1.29-2) ...
+#9 14.05 Selecting previously unselected package libdatrie1:arm64.
+#9 14.05 Preparing to unpack .../076-libdatrie1_0.2.13-4_arm64.deb ...
+#9 14.05 Unpacking libdatrie1:arm64 (0.2.13-4) ...
+#9 14.07 Selecting previously unselected package libthai0:arm64.
+#9 14.07 Preparing to unpack .../077-libthai0_0.1.29-2+b1_arm64.deb ...
+#9 14.07 Unpacking libthai0:arm64 (0.1.29-2+b1) ...
+#9 14.08 Selecting previously unselected package libpango-1.0-0:arm64.
+#9 14.08 Preparing to unpack .../078-libpango-1.0-0_1.56.3-1_arm64.deb ...
+#9 14.08 Unpacking libpango-1.0-0:arm64 (1.56.3-1) ...
+#9 14.11 Selecting previously unselected package libpangoft2-1.0-0:arm64.
+#9 14.11 Preparing to unpack .../079-libpangoft2-1.0-0_1.56.3-1_arm64.deb ...
+#9 14.11 Unpacking libpangoft2-1.0-0:arm64 (1.56.3-1) ...
+#9 14.12 Selecting previously unselected package libpangocairo-1.0-0:arm64.
+#9 14.12 Preparing to unpack .../080-libpangocairo-1.0-0_1.56.3-1_arm64.deb ...
+#9 14.13 Unpacking libpangocairo-1.0-0:arm64 (1.56.3-1) ...
+#9 14.14 Selecting previously unselected package libwayland-client0:arm64.
+#9 14.14 Preparing to unpack .../081-libwayland-client0_1.23.1-3_arm64.deb ...
+#9 14.14 Unpacking libwayland-client0:arm64 (1.23.1-3) ...
+#9 14.16 Selecting previously unselected package libwayland-cursor0:arm64.
+#9 14.16 Preparing to unpack .../082-libwayland-cursor0_1.23.1-3_arm64.deb ...
+#9 14.16 Unpacking libwayland-cursor0:arm64 (1.23.1-3) ...
+#9 14.17 Selecting previously unselected package libwayland-egl1:arm64.
+#9 14.17 Preparing to unpack .../083-libwayland-egl1_1.23.1-3_arm64.deb ...
+#9 14.17 Unpacking libwayland-egl1:arm64 (1.23.1-3) ...
+#9 14.19 Selecting previously unselected package libxcomposite1:arm64.
+#9 14.19 Preparing to unpack .../084-libxcomposite1_1%3a0.4.6-1_arm64.deb ...
+#9 14.19 Unpacking libxcomposite1:arm64 (1:0.4.6-1) ...
+#9 14.21 Selecting previously unselected package libxfixes3:arm64.
+#9 14.21 Preparing to unpack .../085-libxfixes3_1%3a6.0.0-2+b4_arm64.deb ...
+#9 14.21 Unpacking libxfixes3:arm64 (1:6.0.0-2+b4) ...
+#9 14.22 Selecting previously unselected package libxcursor1:arm64.
+#9 14.22 Preparing to unpack .../086-libxcursor1_1%3a1.2.3-1_arm64.deb ...
+#9 14.22 Unpacking libxcursor1:arm64 (1:1.2.3-1) ...
+#9 14.24 Selecting previously unselected package libxdamage1:arm64.
+#9 14.24 Preparing to unpack .../087-libxdamage1_1%3a1.1.6-1+b2_arm64.deb ...
+#9 14.24 Unpacking libxdamage1:arm64 (1:1.1.6-1+b2) ...
+#9 14.25 Selecting previously unselected package libxinerama1:arm64.
+#9 14.25 Preparing to unpack .../088-libxinerama1_2%3a1.1.4-3+b4_arm64.deb ...
+#9 14.25 Unpacking libxinerama1:arm64 (2:1.1.4-3+b4) ...
+#9 14.26 Selecting previously unselected package xkb-data.
+#9 14.26 Preparing to unpack .../089-xkb-data_2.42-1_all.deb ...
+#9 14.26 Unpacking xkb-data (2.42-1) ...
+#9 14.32 Selecting previously unselected package libxkbcommon0:arm64.
+#9 14.33 Preparing to unpack .../090-libxkbcommon0_1.7.0-2.1_arm64.deb ...
+#9 14.33 Unpacking libxkbcommon0:arm64 (1.7.0-2.1) ...
+#9 14.34 Selecting previously unselected package libxrandr2:arm64.
+#9 14.34 Preparing to unpack .../091-libxrandr2_2%3a1.5.4-1+b3_arm64.deb ...
+#9 14.34 Unpacking libxrandr2:arm64 (2:1.5.4-1+b3) ...
+#9 14.35 Selecting previously unselected package dbus-user-session.
+#9 14.35 Preparing to unpack .../092-dbus-user-session_1.16.2-2_arm64.deb ...
+#9 14.36 Unpacking dbus-user-session (1.16.2-2) ...
+#9 14.37 Selecting previously unselected package libdconf1:arm64.
+#9 14.37 Preparing to unpack .../093-libdconf1_0.40.0-5_arm64.deb ...
+#9 14.37 Unpacking libdconf1:arm64 (0.40.0-5) ...
+#9 14.38 Selecting previously unselected package dconf-service.
+#9 14.38 Preparing to unpack .../094-dconf-service_0.40.0-5_arm64.deb ...
+#9 14.38 Unpacking dconf-service (0.40.0-5) ...
+#9 14.39 Selecting previously unselected package dconf-gsettings-backend:arm64.
+#9 14.39 Preparing to unpack .../095-dconf-gsettings-backend_0.40.0-5_arm64.deb ...
+#9 14.39 Unpacking dconf-gsettings-backend:arm64 (0.40.0-5) ...
+#9 14.40 Selecting previously unselected package libgtk-3-common.
+#9 14.41 Preparing to unpack .../096-libgtk-3-common_3.24.50-2_all.deb ...
+#9 14.41 Unpacking libgtk-3-common (3.24.50-2) ...
+#9 14.63 Selecting previously unselected package libgtk-3-0t64:arm64.
+#9 14.63 Preparing to unpack .../097-libgtk-3-0t64_3.24.50-2_arm64.deb ...
+#9 14.64 Unpacking libgtk-3-0t64:arm64 (3.24.50-2) ...
+#9 14.78 Selecting previously unselected package libnspr4:arm64.
+#9 14.78 Preparing to unpack .../098-libnspr4_2%3a4.36-1_arm64.deb ...
+#9 14.78 Unpacking libnspr4:arm64 (2:4.36-1) ...
+#9 14.80 Selecting previously unselected package libnss3:arm64.
+#9 14.80 Preparing to unpack .../099-libnss3_2%3a3.114-1_arm64.deb ...
+#9 14.80 Unpacking libnss3:arm64 (2:3.114-1) ...
+#9 14.87 Selecting previously unselected package libxkbfile1:arm64.
+#9 14.87 Preparing to unpack .../100-libxkbfile1_1%3a1.1.0-1+b4_arm64.deb ...
+#9 14.88 Unpacking libxkbfile1:arm64 (1:1.1.0-1+b4) ...
+#9 14.89 Selecting previously unselected package xdg-utils.
+#9 14.89 Preparing to unpack .../101-xdg-utils_1.2.1-2_all.deb ...
+#9 14.89 Unpacking xdg-utils (1.2.1-2) ...
+#9 14.91 Selecting previously unselected package code.
+#9 14.91 Preparing to unpack .../102-code_1.103.2-1755710123_arm64.deb ...
+#9 14.91 Unpacking code (1.103.2-1755710123) ...
+#9 16.86 Setting up libgraphite2-3:arm64 (1.3.14-3) ...
+#9 16.86 Setting up liblcms2-2:arm64 (2.16-2) ...
+#9 16.87 Setting up libpixman-1-0:arm64 (0.44.0-3) ...
+#9 16.87 Setting up libsharpyuv0:arm64 (1.5.0-0.1) ...
+#9 16.88 Setting up libwayland-server0:arm64 (1.23.1-3) ...
+#9 16.88 Setting up systemd-sysv (258~rc3-1) ...
+#9 16.89 Setting up libxau6:arm64 (1:1.0.11-1) ...
+#9 16.89 Setting up libxdmcp6:arm64 (1:1.1.5-1) ...
+#9 16.89 Setting up libxcb1:arm64 (1.17.0-2+b1) ...
+#9 16.90 Setting up libxcb-xfixes0:arm64 (1.17.0-2+b1) ...
+#9 16.90 Setting up liblerc4:arm64 (4.0.0+ds-5) ...
+#9 16.91 Setting up hicolor-icon-theme (0.18-2) ...
+#9 16.92 Setting up libdatrie1:arm64 (0.2.13-4) ...
+#9 16.92 Setting up libxcb-render0:arm64 (1.17.0-2+b1) ...
+#9 16.92 Setting up libxml2-16:arm64 (2.14.5+dfsg-0.2) ...
+#9 16.93 Setting up libgdk-pixbuf2.0-common (2.42.12+dfsg-5) ...
+#9 16.93 Setting up libsensors-config (1:3.6.2-2) ...
+#9 16.94 Setting up libdeflate0:arm64 (1.23-2) ...
+#9 16.94 Setting up xkb-data (2.42-1) ...
+#9 16.95 Setting up libxcb-shm0:arm64 (1.17.0-2+b1) ...
+#9 16.95 Setting up libjbig0:arm64 (2.1-6.1+b2) ...
+#9 16.95 Setting up libelf1t64:arm64 (0.192-4) ...
+#9 16.96 Setting up libxcb-present0:arm64 (1.17.0-2+b1) ...
+#9 16.96 Setting up libasound2-data (1.2.14-1) ...
+#9 16.96 Setting up libz3-4:arm64 (4.13.3-1) ...
+#9 16.97 Setting up libasound2t64:arm64 (1.2.14-1) ...
+#9 16.97 Setting up libjpeg62-turbo:arm64 (1:2.1.5-4) ...
+#9 16.98 Setting up libx11-data (2:1.8.12-1) ...
+#9 16.98 Setting up libepoxy0:arm64 (1.5.10-2) ...
+#9 16.99 Setting up libnspr4:arm64 (2:4.36-1) ...
+#9 16.99 Setting up libxcb-sync1:arm64 (1.17.0-2+b1) ...
+#9 17.00 Setting up libavahi-common-data:arm64 (0.8-16) ...
+#9 17.00 Setting up libdbus-1-3:arm64 (1.16.2-2) ...
+#9 17.00 Setting up libfribidi0:arm64 (1.0.16-1) ...
+#9 17.01 Setting up libproc2-0:arm64 (2:4.0.4-9) ...
+#9 17.02 Setting up fonts-dejavu-mono (2.37-8) ...
+#9 17.04 Setting up libpng16-16t64:arm64 (1.6.50-1) ...
+#9 17.04 Setting up libatomic1:arm64 (15.2.0-1) ...
+#9 17.05 Setting up fonts-dejavu-core (2.37-8) ...
+#9 17.07 Setting up libsensors5:arm64 (1:3.6.2-2) ...
+#9 17.07 Setting up libncursesw6:arm64 (6.5+20250216-2) ...
+#9 17.09 Setting up libwebp7:arm64 (1.5.0-0.1) ...
+#9 17.09 Setting up libxshmfence1:arm64 (1.3.3-1) ...
+#9 17.10 Setting up at-spi2-common (2.57.1-1) ...
+#9 17.10 Setting up libtiff6:arm64 (4.7.0-4) ...
+#9 17.11 Setting up libxcb-randr0:arm64 (1.17.0-2+b1) ...
+#9 17.11 Setting up dbus-session-bus-common (1.16.2-2) ...
+#9 17.12 Setting up procps (2:4.0.4-9) ...
+#9 17.14 Setting up libx11-6:arm64 (2:1.8.12-1) ...
+#9 17.15 Setting up libthai-data (0.1.29-2) ...
+#9 17.15 Setting up libwayland-egl1:arm64 (1.23.1-3) ...
+#9 17.16 Setting up libxkbfile1:arm64 (1:1.1.0-1+b4) ...
+#9 17.16 Setting up dbus-system-bus-common (1.16.2-2) ...
+#9 17.17 Creating group 'messagebus' with GID 997.
+#9 17.17 Creating user 'messagebus' (System Message Bus) with UID 997 and GID 997.
+#9 17.19 Setting up libdrm-common (2.4.125-2) ...
+#9 17.19 Setting up libxcomposite1:arm64 (1:0.4.6-1) ...
+#9 17.20 Setting up xdg-utils (1.2.1-2) ...
+#9 17.21 update-alternatives: using /usr/bin/xdg-open to provide /usr/bin/open (open) in auto mode
+#9 17.21 update-alternatives: warning: skip creation of /usr/share/man/man1/open.1.gz because associated file /usr/share/man/man1/xdg-open.1.gz (of link group open) doesn't exist
+#9 17.21 Setting up dbus-bin (1.16.2-2) ...
+#9 17.22 Setting up libxkbcommon0:arm64 (1.7.0-2.1) ...
+#9 17.23 Setting up libwayland-client0:arm64 (1.23.1-3) ...
+#9 17.24 Setting up libxcb-dri3-0:arm64 (1.17.0-2+b1) ...
+#9 17.25 Setting up libllvm19:arm64 (1:19.1.7-3+b2) ...
+#9 17.25 Setting up libx11-xcb1:arm64 (2:1.8.12-1) ...
+#9 17.25 Setting up libxdamage1:arm64 (1:1.1.6-1+b2) ...
+#9 17.26 Setting up libxrender1:arm64 (1:0.9.12-1) ...
+#9 17.26 Setting up fontconfig-config (2.15.0-2.3) ...
+#9 17.30 debconf: unable to initialize frontend: Dialog
+#9 17.30 debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+#9 17.30 debconf: falling back to frontend: Readline
+#9 17.31 debconf: unable to initialize frontend: Readline
+#9 17.31 debconf: (This frontend requires a controlling tty.)
+#9 17.31 debconf: falling back to frontend: Teletype
+#9 17.31 debconf: unable to initialize frontend: Teletype
+#9 17.31 debconf: (This frontend requires a controlling tty.)
+#9 17.31 debconf: falling back to frontend: Noninteractive
+#9 17.34 Setting up libavahi-common3:arm64 (0.8-16) ...
+#9 17.34 Setting up libxext6:arm64 (2:1.3.4-1+b3) ...
+#9 17.35 Setting up libnss3:arm64 (2:3.114-1) ...
+#9 17.36 Setting up dbus-daemon (1.16.2-2) ...
+#9 17.37 Setting up libthai0:arm64 (0.1.29-2+b1) ...
+#9 17.38 Setting up libglib2.0-0t64:arm64 (2.84.4-3) ...
+#9 17.39 Setting up libfreetype6:arm64 (2.13.3+dfsg-1) ...
+#9 17.40 Setting up libxfixes3:arm64 (1:6.0.0-2+b4) ...
+#9 17.40 Setting up dbus (1.16.2-2) ...
+#9 17.42 invoke-rc.d: could not determine current runlevel
+#9 17.42 invoke-rc.d: policy-rc.d denied execution of start.
+#9 17.42 Setting up shared-mime-info (2.4-5+b3) ...
+#9 18.64 Setting up libxinerama1:arm64 (2:1.1.4-3+b4) ...
+#9 18.64 Setting up libxrandr2:arm64 (2:1.5.4-1+b3) ...
+#9 18.65 Setting up libdrm2:arm64 (2.4.125-2) ...
+#9 18.65 Setting up libwayland-cursor0:arm64 (1.23.1-3) ...
+#9 18.66 Setting up libpam-systemd:arm64 (258~rc3-1) ...
+#9 18.69 debconf: unable to initialize frontend: Dialog
+#9 18.69 debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+#9 18.69 debconf: falling back to frontend: Readline
+#9 18.70 debconf: unable to initialize frontend: Readline
+#9 18.70 debconf: (This frontend requires a controlling tty.)
+#9 18.70 debconf: falling back to frontend: Teletype
+#9 18.70 debconf: unable to initialize frontend: Teletype
+#9 18.70 debconf: (This frontend requires a controlling tty.)
+#9 18.70 debconf: falling back to frontend: Noninteractive
+#9 18.73 Setting up libharfbuzz0b:arm64 (10.2.0-1+b1) ...
+#9 18.73 Setting up libgdk-pixbuf-2.0-0:arm64 (2.42.12+dfsg-5) ...
+#9 18.74 Setting up libfontconfig1:arm64 (2.15.0-2.3) ...
+#9 18.75 Setting up libavahi-client3:arm64 (0.8-16) ...
+#9 18.75 Setting up libdrm-amdgpu1:arm64 (2.4.125-2) ...
+#9 18.76 Setting up gtk-update-icon-cache (4.18.6+ds-2) ...
+#9 18.76 Setting up mesa-libgallium:arm64 (25.0.7-2) ...
+#9 18.76 Setting up fontconfig (2.15.0-2.3) ...
+#9 18.76 Regenerating fonts cache... done.
+#9 20.78 Setting up libatk1.0-0t64:arm64 (2.57.1-1) ...
+#9 20.79 Setting up libxi6:arm64 (2:1.8.2-1) ...
+#9 20.79 Setting up libgbm1:arm64 (25.0.7-2) ...
+#9 20.80 Setting up libxcursor1:arm64 (1:1.2.3-1) ...
+#9 20.80 Setting up libpango-1.0-0:arm64 (1.56.3-1) ...
+#9 20.81 Setting up libcloudproviders0:arm64 (0.3.6-2) ...
+#9 20.81 Setting up libcairo2:arm64 (1.18.4-1+b1) ...
+#9 20.82 Setting up libcolord2:arm64 (1.4.7-3) ...
+#9 20.82 Setting up libdconf1:arm64 (0.40.0-5) ...
+#9 20.83 Setting up dbus-user-session (1.16.2-2) ...
+#9 20.83 Setting up adwaita-icon-theme (48.1-1) ...
+#9 20.84 update-alternatives: using /usr/share/icons/Adwaita/cursor.theme to provide /usr/share/icons/default/index.theme (x-cursor-theme) in auto mode
+#9 20.85 Setting up libatspi2.0-0t64:arm64 (2.57.1-1) ...
+#9 20.85 Setting up libcairo-gobject2:arm64 (1.18.4-1+b1) ...
+#9 20.85 Setting up libpangoft2-1.0-0:arm64 (1.56.3-1) ...
+#9 20.86 Setting up libcups2t64:arm64 (2.4.10-3) ...
+#9 20.86 Setting up libpangocairo-1.0-0:arm64 (1.56.3-1) ...
+#9 20.87 Setting up libatk-bridge2.0-0t64:arm64 (2.57.1-1) ...
+#9 20.87 Setting up dconf-service (0.40.0-5) ...
+#9 20.87 Setting up dconf-gsettings-backend:arm64 (0.40.0-5) ...
+#9 20.88 Setting up libgtk-3-common (3.24.50-2) ...
+#9 20.89 Setting up libgtk-3-0t64:arm64 (3.24.50-2) ...
+#9 20.90 Setting up code (1.103.2-1755710123) ...
+#9 20.91 update-alternatives: using /usr/bin/code to provide /usr/bin/editor (editor) in auto mode
+#9 22.00 debconf: unable to initialize frontend: Dialog
+#9 22.00 debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+#9 22.00 debconf: falling back to frontend: Readline
+#9 22.00 debconf: unable to initialize frontend: Readline
+#9 22.00 debconf: (This frontend requires a controlling tty.)
+#9 22.00 debconf: falling back to frontend: Teletype
+#9 22.01 debconf: unable to initialize frontend: Teletype
+#9 22.01 debconf: (This frontend requires a controlling tty.)
+#9 22.01 debconf: falling back to frontend: Noninteractive
+#9 23.19 Processing triggers for libc-bin (2.41-12) ...
+#9 DONE 23.7s
+
+#10 [ 6/16] RUN type -p curl >/dev/null || sudo apt install curl -y &&     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg &&     sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null &&     sudo apt update && sudo apt install -y --no-install-recommends gh &&     sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+#10 0.136 
+#10 0.136 WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+#10 0.136 
+#10 0.144 Reading package lists...
+#10 0.148 Building dependency tree...
+#10 0.148 Reading state information...
+#10 0.151 curl is already the newest version (8.15.0-1).
+#10 0.151 The following package was automatically installed and is no longer required:
+#10 0.151   gcc-14-base
+#10 0.151 Use 'sudo apt autoremove' to remove it.
+#10 0.151 
+#10 0.155 Summary:
+#10 0.155   Upgrading: 0, Installing: 0, Removing: 0, Not Upgrading: 0
+#10 0.215 4+1 records in
+#10 0.215 4+1 records out
+#10 0.215 2270 bytes (2.3 kB, 2.2 KiB) copied, 0.0529475 s, 42.9 kB/s
+#10 0.235 
+#10 0.235 WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+#10 0.235 
+#10 0.306 Get:1 https://cli.github.com/packages stable InRelease [3917 B]
+#10 0.336 Get:2 https://cli.github.com/packages stable/main arm64 Packages [345 B]
+#10 0.360 Get:3 http://deb.debian.org/debian testing InRelease [146 kB]
+#10 0.367 Get:4 https://packages.microsoft.com/repos/code stable InRelease [3590 B]
+#10 0.402 Get:5 https://packages.microsoft.com/repos/code stable/main amd64 Packages [20.4 kB]
+#10 0.442 Get:6 https://packages.microsoft.com/repos/code stable/main armhf Packages [20.5 kB]
+#10 0.463 Get:7 https://packages.microsoft.com/repos/code stable/main arm64 Packages [20.5 kB]
+#10 0.526 Get:8 http://deb.debian.org/debian testing-updates InRelease [45.1 kB]
+#10 0.540 Get:9 http://deb.debian.org/debian-security testing-security InRelease [43.4 kB]
+#10 0.559 Get:10 http://deb.debian.org/debian testing/main arm64 Packages [9722 kB]
+#10 1.562 Fetched 10.0 MB in 1s (7612 kB/s)
+#10 1.562 Reading package lists...
+#10 1.898 Building dependency tree...
+#10 2.018 Reading state information...
+#10 2.036 1 package can be upgraded. Run 'apt list --upgradable' to see it.
+#10 2.043 
+#10 2.043 WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+#10 2.043 
+#10 2.044 Reading package lists...
+#10 2.392 Building dependency tree...
+#10 2.499 Reading state information...
+#10 2.709 The following package was automatically installed and is no longer required:
+#10 2.709   gcc-14-base
+#10 2.709 Use 'sudo apt autoremove' to remove it.
+#10 2.709 
+#10 2.720 Installing:
+#10 2.720   gh
+#10 2.720 
+#10 2.789 Summary:
+#10 2.789   Upgrading: 0, Installing: 1, Removing: 0, Not Upgrading: 1
+#10 2.789   Download size: 17.2 MB
+#10 2.789   Space needed: 52.6 MB / 219 GB available
+#10 2.789 
+#10 2.789 Get:1 https://cli.github.com/packages stable/main arm64 gh arm64 2.78.0 [17.2 MB]
+#10 3.375 debconf: unable to initialize frontend: Dialog
+#10 3.375 debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+#10 3.375 debconf: falling back to frontend: Readline
+#10 3.378 debconf: unable to initialize frontend: Readline
+#10 3.378 debconf: (This frontend requires a controlling tty.)
+#10 3.378 debconf: falling back to frontend: Teletype
+#10 3.381 debconf: unable to initialize frontend: Teletype
+#10 3.381 debconf: (This frontend requires a controlling tty.)
+#10 3.381 debconf: falling back to frontend: Noninteractive
+#10 3.721 Fetched 17.2 MB in 1s (30.7 MB/s)
+#10 3.730 Selecting previously unselected package gh.
+#10 3.730 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 17938 files and directories currently installed.)
+#10 3.736 Preparing to unpack .../archives/gh_2.78.0_arm64.deb ...
+#10 3.737 Unpacking gh (2.78.0) ...
+#10 3.936 Setting up gh (2.78.0) ...
+#10 DONE 4.0s
+
+#11 [ 7/16] RUN curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - &&     sudo apt-get install -y nodejs &&     sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+#11 0.197 [38;5;79m2025-08-30 15:15:40 - Installing pre-requisites[0m
+#11 0.256 Get:1 http://deb.debian.org/debian testing InRelease [146 kB]
+#11 0.278 Get:2 https://cli.github.com/packages stable InRelease [3917 B]
+#11 0.285 Get:3 http://deb.debian.org/debian testing-updates InRelease [45.1 kB]
+#11 0.285 Get:4 https://packages.microsoft.com/repos/code stable InRelease [3590 B]
+#11 0.306 Get:5 http://deb.debian.org/debian-security testing-security InRelease [43.4 kB]
+#11 0.306 Get:6 https://cli.github.com/packages stable/main arm64 Packages [345 B]
+#11 0.310 Get:7 https://packages.microsoft.com/repos/code stable/main arm64 Packages [20.5 kB]
+#11 0.324 Get:8 http://deb.debian.org/debian testing/main arm64 Packages [9722 kB]
+#11 0.326 Get:9 https://packages.microsoft.com/repos/code stable/main amd64 Packages [20.4 kB]
+#11 0.333 Get:10 https://packages.microsoft.com/repos/code stable/main armhf Packages [20.5 kB]
+#11 1.352 Fetched 10.0 MB in 1s (8794 kB/s)
+#11 1.352 Reading package lists...
+#11 1.765 Reading package lists...
+#11 2.233 Building dependency tree...
+#11 2.386 Reading state information...
+#11 2.632 ca-certificates is already the newest version (20250419).
+#11 2.632 curl is already the newest version (8.15.0-1).
+#11 2.632 The following package was automatically installed and is no longer required:
+#11 2.633   gcc-14-base
+#11 2.633 Use 'sudo apt autoremove' to remove it.
+#11 2.633 The following additional packages will be installed:
+#11 2.634   dirmngr gnupg-l10n gnupg-utils gpg-agent gpg-wks-client gpgsm gpgv
+#11 2.634   pinentry-curses
+#11 2.634 Suggested packages:
+#11 2.634   pinentry-gnome3 tor gpg-wks-server parcimonie xloadimage scdaemon tpm2daemon
+#11 2.634   pinentry-doc
+#11 2.669 The following NEW packages will be installed:
+#11 2.669   apt-transport-https dirmngr gnupg gnupg-l10n gnupg-utils gpg-agent
+#11 2.669   gpg-wks-client gpgsm gpgv pinentry-curses
+#11 2.710 0 upgraded, 10 newly installed, 0 to remove and 1 not upgraded.
+#11 2.710 Need to get 2656 kB of archives.
+#11 2.710 After this operation, 10.6 MB of additional disk space will be used.
+#11 2.710 Get:1 http://deb.debian.org/debian testing/main arm64 apt-transport-https all 3.1.4 [39.8 kB]
+#11 2.728 Get:2 http://deb.debian.org/debian testing/main arm64 dirmngr arm64 2.4.8-3 [359 kB]
+#11 2.760 Get:3 http://deb.debian.org/debian testing/main arm64 gnupg-l10n all 2.4.8-3 [753 kB]
+#11 2.789 Get:4 http://deb.debian.org/debian testing/main arm64 pinentry-curses arm64 1.3.2-3 [85.0 kB]
+#11 2.790 Get:5 http://deb.debian.org/debian testing/main arm64 gpg-agent arm64 2.4.8-3 [248 kB]
+#11 2.803 Get:6 http://deb.debian.org/debian testing/main arm64 gpgsm arm64 2.4.8-3 [250 kB]
+#11 2.804 Get:7 http://deb.debian.org/debian testing/main arm64 gnupg all 2.4.8-3 [418 kB]
+#11 2.813 Get:8 http://deb.debian.org/debian testing/main arm64 gpg-wks-client arm64 2.4.8-3 [101 kB]
+#11 2.813 Get:9 http://deb.debian.org/debian testing/main arm64 gpgv arm64 2.4.8-3 [220 kB]
+#11 2.819 Get:10 http://deb.debian.org/debian testing/main arm64 gnupg-utils arm64 2.4.8-3 [182 kB]
+#11 3.319 Fetched 2656 kB in 0s (18.1 MB/s)
+#11 3.328 Selecting previously unselected package apt-transport-https.
+#11 3.328 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 18148 files and directories currently installed.)
+#11 3.334 Preparing to unpack .../0-apt-transport-https_3.1.4_all.deb ...
+#11 3.336 Unpacking apt-transport-https (3.1.4) ...
+#11 3.351 Selecting previously unselected package dirmngr.
+#11 3.352 Preparing to unpack .../1-dirmngr_2.4.8-3_arm64.deb ...
+#11 3.358 Unpacking dirmngr (2.4.8-3) ...
+#11 3.385 Selecting previously unselected package gnupg-l10n.
+#11 3.386 Preparing to unpack .../2-gnupg-l10n_2.4.8-3_all.deb ...
+#11 3.387 Unpacking gnupg-l10n (2.4.8-3) ...
+#11 3.436 Selecting previously unselected package pinentry-curses.
+#11 3.437 Preparing to unpack .../3-pinentry-curses_1.3.2-3_arm64.deb ...
+#11 3.439 Unpacking pinentry-curses (1.3.2-3) ...
+#11 3.457 Selecting previously unselected package gpg-agent.
+#11 3.458 Preparing to unpack .../4-gpg-agent_2.4.8-3_arm64.deb ...
+#11 3.459 Unpacking gpg-agent (2.4.8-3) ...
+#11 3.481 Selecting previously unselected package gpgsm.
+#11 3.482 Preparing to unpack .../5-gpgsm_2.4.8-3_arm64.deb ...
+#11 3.483 Unpacking gpgsm (2.4.8-3) ...
+#11 3.504 Selecting previously unselected package gnupg.
+#11 3.505 Preparing to unpack .../6-gnupg_2.4.8-3_all.deb ...
+#11 3.506 Unpacking gnupg (2.4.8-3) ...
+#11 3.533 Selecting previously unselected package gpg-wks-client.
+#11 3.534 Preparing to unpack .../7-gpg-wks-client_2.4.8-3_arm64.deb ...
+#11 3.535 Unpacking gpg-wks-client (2.4.8-3) ...
+#11 3.548 Selecting previously unselected package gpgv.
+#11 3.550 Preparing to unpack .../8-gpgv_2.4.8-3_arm64.deb ...
+#11 3.551 Unpacking gpgv (2.4.8-3) ...
+#11 3.570 Selecting previously unselected package gnupg-utils.
+#11 3.571 Preparing to unpack .../9-gnupg-utils_2.4.8-3_arm64.deb ...
+#11 3.573 Unpacking gnupg-utils (2.4.8-3) ...
+#11 3.594 Setting up pinentry-curses (1.3.2-3) ...
+#11 3.600 Setting up gpg-agent (2.4.8-3) ...
+#11 3.664 Created symlink '/etc/systemd/user/sockets.target.wants/gpg-agent-browser.socket' → '/usr/lib/systemd/user/gpg-agent-browser.socket'.
+#11 3.724 Created symlink '/etc/systemd/user/sockets.target.wants/gpg-agent-extra.socket' → '/usr/lib/systemd/user/gpg-agent-extra.socket'.
+#11 3.783 Created symlink '/etc/systemd/user/sockets.target.wants/gpg-agent-ssh.socket' → '/usr/lib/systemd/user/gpg-agent-ssh.socket'.
+#11 3.844 Created symlink '/etc/systemd/user/sockets.target.wants/gpg-agent.socket' → '/usr/lib/systemd/user/gpg-agent.socket'.
+#11 3.847 Setting up apt-transport-https (3.1.4) ...
+#11 3.851 Setting up gpgsm (2.4.8-3) ...
+#11 3.854 Setting up dirmngr (2.4.8-3) ...
+#11 3.914 Created symlink '/etc/systemd/user/sockets.target.wants/dirmngr.socket' → '/usr/lib/systemd/user/dirmngr.socket'.
+#11 3.922 Setting up gnupg-l10n (2.4.8-3) ...
+#11 3.927 Setting up gpgv (2.4.8-3) ...
+#11 3.930 Setting up gnupg (2.4.8-3) ...
+#11 3.933 Setting up gnupg-utils (2.4.8-3) ...
+#11 3.937 Setting up gpg-wks-client (2.4.8-3) ...
+#11 4.063 Hit:1 http://deb.debian.org/debian testing InRelease
+#11 4.068 Hit:2 http://deb.debian.org/debian testing-updates InRelease
+#11 4.077 Hit:3 http://deb.debian.org/debian-security testing-security InRelease
+#11 4.086 Hit:4 https://cli.github.com/packages stable InRelease
+#11 4.095 Get:5 https://deb.nodesource.com/node_20.x nodistro InRelease [12.1 kB]
+#11 4.116 Get:6 https://deb.nodesource.com/node_20.x nodistro/main arm64 Packages [12.2 kB]
+#11 4.151 Hit:7 https://packages.microsoft.com/repos/code stable InRelease
+#11 4.155 Fetched 24.3 kB in 0s (185 kB/s)
+#11 4.155 Reading package lists...
+#11 4.507 W: https://deb.nodesource.com/node_20.x/dists/nodistro/InRelease: Policy will reject signature within a year, see --audit for details
+#11 4.509 [1;34m2025-08-30 15:15:44 - Repository configured successfully.[0m
+#11 4.509 [38;5;79m2025-08-30 15:15:44 - To install Node.js, run: apt-get install nodejs -y[0m
+#11 4.510 [38;5;79m2025-08-30 15:15:44 - You can use N|solid Runtime as a node.js alternative[0m
+#11 4.511 [1;32m2025-08-30 15:15:44 - To install N|solid Runtime, run: apt-get install nsolid -y 
+#11 4.511 [0m
+#11 4.519 Reading package lists...
+#11 4.904 Building dependency tree...
+#11 5.030 Reading state information...
+#11 5.208 The following package was automatically installed and is no longer required:
+#11 5.208   gcc-14-base
+#11 5.208 Use 'sudo apt autoremove' to remove it.
+#11 5.209 The following additional packages will be installed:
+#11 5.209   libpython3-stdlib libpython3.13-minimal libpython3.13-stdlib media-types
+#11 5.209   netbase python3 python3-minimal python3.13 python3.13-minimal
+#11 5.210 Suggested packages:
+#11 5.210   python3-doc python3-tk python3-venv python3.13-venv python3.13-doc binutils
+#11 5.210   binfmt-support
+#11 5.272 The following NEW packages will be installed:
+#11 5.273   libpython3-stdlib libpython3.13-minimal libpython3.13-stdlib media-types
+#11 5.273   netbase nodejs python3 python3-minimal python3.13 python3.13-minimal
+#11 5.308 0 upgraded, 10 newly installed, 0 to remove and 1 not upgraded.
+#11 5.308 Need to get 36.7 MB of archives.
+#11 5.308 After this operation, 222 MB of additional disk space will be used.
+#11 5.308 Get:1 http://deb.debian.org/debian testing/main arm64 libpython3.13-minimal arm64 3.13.7-1 [857 kB]
+#11 5.338 Get:2 https://deb.nodesource.com/node_20.x nodistro/main arm64 nodejs arm64 20.19.4-1nodesource1 [31.1 MB]
+#11 5.369 Get:3 http://deb.debian.org/debian testing/main arm64 python3.13-minimal arm64 3.13.7-1 [2001 kB]
+#11 5.473 Get:4 http://deb.debian.org/debian testing/main arm64 python3-minimal arm64 3.13.5-1 [27.2 kB]
+#11 5.474 Get:5 http://deb.debian.org/debian testing/main arm64 media-types all 13.0.0 [29.3 kB]
+#11 5.474 Get:6 http://deb.debian.org/debian testing/main arm64 netbase all 6.5 [12.4 kB]
+#11 5.474 Get:7 http://deb.debian.org/debian testing/main arm64 libpython3.13-stdlib arm64 3.13.7-1 [1895 kB]
+#11 5.519 Get:8 http://deb.debian.org/debian testing/main arm64 python3.13 arm64 3.13.7-1 [761 kB]
+#11 5.524 Get:9 http://deb.debian.org/debian testing/main arm64 libpython3-stdlib arm64 3.13.5-1 [10.2 kB]
+#11 5.527 Get:10 http://deb.debian.org/debian testing/main arm64 python3 arm64 3.13.5-1 [28.2 kB]
+#11 6.532 debconf: unable to initialize frontend: Dialog
+#11 6.532 debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+#11 6.532 debconf: falling back to frontend: Readline
+#11 6.536 debconf: unable to initialize frontend: Readline
+#11 6.536 debconf: (This frontend requires a controlling tty.)
+#11 6.536 debconf: falling back to frontend: Teletype
+#11 6.541 debconf: unable to initialize frontend: Teletype
+#11 6.541 debconf: (This frontend requires a controlling tty.)
+#11 6.541 debconf: falling back to frontend: Noninteractive
+#11 6.932 Fetched 36.7 MB in 1s (31.6 MB/s)
+#11 6.951 Selecting previously unselected package libpython3.13-minimal:arm64.
+#11 6.951 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 18354 files and directories currently installed.)
+#11 6.956 Preparing to unpack .../libpython3.13-minimal_3.13.7-1_arm64.deb ...
+#11 6.957 Unpacking libpython3.13-minimal:arm64 (3.13.7-1) ...
+#11 7.014 Selecting previously unselected package python3.13-minimal.
+#11 7.015 Preparing to unpack .../python3.13-minimal_3.13.7-1_arm64.deb ...
+#11 7.018 Unpacking python3.13-minimal (3.13.7-1) ...
+#11 7.124 Setting up libpython3.13-minimal:arm64 (3.13.7-1) ...
+#11 7.159 Setting up python3.13-minimal (3.13.7-1) ...
+#11 7.645 Selecting previously unselected package python3-minimal.
+#11 7.645 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 18678 files and directories currently installed.)
+#11 7.651 Preparing to unpack .../0-python3-minimal_3.13.5-1_arm64.deb ...
+#11 7.652 Unpacking python3-minimal (3.13.5-1) ...
+#11 7.663 Selecting previously unselected package media-types.
+#11 7.664 Preparing to unpack .../1-media-types_13.0.0_all.deb ...
+#11 7.665 Unpacking media-types (13.0.0) ...
+#11 7.683 Selecting previously unselected package netbase.
+#11 7.684 Preparing to unpack .../2-netbase_6.5_all.deb ...
+#11 7.685 Unpacking netbase (6.5) ...
+#11 7.695 Selecting previously unselected package libpython3.13-stdlib:arm64.
+#11 7.696 Preparing to unpack .../3-libpython3.13-stdlib_3.13.7-1_arm64.deb ...
+#11 7.698 Unpacking libpython3.13-stdlib:arm64 (3.13.7-1) ...
+#11 7.826 Selecting previously unselected package python3.13.
+#11 7.827 Preparing to unpack .../4-python3.13_3.13.7-1_arm64.deb ...
+#11 7.828 Unpacking python3.13 (3.13.7-1) ...
+#11 7.849 Selecting previously unselected package libpython3-stdlib:arm64.
+#11 7.850 Preparing to unpack .../5-libpython3-stdlib_3.13.5-1_arm64.deb ...
+#11 7.852 Unpacking libpython3-stdlib:arm64 (3.13.5-1) ...
+#11 7.865 Setting up python3-minimal (3.13.5-1) ...
+#11 7.947 Selecting previously unselected package python3.
+#11 7.947 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 19138 files and directories currently installed.)
+#11 7.952 Preparing to unpack .../python3_3.13.5-1_arm64.deb ...
+#11 7.954 Unpacking python3 (3.13.5-1) ...
+#11 7.973 Selecting previously unselected package nodejs.
+#11 7.974 Preparing to unpack .../nodejs_20.19.4-1nodesource1_arm64.deb ...
+#11 7.976 Unpacking nodejs (20.19.4-1nodesource1) ...
+#11 8.903 Setting up media-types (13.0.0) ...
+#11 8.909 Setting up netbase (6.5) ...
+#11 8.916 Setting up libpython3.13-stdlib:arm64 (3.13.7-1) ...
+#11 8.922 Setting up libpython3-stdlib:arm64 (3.13.5-1) ...
+#11 8.925 Setting up python3.13 (3.13.7-1) ...
+#11 9.403 Setting up python3 (3.13.5-1) ...
+#11 9.407 running python rtupdate hooks for python3.13...
+#11 9.407 running python post-rtupdate hooks for python3.13...
+#11 9.456 Setting up nodejs (20.19.4-1nodesource1) ...
+#11 9.464 Processing triggers for systemd (258~rc3-1) ...
+#11 DONE 9.6s
+
+#12 [ 8/16] COPY --chown=devuser:devuser vscode-container-updater/ /home/devuser/vscode-container-updater/
+#12 DONE 1.3s
+
+#13 [ 9/16] WORKDIR /home/devuser/vscode-container-updater
+#13 DONE 0.1s
+
+#14 [10/16] RUN npm install && npm run compile
+#14 1.258 
+#14 1.258 added 1 package, and audited 455 packages in 1s
+#14 1.258 
+#14 1.258 126 packages are looking for funding
+#14 1.258   run `npm fund` for details
+#14 1.259 
+#14 1.259 found 0 vulnerabilities
+#14 1.260 npm notice
+#14 1.260 npm notice New major version of npm available! 10.8.2 -> 11.5.2
+#14 1.260 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.5.2
+#14 1.260 npm notice To update run: npm install -g npm@11.5.2
+#14 1.260 npm notice
+#14 1.339 
+#14 1.339 > vscode-container-updater@0.0.1 compile
+#14 1.339 > tsc -p ./
+#14 1.339 
+#14 DONE 2.9s
+
+#15 [11/16] RUN npm install @vscode/vsce && npx @vscode/vsce package --out vscode-container-updater-updated.vsix
+#15 0.714 
+#15 0.714 up to date, audited 455 packages in 571ms
+#15 0.714 
+#15 0.714 126 packages are looking for funding
+#15 0.714   run `npm fund` for details
+#15 0.715 
+#15 0.715 found 0 vulnerabilities
+#15 1.254 Executing prepublish script 'npm run vscode:prepublish'...
+#15 1.335 
+#15 1.335 > vscode-container-updater@0.0.1 vscode:prepublish
+#15 1.335 > npm run compile
+#15 1.335 
+#15 1.410 
+#15 1.410 > vscode-container-updater@0.0.1 compile
+#15 1.410 > tsc -p ./
+#15 1.410 
+#15 4.274  INFO  Files included in the VSIX:
+#15 4.274 vscode-container-updater-updated.vsix
+#15 4.274 ├─ [Content_Types].xml 
+#15 4.274 ├─ extension.vsixmanifest 
+#15 4.274 └─ extension/
+#15 4.274    ├─ LICENSE.txt [1.05 KB]
+#15 4.274    ├─ package.json [2.31 KB]
+#15 4.274    ├─ readme.md 
+#15 4.274    └─ out/
+#15 4.274       ├─ extension-clean.js [7.19 KB]
+#15 4.274       ├─ extension-external-monitor.js [9.23 KB]
+#15 4.274       └─ extension.js [6.41 KB]
+#15 4.274 
+#15 4.436  DONE  Packaged: vscode-container-updater-updated.vsix (8 files, 11.64 KB)
+#15 DONE 4.5s
+
+#16 [12/16] RUN code --install-extension vscode-container-updater-updated.vsix --force
+#16 0.314 Installing extensions...
+#16 0.430 Extension 'vscode-container-updater-updated.vsix' was successfully installed.
+#16 DONE 0.4s
+
+#17 [13/16] RUN rm -rf node_modules && npm cache clean --force
+#17 1.891 npm warn using --force Recommended protections disabled.
+#17 DONE 2.0s
+
+#18 [14/16] WORKDIR /home/devuser
+#18 DONE 0.0s
+
+#19 [15/16] COPY --chown=devuser:devuser scripts/vscode-tunnel-entrypoint.sh /home/devuser/vscode-tunnel-entrypoint.sh
+#19 DONE 0.0s
+
+#20 [16/16] RUN chmod +x /home/devuser/vscode-tunnel-entrypoint.sh
+#20 DONE 0.1s
+
+#21 exporting to image
+#21 exporting layers
+#21 exporting layers 17.5s done
+#21 exporting manifest sha256:a7d9f9711abfb5706c579a3639914bbbeb883737c38bb01758a24419d32b4de4 done
+#21 exporting config sha256:d4fde3ee3856165d909574f22351c749707823173b0610e407d41b9af6dd6ccf done
+#21 exporting attestation manifest sha256:e80ff5febe5efec463bb2b4d9cfb4786411859005bdce39105e0d37874d3fff2 done
+#21 exporting manifest list sha256:9c08dc0ca22b52650f068c330fb8339cd989ee8e834b7c708b6aaafe5a5505d4 done
+#21 naming to docker.io/library/dmg-vs-code-debian-slim:333a3739e833 done
+#21 unpacking to docker.io/library/dmg-vs-code-debian-slim:333a3739e833
+#21 unpacking to docker.io/library/dmg-vs-code-debian-slim:333a3739e833 6.3s done
+#21 DONE 23.8s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/qd6gkl0lz6px9a3hzgh9vunte
+[INFO] Docker build log saved to logs/docker-build-333a3739e833.log
+Running npm audit fix in a temp container (if npm is present)...
+*
+* Visual Studio Code Server
+*
+* By using the software, you agree to
+* the Visual Studio Code Server License Terms (https://aka.ms/vscode-server-license) and
+* the Microsoft Privacy Statement (https://privacy.microsoft.com/en-US/privacystatement).
+*
+[2025-08-30 15:16:28] info Using GitHub for authentication, run `code tunnel user login --provider <provider>` option to change this.
+To grant access to the server, please log into https://github.com/login/device and use code 1583-8DAC
+[2025-08-30 15:21:00] info Creating tunnel with the name: 5c78fdaa16fc
+
+Open this link in your browser https://vscode.dev/tunnel/5c78fdaa16fc
+
+[2025-08-30 15:21:44] info [tunnels::connections::relay_tunnel_host] Opened new client on channel 2
+[2025-08-30 15:21:44] info [russh::server] wrote id
+[2025-08-30 15:21:44] info [russh::server] read other id
+[2025-08-30 15:21:44] info [russh::server] session is running
+[2025-08-30 15:21:45] info [rpc.0] Checking /home/devuser/.vscode/cli/servers/Stable-6f17636121051a53c88d3e605c491d22af2ba755/log.txt and /home/devuser/.vscode/cli/servers/Stable-6f17636121051a53c88d3e605c491d22af2ba755/pid.txt for a running server...
+[2025-08-30 15:21:45] info [rpc.0] Downloading Visual Studio Code server -> /tmp/.tmpGovnK9/vscode-server-linux-arm64.tar.gz
+[2025-08-30 15:21:48] info [rpc.0] Starting server...
+[2025-08-30 15:21:48] info [rpc.0] Server started
+^C[INFO] NPM audit log saved to logs/npm-audit-333a3739e833.log
+Running apt-get update/upgrade in a temp container (if apt is present)...
+*
+* Visual Studio Code Server
+*
+* By using the software, you agree to
+* the Visual Studio Code Server License Terms (https://aka.ms/vscode-server-license) and
+* the Microsoft Privacy Statement (https://privacy.microsoft.com/en-US/privacystatement).
+*
+[2025-08-30 15:24:30] info Using GitHub for authentication, run `code tunnel user login --provider <provider>` option to change this.
+To grant access to the server, please log into https://github.com/login/device and use code 5515-5B09
+[INFO] Apt upgrade log saved to logs/apt-upgrade-333a3739e833.log
+Running Docker Scout analysis for dmg-vs-code-debian-slim:333a3739e833...
+    ...Storing image for indexing
+    ✓ Image stored for indexing
+    ...Indexing
+    ✓ Indexed 1008 packages
+    ✓ Provenance obtained from attestation
+    ✗ Detected 41 vulnerable packages with a total of 113 vulnerabilities
+
+What's next:
+    View base image update recommendations → docker scout recommendations dmg-vs-code-debian-slim:333a3739e833
+
+
+
+## Overview
+
+                    │                      Analyzed Image                        
+────────────────────┼────────────────────────────────────────────────────────────
+  Target            │  dmg-vs-code-debian-slim:333a3739e833                      
+    digest          │  9c08dc0ca22b                                              
+    platform        │ linux/arm64                                                
+    provenance      │ https://github.com/dmgoldstein1/dmg-VSCode-DebianSlim.git  
+                    │  https://github.com/dmgoldstein1/dmg-VSCode-DebianSlim/blob/9c95482c7814e4ce3026e256ddfc506139678506                  
+    vulnerabilities │    3C    17H    12M    78L     3?                          
+    size            │ 530 MB                                                     
+    packages        │ 1008                                                       
+
+
+## Packages and Vulnerabilities
+
+   3C     5H     1M     0L     1?  handlebars 1.0.0
+pkg:npm/handlebars@1.0.0
+
+    ✗ CRITICAL CVE-2021-23383 [Improperly Controlled Modification of Object Prototype Attributes ('Prototype Pollution')]
+      https://scout.docker.com/v/CVE-2021-23383?s=github&n=handlebars&t=npm&vr=%3C4.7.7
+      Affected range : <4.7.7                                        
+      Fixed version  : 4.7.7                                         
+      CVSS Score     : 9.8                                           
+      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H  
+    
+    ✗ CRITICAL CVE-2021-23369 [Improper Control of Generation of Code ('Code Injection')]
+      https://scout.docker.com/v/CVE-2021-23369?s=github&n=handlebars&t=npm&vr=%3C4.7.7
+      Affected range : <4.7.7                                        
+      Fixed version  : 4.7.7                                         
+      CVSS Score     : 9.8                                           
+      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H  
+    
+    ✗ CRITICAL CVE-2019-19919 [Improperly Controlled Modification of Object Prototype Attributes ('Prototype Pollution')]
+      https://scout.docker.com/v/CVE-2019-19919?s=github&n=handlebars&t=npm&vr=%3C3.0.8
+      Affected range : <3.0.8                                        
+      Fixed version  : 3.0.8                                         
+      CVSS Score     : 9.8                                           
+      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H  
+    
+    ✗ HIGH CVE-2019-20920 [Improper Control of Generation of Code ('Code Injection')]
+      https://scout.docker.com/v/CVE-2019-20920?s=github&n=handlebars&t=npm&vr=%3C3.0.8
+      Affected range : <3.0.8                                        
+      Fixed version  : 3.0.8                                         
+      CVSS Score     : 8.1                                           
+      CVSS Vector    : CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:H/I:L/A:L  
+    
+    ✗ HIGH GHSA-q42p-pg8m-cqh6 [Modification of Assumed-Immutable Data (MAID)]
+      https://scout.docker.com/v/GHSA-q42p-pg8m-cqh6?s=github&n=handlebars&t=npm&vr=%3C3.0.7
+      Affected range : <3.0.7                                        
+      Fixed version  : 3.0.7                                         
+      CVSS Score     : 7.3                                           
+      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L  
+    
+    ✗ HIGH GHSA-2cf5-4w76-r9qv [Improper Control of Generation of Code ('Code Injection')]
+      https://scout.docker.com/v/GHSA-2cf5-4w76-r9qv?s=github&n=handlebars&t=npm&vr=%3C3.0.8
+      Affected range : <3.0.8                                        
+      Fixed version  : 3.0.8                                         
+      CVSS Score     : 7.3                                           
+      CVSS Vector    : CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:C/C:L/I:H/A:L  
+    
+    ✗ HIGH GHSA-q2c6-c6pm-g3gh
+      https://scout.docker.com/v/GHSA-q2c6-c6pm-g3gh?s=github&n=handlebars&t=npm&vr=%3C3.0.8
+      Affected range : <3.0.8  
+      Fixed version  : 3.0.8   
+    
+    ✗ HIGH GHSA-g9r4-xpmj-mj65 [Improperly Controlled Modification of Object Prototype Attributes ('Prototype Pollution')]
+      https://scout.docker.com/v/GHSA-g9r4-xpmj-mj65?s=github&n=handlebars&t=npm&vr=%3C3.0.8
+      Affected range : <3.0.8  
+      Fixed version  : 3.0.8   
+    
+    ✗ MEDIUM CVE-2015-8861 [Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')]
+      https://scout.docker.com/v/CVE-2015-8861?s=github&n=handlebars&t=npm&vr=%3C4.0.0
+      Affected range : <4.0.0                                        
+      Fixed version  : 4.0.0                                         
+      CVSS Score     : 6.1                                           
+      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N  
+    
+    ✗ UNSPECIFIED GMS-2015-33 [OWASP Top Ten 2017 Category A9 - Using Components with Known Vulnerabilities]
+      https://scout.docker.com/v/GMS-2015-33?s=gitlab&n=handlebars&t=npm&vr=%3C4.0.0
+      Affected range : <4.0.0  
+      Fixed version  : 4.0.0   
+    
+
+   0C     5H     1M     1L     1?  npm 1.0.1
+pkg:npm/npm@1.0.1
+
+    ✗ HIGH CVE-2018-7408 [Incorrect Permission Assignment for Critical Resource]
+      https://scout.docker.com/v/CVE-2018-7408?s=github&n=npm&t=npm&vr=%3C5.7.1
+      Affected range : <5.7.1                                        
+      Fixed version  : 5.7.1                                         
+      CVSS Score     : 7.8                                           
+      CVSS Vector    : CVSS:3.0/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H  
+    
+    ✗ HIGH CVE-2019-16777 [Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')]
+      https://scout.docker.com/v/CVE-2019-16777?s=github&n=npm&t=npm&vr=%3C6.13.4
+      Affected range : <6.13.4                                       
+      Fixed version  : 6.13.4                                        
+      CVSS Score     : 7.7                                           
+      CVSS Vector    : CVSS:3.1/AV:N/AC:H/PR:L/UI:R/S:C/C:H/I:H/A:N  
+    
+    ✗ HIGH CVE-2019-16776 [Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')]
+      https://scout.docker.com/v/CVE-2019-16776?s=github&n=npm&t=npm&vr=%3C6.13.3
+      Affected range : <6.13.3                                       
+      Fixed version  : 6.13.3                                        
+      CVSS Score     : 7.7                                           
+      CVSS Vector    : CVSS:3.1/AV:N/AC:H/PR:L/UI:R/S:C/C:H/I:H/A:N  
+    
+    ✗ HIGH CVE-2019-16775 [Improper Link Resolution Before File Access ('Link Following')]
+      https://scout.docker.com/v/CVE-2019-16775?s=github&n=npm&t=npm&vr=%3C6.13.3
+      Affected range : <6.13.3                                       
+      Fixed version  : 6.13.3                                        
+      CVSS Score     : 7.7                                           
+      CVSS Vector    : CVSS:3.1/AV:N/AC:H/PR:L/UI:R/S:C/C:H/I:H/A:N  
+    
+    ✗ HIGH CVE-2016-3956 [Exposure of Sensitive Information to an Unauthorized Actor]
+      https://scout.docker.com/v/CVE-2016-3956?s=github&n=npm&t=npm&vr=%3C%3D2.15.0
+      Affected range : <=2.15.0  
+      Fixed version  : 2.15.1    
+    
+    ✗ MEDIUM CVE-2020-15095 [Insertion of Sensitive Information into Log File]
+      https://scout.docker.com/v/CVE-2020-15095?s=github&n=npm&t=npm&vr=%3C6.14.6
+      Affected range : <6.14.6                                       
+      Fixed version  : 6.14.6                                        
+      CVSS Score     : 4.4                                           
+      CVSS Vector    : CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:U/C:H/I:N/A:N  
+    
+    ✗ LOW CVE-2013-4116 [Improper Link Resolution Before File Access ('Link Following')]
+      https://scout.docker.com/v/CVE-2013-4116?s=github&n=npm&t=npm&vr=%3C1.3.3
+      Affected range : <1.3.3  
+      Fixed version  : 1.3.3   
+    
+    ✗ UNSPECIFIED GMS-2016-23 [OWASP Top Ten 2017 Category A9 - Using Components with Known Vulnerabilities]
+      https://scout.docker.com/v/GMS-2016-23?s=gitlab&n=npm&t=npm&vr=%3C%3D%2C2.15.0
+      Affected range : <=             
+                     : 2.15.0         
+      Fixed version  : 2.15.1, 3.8.3  
+    
+
+   0C     2H     1M     0L  grunt 1.0.0
+pkg:npm/grunt@1.0.0
+
+    ✗ HIGH CVE-2020-7729 [Initialization of a Resource with an Insecure Default]
+      https://scout.docker.com/v/CVE-2020-7729?s=github&n=grunt&t=npm&vr=%3C1.3.0
+      Affected range : <1.3.0                                        
+      Fixed version  : 1.3.0                                         
+      CVSS Score     : 7.1                                           
+      CVSS Vector    : CVSS:3.1/AV:N/AC:H/PR:L/UI:R/S:U/C:H/I:H/A:H  
+    
+    ✗ HIGH CVE-2022-1537 [Time-of-check Time-of-use (TOCTOU) Race Condition]
+      https://scout.docker.com/v/CVE-2022-1537?s=github&n=grunt&t=npm&vr=%3C1.5.3
+      Affected range : <1.5.3                                        
+      Fixed version  : 1.5.3                                         
+      CVSS Score     : 7.0                                           
+      CVSS Vector    : CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H  
+    
+    ✗ MEDIUM CVE-2022-0436 [Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')]
+      https://scout.docker.com/v/CVE-2022-0436?s=github&n=grunt&t=npm&vr=%3C1.5.2
+      Affected range : <1.5.2                                        
+      Fixed version  : 1.5.2                                         
+      CVSS Score     : 5.5                                           
+      CVSS Vector    : CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N  
+    
+
+   0C     1H     1M     1L  xdg-utils 1.2.1-2
+pkg:deb/debian/xdg-utils@1.2.1-2?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ HIGH CVE-2022-4055
+      https://scout.docker.com/v/CVE-2022-4055?s=debian&n=xdg-utils&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1.2.1-2
+      Affected range : >=1.2.1-2  
+      Fixed version  : not fixed  
+    
+    ✗ MEDIUM CVE-2020-27748
+      https://scout.docker.com/v/CVE-2020-27748?s=debian&n=xdg-utils&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1.2.1-2
+      Affected range : >=1.2.1-2  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2025-52968
+      https://scout.docker.com/v/CVE-2025-52968?s=debian&n=xdg-utils&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1.2.1-2
+      Affected range : >=1.2.1-2  
+      Fixed version  : not fixed  
+    
+
+   0C     1H     0M     0L  json 1.0.0
+pkg:npm/json@1.0.0
+
+    ✗ HIGH CVE-2020-7712 [Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')]
+      https://scout.docker.com/v/CVE-2020-7712?s=github&n=json&t=npm&vr=%3C10.0.0
+      Affected range : <10.0.0                                       
+      Fixed version  : 10.0.0                                        
+      CVSS Score     : 7.2                                           
+      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H  
+    
+
+   0C     1H     0M     0L  ini 1.0.0
+pkg:npm/ini@1.0.0
+
+    ✗ HIGH CVE-2020-7788 [Improperly Controlled Modification of Object Prototype Attributes ('Prototype Pollution')]
+      https://scout.docker.com/v/CVE-2020-7788?s=github&n=ini&t=npm&vr=%3C1.3.6
+      Affected range : <1.3.6                                        
+      Fixed version  : 1.3.6                                         
+      CVSS Score     : 7.3                                           
+      CVSS Vector    : CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L  
+    
+
+   0C     1H     0M     0L  cross-spawn 7.0.3
+pkg:npm/cross-spawn@7.0.3
+
+    ✗ HIGH CVE-2024-21538 [Inefficient Regular Expression Complexity]
+      https://scout.docker.com/v/CVE-2024-21538?s=github&n=cross-spawn&t=npm&vr=%3E%3D7.0.0%2C%3C7.0.5
+      Affected range : >=7.0.0                                                              
+                     : <7.0.5                                                               
+      Fixed version  : 7.0.5                                                                
+      CVSS Score     : 7.7                                                                  
+      CVSS Vector    : CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N/E:P  
+    
+
+   0C     1H     0M     0L  diff 1.0.0
+pkg:npm/diff@1.0.0
+
+    ✗ HIGH GHSA-h6ch-v84p-w6p9 [Uncontrolled Resource Consumption]
+      https://scout.docker.com/v/GHSA-h6ch-v84p-w6p9?s=github&n=diff&t=npm&vr=%3C3.5.0
+      Affected range : <3.5.0  
+      Fixed version  : 3.5.0   
+    
+
+   0C     0H     2M     0L  avahi 0.8-16
+pkg:deb/debian/avahi@0.8-16?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ MEDIUM CVE-2024-52616
+      https://scout.docker.com/v/CVE-2024-52616?s=debian&n=avahi&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D0.8-16
+      Affected range : >=0.8-16   
+      Fixed version  : not fixed  
+    
+    ✗ MEDIUM CVE-2024-52615
+      https://scout.docker.com/v/CVE-2024-52615?s=debian&n=avahi&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D0.8-16
+      Affected range : >=0.8-16   
+      Fixed version  : not fixed  
+    
+
+   0C     0H     2M     0L  pug 1.0.0
+pkg:npm/pug@1.0.0
+
+    ✗ MEDIUM CVE-2024-36361 [Improper Control of Generation of Code ('Code Injection')]
+      https://scout.docker.com/v/CVE-2024-36361?s=github&n=pug&t=npm&vr=%3C%3D3.0.2
+      Affected range : <=3.0.2                                       
+      Fixed version  : 3.0.3                                         
+      CVSS Score     : 6.8                                           
+      CVSS Vector    : CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:H/A:N  
+    
+    ✗ MEDIUM CVE-2021-21353 [Improper Neutralization of Special Elements in Output Used by a Downstream Component ('Injection')]
+      https://scout.docker.com/v/CVE-2021-21353?s=github&n=pug&t=npm&vr=%3C3.0.1
+      Affected range : <3.0.1                                        
+      Fixed version  : 3.0.1                                         
+      CVSS Score     : 6.8                                           
+      CVSS Vector    : CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:N/I:H/A:N  
+    
+
+   0C     0H     1M    13L  tiff 4.7.0-4
+pkg:deb/debian/tiff@4.7.0-4?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ MEDIUM CVE-2025-8961
+      https://scout.docker.com/v/CVE-2025-8961?s=debian&n=tiff&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D4.7.0-4
+      Affected range : >=4.7.0-4  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2025-8534
+      https://scout.docker.com/v/CVE-2025-8534?s=debian&n=tiff&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D4.7.0-4
+      Affected range : >=4.7.0-4  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2025-8177
+      https://scout.docker.com/v/CVE-2025-8177?s=debian&n=tiff&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D4.7.0-4
+      Affected range : >=4.7.0-4  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2025-8176
+      https://scout.docker.com/v/CVE-2025-8176?s=debian&n=tiff&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D4.7.0-4
+      Affected range : >=4.7.0-4  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2024-6716
+      https://scout.docker.com/v/CVE-2024-6716?s=debian&n=tiff&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D4.5.1%2Bgit230720-5
+      Affected range : >=4.5.1+git230720-5  
+      Fixed version  : not fixed            
+    
+    ✗ LOW CVE-2023-6228
+      https://scout.docker.com/v/CVE-2023-6228?s=debian&n=tiff&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D4.7.0-4
+      Affected range : >=4.7.0-4  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2023-3164
+      https://scout.docker.com/v/CVE-2023-3164?s=debian&n=tiff&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D4.7.0-4
+      Affected range : >=4.7.0-4  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2023-1916
+      https://scout.docker.com/v/CVE-2023-1916?s=debian&n=tiff&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D4.7.0-4
+      Affected range : >=4.7.0-4  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2022-1210
+      https://scout.docker.com/v/CVE-2022-1210?s=debian&n=tiff&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D4.7.0-4
+      Affected range : >=4.7.0-4  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2018-10126
+      https://scout.docker.com/v/CVE-2018-10126?s=debian&n=tiff&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D4.7.0-4
+      Affected range : >=4.7.0-4  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2017-9117
+      https://scout.docker.com/v/CVE-2017-9117?s=debian&n=tiff&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D4.7.0-4
+      Affected range : >=4.7.0-4  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2017-5563
+      https://scout.docker.com/v/CVE-2017-5563?s=debian&n=tiff&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D4.7.0-4
+      Affected range : >=4.7.0-4  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2017-17973
+      https://scout.docker.com/v/CVE-2017-17973?s=debian&n=tiff&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D4.7.0-4
+      Affected range : >=4.7.0-4  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2017-16232
+      https://scout.docker.com/v/CVE-2017-16232?s=debian&n=tiff&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D4.7.0-4
+      Affected range : >=4.7.0-4  
+      Fixed version  : not fixed  
+    
+
+   0C     0H     1M     1L  tar 1.35+dfsg-3.1
+pkg:deb/debian/tar@1.35%2Bdfsg-3.1?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ MEDIUM CVE-2025-45582
+      https://scout.docker.com/v/CVE-2025-45582?s=debian&n=tar&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1.35%2Bdfsg-3.1
+      Affected range : >=1.35+dfsg-3.1  
+      Fixed version  : not fixed        
+    
+    ✗ LOW CVE-2005-2541
+      https://scout.docker.com/v/CVE-2005-2541?s=debian&n=tar&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1.35%2Bdfsg-3.1
+      Affected range : >=1.35+dfsg-3.1  
+      Fixed version  : not fixed        
+    
+
+   0C     0H     1M     0L  wget 1.25.0-2
+pkg:deb/debian/wget@1.25.0-2?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ MEDIUM CVE-2021-31879
+      https://scout.docker.com/v/CVE-2021-31879?s=debian&n=wget&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1.25.0-2
+      Affected range : >=1.25.0-2  
+      Fixed version  : not fixed   
+    
+
+   0C     0H     1M     0L  ncurses 6.5+20250216-2
+pkg:deb/debian/ncurses@6.5%2B20250216-2?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ MEDIUM CVE-2025-6141
+      https://scout.docker.com/v/CVE-2025-6141?s=debian&n=ncurses&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D6.5%2B20250216-2
+      Affected range : >=6.5+20250216-2  
+      Fixed version  : not fixed         
+    
+
+   0C     0H     0M     9L  openssh 1:10.0p1-8
+pkg:deb/debian/openssh@1%3A10.0p1-8?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2023-51767
+      https://scout.docker.com/v/CVE-2023-51767?s=debian&n=openssh&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1%3A10.0p1-8
+      Affected range : >=1:10.0p1-8  
+      Fixed version  : not fixed     
+    
+    ✗ LOW CVE-2020-15778
+      https://scout.docker.com/v/CVE-2020-15778?s=debian&n=openssh&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1%3A10.0p1-8
+      Affected range : >=1:10.0p1-8  
+      Fixed version  : not fixed     
+    
+    ✗ LOW CVE-2020-14145
+      https://scout.docker.com/v/CVE-2020-14145?s=debian&n=openssh&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1%3A10.0p1-8
+      Affected range : >=1:10.0p1-8  
+      Fixed version  : not fixed     
+    
+    ✗ LOW CVE-2019-6110
+      https://scout.docker.com/v/CVE-2019-6110?s=debian&n=openssh&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1%3A10.0p1-8
+      Affected range : >=1:10.0p1-8  
+      Fixed version  : not fixed     
+    
+    ✗ LOW CVE-2018-15919
+      https://scout.docker.com/v/CVE-2018-15919?s=debian&n=openssh&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1%3A10.0p1-8
+      Affected range : >=1:10.0p1-8  
+      Fixed version  : not fixed     
+    
+    ✗ LOW CVE-2016-20012
+      https://scout.docker.com/v/CVE-2016-20012?s=debian&n=openssh&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1%3A10.0p1-8
+      Affected range : >=1:10.0p1-8  
+      Fixed version  : not fixed     
+    
+    ✗ LOW CVE-2008-3234
+      https://scout.docker.com/v/CVE-2008-3234?s=debian&n=openssh&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1%3A10.0p1-8
+      Affected range : >=1:10.0p1-8  
+      Fixed version  : not fixed     
+    
+    ✗ LOW CVE-2007-2768
+      https://scout.docker.com/v/CVE-2007-2768?s=debian&n=openssh&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1%3A10.0p1-8
+      Affected range : >=1:10.0p1-8  
+      Fixed version  : not fixed     
+    
+    ✗ LOW CVE-2007-2243
+      https://scout.docker.com/v/CVE-2007-2243?s=debian&n=openssh&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1%3A10.0p1-8
+      Affected range : >=1:10.0p1-8  
+      Fixed version  : not fixed     
+    
+
+   0C     0H     0M     7L  elfutils 0.192-4
+pkg:deb/debian/elfutils@0.192-4?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2025-1377
+      https://scout.docker.com/v/CVE-2025-1377?s=debian&n=elfutils&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D0.192-4
+      Affected range : >=0.192-4  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2025-1376
+      https://scout.docker.com/v/CVE-2025-1376?s=debian&n=elfutils&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D0.192-4
+      Affected range : >=0.192-4  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2025-1372
+      https://scout.docker.com/v/CVE-2025-1372?s=debian&n=elfutils&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D0.192-4
+      Affected range : >=0.192-4  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2025-1371
+      https://scout.docker.com/v/CVE-2025-1371?s=debian&n=elfutils&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D0.192-4
+      Affected range : >=0.192-4  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2025-1365
+      https://scout.docker.com/v/CVE-2025-1365?s=debian&n=elfutils&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D0.192-4
+      Affected range : >=0.192-4  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2025-1352
+      https://scout.docker.com/v/CVE-2025-1352?s=debian&n=elfutils&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D0.192-4
+      Affected range : >=0.192-4  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2024-25260
+      https://scout.docker.com/v/CVE-2024-25260?s=debian&n=elfutils&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D0.192-4
+      Affected range : >=0.192-4  
+      Fixed version  : not fixed  
+    
+
+   0C     0H     0M     7L  glibc 2.41-12
+pkg:deb/debian/glibc@2.41-12?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2019-9192
+      https://scout.docker.com/v/CVE-2019-9192?s=debian&n=glibc&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2.41-12
+      Affected range : >=2.41-12  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2019-1010025
+      https://scout.docker.com/v/CVE-2019-1010025?s=debian&n=glibc&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2.41-12
+      Affected range : >=2.41-12  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2019-1010024
+      https://scout.docker.com/v/CVE-2019-1010024?s=debian&n=glibc&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2.41-12
+      Affected range : >=2.41-12  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2019-1010023
+      https://scout.docker.com/v/CVE-2019-1010023?s=debian&n=glibc&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2.41-12
+      Affected range : >=2.41-12  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2019-1010022
+      https://scout.docker.com/v/CVE-2019-1010022?s=debian&n=glibc&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2.41-12
+      Affected range : >=2.41-12  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2018-20796
+      https://scout.docker.com/v/CVE-2018-20796?s=debian&n=glibc&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2.41-12
+      Affected range : >=2.41-12  
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2010-4756
+      https://scout.docker.com/v/CVE-2010-4756?s=debian&n=glibc&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2.41-12
+      Affected range : >=2.41-12  
+      Fixed version  : not fixed  
+    
+
+   0C     0H     0M     4L  openldap 2.6.10+dfsg-1
+pkg:deb/debian/openldap@2.6.10%2Bdfsg-1?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2020-15719
+      https://scout.docker.com/v/CVE-2020-15719?s=debian&n=openldap&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2.6.10%2Bdfsg-1
+      Affected range : >=2.6.10+dfsg-1  
+      Fixed version  : not fixed        
+    
+    ✗ LOW CVE-2017-17740
+      https://scout.docker.com/v/CVE-2017-17740?s=debian&n=openldap&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2.6.10%2Bdfsg-1
+      Affected range : >=2.6.10+dfsg-1  
+      Fixed version  : not fixed        
+    
+    ✗ LOW CVE-2017-14159
+      https://scout.docker.com/v/CVE-2017-14159?s=debian&n=openldap&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2.6.10%2Bdfsg-1
+      Affected range : >=2.6.10+dfsg-1  
+      Fixed version  : not fixed        
+    
+    ✗ LOW CVE-2015-3276
+      https://scout.docker.com/v/CVE-2015-3276?s=debian&n=openldap&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2.6.10%2Bdfsg-1
+      Affected range : >=2.6.10+dfsg-1  
+      Fixed version  : not fixed        
+    
+
+   0C     0H     0M     4L  systemd 258~rc3-1
+pkg:deb/debian/systemd@258~rc3-1?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2023-31439
+      https://scout.docker.com/v/CVE-2023-31439?s=debian&n=systemd&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D258%7Erc3-1
+      Affected range : >=258~rc3-1  
+      Fixed version  : not fixed    
+    
+    ✗ LOW CVE-2023-31438
+      https://scout.docker.com/v/CVE-2023-31438?s=debian&n=systemd&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D258%7Erc3-1
+      Affected range : >=258~rc3-1  
+      Fixed version  : not fixed    
+    
+    ✗ LOW CVE-2023-31437
+      https://scout.docker.com/v/CVE-2023-31437?s=debian&n=systemd&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D258%7Erc3-1
+      Affected range : >=258~rc3-1  
+      Fixed version  : not fixed    
+    
+    ✗ LOW CVE-2013-4392
+      https://scout.docker.com/v/CVE-2013-4392?s=debian&n=systemd&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D258%7Erc3-1
+      Affected range : >=258~rc3-1  
+      Fixed version  : not fixed    
+    
+
+   0C     0H     0M     4L  nss 2:3.114-1
+pkg:deb/debian/nss@2%3A3.114-1?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2017-11698
+      https://scout.docker.com/v/CVE-2017-11698?s=debian&n=nss&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2%3A3.114-1
+      Affected range : >=2:3.114-1  
+      Fixed version  : not fixed    
+    
+    ✗ LOW CVE-2017-11697
+      https://scout.docker.com/v/CVE-2017-11697?s=debian&n=nss&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2%3A3.114-1
+      Affected range : >=2:3.114-1  
+      Fixed version  : not fixed    
+    
+    ✗ LOW CVE-2017-11696
+      https://scout.docker.com/v/CVE-2017-11696?s=debian&n=nss&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2%3A3.114-1
+      Affected range : >=2:3.114-1  
+      Fixed version  : not fixed    
+    
+    ✗ LOW CVE-2017-11695
+      https://scout.docker.com/v/CVE-2017-11695?s=debian&n=nss&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2%3A3.114-1
+      Affected range : >=2:3.114-1  
+      Fixed version  : not fixed    
+    
+
+   0C     0H     0M     3L  krb5 1.21.3-5
+pkg:deb/debian/krb5@1.21.3-5?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2024-26461
+      https://scout.docker.com/v/CVE-2024-26461?s=debian&n=krb5&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1.21.3-5
+      Affected range : >=1.21.3-5  
+      Fixed version  : not fixed   
+    
+    ✗ LOW CVE-2024-26458
+      https://scout.docker.com/v/CVE-2024-26458?s=debian&n=krb5&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1.21.3-5
+      Affected range : >=1.21.3-5  
+      Fixed version  : not fixed   
+    
+    ✗ LOW CVE-2018-5709
+      https://scout.docker.com/v/CVE-2018-5709?s=debian&n=krb5&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1.21.3-5
+      Affected range : >=1.21.3-5  
+      Fixed version  : not fixed   
+    
+
+   0C     0H     0M     3L  cairo 1.18.4-1
+pkg:deb/debian/cairo@1.18.4-1?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2025-50422
+      https://scout.docker.com/v/CVE-2025-50422?s=debian&n=cairo&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1.18.4-1
+      Affected range : >=1.18.4-1  
+      Fixed version  : not fixed   
+    
+    ✗ LOW CVE-2018-18064
+      https://scout.docker.com/v/CVE-2018-18064?s=debian&n=cairo&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1.18.4-1
+      Affected range : >=1.18.4-1  
+      Fixed version  : not fixed   
+    
+    ✗ LOW CVE-2017-7475
+      https://scout.docker.com/v/CVE-2017-7475?s=debian&n=cairo&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1.18.4-1
+      Affected range : >=1.18.4-1  
+      Fixed version  : not fixed   
+    
+
+   0C     0H     0M     2L  lcms2 2.16-2
+pkg:deb/debian/lcms2@2.16-2?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2025-29070
+      https://scout.docker.com/v/CVE-2025-29070?s=debian&n=lcms2&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2.16-2
+      Affected range : >=2.16-2   
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2025-29069
+      https://scout.docker.com/v/CVE-2025-29069?s=debian&n=lcms2&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2.16-2
+      Affected range : >=2.16-2   
+      Fixed version  : not fixed  
+    
+
+   0C     0H     0M     2L  libgcrypt20 1.11.2-2
+pkg:deb/debian/libgcrypt20@1.11.2-2?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2024-2236
+      https://scout.docker.com/v/CVE-2024-2236?s=debian&n=libgcrypt20&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1.11.2-2
+      Affected range : >=1.11.2-2  
+      Fixed version  : not fixed   
+    
+    ✗ LOW CVE-2018-6829
+      https://scout.docker.com/v/CVE-2018-6829?s=debian&n=libgcrypt20&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1.11.2-2
+      Affected range : >=1.11.2-2  
+      Fixed version  : not fixed   
+    
+
+   0C     0H     0M     2L  coreutils 9.7-3
+pkg:deb/debian/coreutils@9.7-3?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2025-5278
+      https://scout.docker.com/v/CVE-2025-5278?s=debian&n=coreutils&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D9.7-3
+      Affected range : >=9.7-3    
+      Fixed version  : not fixed  
+    
+    ✗ LOW CVE-2017-18018
+      https://scout.docker.com/v/CVE-2017-18018?s=debian&n=coreutils&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D9.7-3
+      Affected range : >=9.7-3    
+      Fixed version  : not fixed  
+    
+
+   0C     0H     0M     1L  llvm-toolchain-19 1:19.1.7-3
+pkg:deb/debian/llvm-toolchain-19@1%3A19.1.7-3?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2024-7883
+      https://scout.docker.com/v/CVE-2024-7883?s=debian&n=llvm-toolchain-19&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1%3A19.1.7-3
+      Affected range : >=1:19.1.7-3  
+      Fixed version  : not fixed     
+    
+
+   0C     0H     0M     1L  libpng1.6 1.6.50-1
+pkg:deb/debian/libpng1.6@1.6.50-1?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2021-4214
+      https://scout.docker.com/v/CVE-2021-4214?s=debian&n=libpng1.6&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1.6.50-1
+      Affected range : >=1.6.50-1  
+      Fixed version  : not fixed   
+    
+
+   0C     0H     0M     1L  pixman 0.44.0-3
+pkg:deb/debian/pixman@0.44.0-3?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2023-37769
+      https://scout.docker.com/v/CVE-2023-37769?s=debian&n=pixman&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D0.44.0-3
+      Affected range : >=0.44.0-3  
+      Fixed version  : not fixed   
+    
+
+   0C     0H     0M     1L  jbigkit 2.1-6.1
+pkg:deb/debian/jbigkit@2.1-6.1?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2017-9937
+      https://scout.docker.com/v/CVE-2017-9937?s=debian&n=jbigkit&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2.1-6.1
+      Affected range : >=2.1-6.1  
+      Fixed version  : not fixed  
+    
+
+   0C     0H     0M     1L  gnupg2 2.4.8-3
+pkg:deb/debian/gnupg2@2.4.8-3?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2022-3219
+      https://scout.docker.com/v/CVE-2022-3219?s=debian&n=gnupg2&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2.4.8-3
+      Affected range : >=2.4.8-3  
+      Fixed version  : not fixed  
+    
+
+   0C     0H     0M     1L  brace-expansion 2.0.1
+pkg:npm/brace-expansion@2.0.1
+
+    ✗ LOW CVE-2025-5889 [Uncontrolled Resource Consumption]
+      https://scout.docker.com/v/CVE-2025-5889?s=github&n=brace-expansion&t=npm&vr=%3E%3D2.0.0%2C%3C%3D2.0.1
+      Affected range : >=2.0.0                                                              
+                     : <=2.0.1                                                              
+      Fixed version  : 2.0.2                                                                
+      CVSS Score     : 1.3                                                                  
+      CVSS Vector    : CVSS:4.0/AV:N/AC:H/AT:N/PR:L/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N/E:P  
+    
+
+   0C     0H     0M     1L  glib2.0 2.84.4-3
+pkg:deb/debian/glib2.0@2.84.4-3?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2012-0039
+      https://scout.docker.com/v/CVE-2012-0039?s=debian&n=glib2.0&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2.84.4-3
+      Affected range : >=2.84.4-3  
+      Fixed version  : not fixed   
+    
+
+   0C     0H     0M     1L  cups 2.4.10-3
+pkg:deb/debian/cups@2.4.10-3?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2014-8166
+      https://scout.docker.com/v/CVE-2014-8166?s=debian&n=cups&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2.4.10-3
+      Affected range : >=2.4.10-3  
+      Fixed version  : not fixed   
+    
+
+   0C     0H     0M     1L  util-linux 2.41.1-1
+pkg:deb/debian/util-linux@2.41.1-1?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2022-0563
+      https://scout.docker.com/v/CVE-2022-0563?s=debian&n=util-linux&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2.41.1-1
+      Affected range : >=2.41.1-1  
+      Fixed version  : not fixed   
+    
+
+   0C     0H     0M     1L  sudo 1.9.17p2-1
+pkg:deb/debian/sudo@1.9.17p2-1?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2005-1119
+      https://scout.docker.com/v/CVE-2005-1119?s=debian&n=sudo&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D1.9.17p2-1
+      Affected range : >=1.9.17p2-1  
+      Fixed version  : not fixed     
+    
+
+   0C     0H     0M     1L  openssl 3.5.2-1
+pkg:deb/debian/openssl@3.5.2-1?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2010-0928
+      https://scout.docker.com/v/CVE-2010-0928?s=debian&n=openssl&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D3.2.2-1
+      Affected range : >=3.2.2-1  
+      Fixed version  : not fixed  
+    
+
+   0C     0H     0M     1L  markdown 1.0.0
+pkg:npm/markdown@1.0.0
+
+    ✗ LOW GHSA-wx77-rp39-c6vg [Uncontrolled Resource Consumption]
+      https://scout.docker.com/v/GHSA-wx77-rp39-c6vg?s=github&n=markdown&t=npm&vr=%3E%3D0.0.0
+      Affected range : >=0.0.0    
+      Fixed version  : not fixed  
+    
+
+   0C     0H     0M     1L  perl 5.40.1-6
+pkg:deb/debian/perl@5.40.1-6?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2011-4116
+      https://scout.docker.com/v/CVE-2011-4116?s=debian&n=perl&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D5.40.1-6
+      Affected range : >=5.40.1-6  
+      Fixed version  : not fixed   
+    
+
+   0C     0H     0M     1L  libxml2 2.14.5+dfsg-0.2
+pkg:deb/debian/libxml2@2.14.5%2Bdfsg-0.2?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2025-8732
+      https://scout.docker.com/v/CVE-2025-8732?s=debian&n=libxml2&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D2.14.5%2Bdfsg-0.2
+      Affected range : >=2.14.5+dfsg-0.2  
+      Fixed version  : not fixed          
+    
+
+   0C     0H     0M     1L  sqlite3 3.46.1-7
+pkg:deb/debian/sqlite3@3.46.1-7?os_distro=forky&os_name=debian&os_version=unstable
+
+    ✗ LOW CVE-2021-45346
+      https://scout.docker.com/v/CVE-2021-45346?s=debian&n=sqlite3&ns=debian&t=deb&osn=debian&osv=unstable&vr=%3E%3D3.46.1-7
+      Affected range : >=3.46.1-7  
+      Fixed version  : not fixed   
+    
+
+   0C     0H     0M     0L     1?  github.com/go-chi/chi 4.1.2+incompatible
+pkg:golang/github.com/go-chi/chi@4.1.2%2Bincompatible
+
+    ✗ UNSPECIFIED GHSA-vrw8-fxc6-2r93
+      https://scout.docker.com/v/GHSA-vrw8-fxc6-2r93?s=golang&n=chi&ns=github.com%2Fgo-chi&t=golang&vr=%3E%3D0
+      Affected range : >=0        
+      Fixed version  : not fixed  
+    
+
+
+113 vulnerabilities found in 41 packages
+  CRITICAL     3   
+  HIGH         17  
+  MEDIUM       12  
+  LOW          78  
+  UNSPECIFIED  3   
+
+    ...Storing image for indexing
+    ✓ Image stored for indexing
+    ...Indexing
+    ✓ Indexed 1008 packages
+    ✓ Provenance obtained from attestation
+    i Base image was auto-detected. To get more accurate recommendations, build images with max-mode provenance attestations.
+      Review https://docs.docker.com/build/attestations/slsa-provenance/ for more information.
+      Alternatively, use  docker scout recommendations --tag <base image tag>  to pass a specific base image tag.
+
+
+  Target   │  dmg-vs-code-debian-slim:333a3739e833   
+    digest │  9c08dc0ca22b                           
+
+## Recommended fixes
+
+  Base image is  debian:testing-20250811-slim 
+
+  Name            │  testing-20250811-slim                                                     
+  Digest          │  sha256:2edf7c11de113deaa9aad1d34e940236a40babc444b7f18255a8812459fbbda3   
+  Vulnerabilities │    0C     0H     1M    20L                                                 
+  Pushed          │ 2 weeks ago                                                                
+  Size            │ 30 MB                                                                      
+  Packages        │ 111                                                                        
+  Flavor          │ debian                                                                     
+  OS              │ 13                                                                         
+  Slim            │ ✓                                                                          
+
+                                                                                           
+  │ The base image is also available under the supported tag(s) `testing-slim`. If you want 
+  │ to display recommendations specifically for a different tag, please re-run the command  
+  │ using the `--tag` flag.                                                                 
+
+
+
+Refresh base image
+  Rebuild the image using a newer base image version. Updating this may result in breaking changes.
+
+  ✓ This image version is up to date.
+
+
+Change base image
+  The list displays new recommended tags in descending order, where the top results are rated as most suitable.
+
+
+           Tag           │                  Details                   │   Pushed    │       Vulnerabilities        
+─────────────────────────┼────────────────────────────────────────────┼─────────────┼──────────────────────────────
+   stable-20250811-slim  │ Benefits:                                  │ 2 weeks ago │    0C     0H     1M    20L   
+  Tag is preferred tag   │ • Same OS detected                         │             │                              
+  Also known as:         │ • Tag is preferred tag                     │             │                              
+  • stable-slim          │ • Image has similar size                   │             │                              
+                         │ • Image has same number of vulnerabilities │             │                              
+                         │ • Image contains equal number of packages  │             │                              
+                         │ • Tag is using slim variant                │             │                              
+                         │                                            │             │                              
+                         │ Image details:                             │             │                              
+                         │ • Size: 30 MB                              │             │                              
+                         │ • Flavor: debian                           │             │                              
+                         │ • OS: 12                                   │             │                              
+                         │ • Slim: ✓                                  │             │                              
+                         │                                            │             │                              
+                         │                                            │             │                              
+                         │                                            │             │                              
+
+
+Vulnerability summary for dmg-vs-code-debian-slim:333a3739e833:
+=== Vulnerability Summary for dmg-vs-code-debian-slim:333a3739e833 ===
+Critical:     4
+High:         18
+Medium:       13
+Low:          79
+Unspecified:  4
+Fixable:      113
+============================================
+Full CVE analysis saved to: logs/docker-scout-cves-333a3739e833.log
+Recommendations saved to: logs/docker-scout-recommendations-333a3739e833.log
+Stopping and removing previous container vscode-server-tunnel...
+Using host port 8080 for container vscode-server-tunnel (host:8080 -> container:8080)
+Launching VS Code Server container as vscode-server-tunnel...
+docker run envs: 
+25c7149518b1f8b4bfac90c34f42f265269d5eebfcbdbcfb8857a4ef340b2132
+[INFO] Docker run log saved to logs/docker-run-vscode-server-tunnel-333a3739e833.log
+Copying local VS Code settings.json to container...
+Test mode enabled - container vscode-server-tunnel started successfully.
+Container is running on port 8080.
+To view logs: docker logs vscode-server-tunnel
+To stop: docker stop vscode-server-tunnel && docker rm vscode-server-tunnel
