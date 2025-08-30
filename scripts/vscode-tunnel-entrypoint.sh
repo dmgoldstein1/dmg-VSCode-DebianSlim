@@ -75,6 +75,7 @@ start_update_watcher() {
       fi
       refresh_apt_indexes
       if code_update_available; then
+        local installed candidate
         installed="$(get_installed_code_version)"
         candidate="$(get_candidate_code_version)"
         log "Update available for VS Code CLI (installed: ${installed:-unknown}, candidate: ${candidate:-unknown})."

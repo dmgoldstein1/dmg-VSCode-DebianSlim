@@ -8,6 +8,11 @@ import { promisify } from 'util';
 
 const execAsync = promisify(exec);
 
+// Shell escaping function to prevent command injection
+function shellEscape(arg: string): string {
+  return "'" + arg.replace(/'/g, "'\"'\"'") + "'";
+}
+
 interface UpdateStatus {
   updateAvailable: boolean;
   installedVersion?: string;
@@ -109,7 +114,7 @@ class ContainerUpdater {
     try {
       // Check the entrypoint logs for VS Code CLI update notifications
       const logsDir = process.env.HOME + '/LOGS';
-      const cmd = 'find ' + logsDir + ' -name "entrypoint-log-*.log" -exec tail -50 {} \\; 2>/dev/null || echo ""';
+      const cmd = 'find ' + shellEscape(logsDir) + ' -name "entrypoint-log-*.log" -exec tail -50 {} \\; 2>/dev/null || echo ""';
       const { stdout } = await execAsync(cmd);
       
       // Look for update notification pattern from the entrypoint script
@@ -157,7 +162,7 @@ class ContainerUpdater {
     try {
       // Create approval file in the local filesystem (inside the container)
       const approvalFile = process.env.HOME + '/APPROVE_CODE_UPDATE';
-      const cmd = 'touch ' + approvalFile;
+      const cmd = 'touch ' + shellEscape(approvalFile);
       await execAsync(cmd);
 
       vscode.window.showInformationMessage(
