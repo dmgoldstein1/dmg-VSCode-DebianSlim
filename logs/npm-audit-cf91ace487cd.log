@@ -1,0 +1,13 @@
+*
+* Visual Studio Code Server
+*
+* By using the software, you agree to
+* the Visual Studio Code Server License Terms (https://aka.ms/vscode-server-license) and
+* the Microsoft Privacy Statement (https://privacy.microsoft.com/en-US/privacystatement).
+*
+[2025-08-30 00:23:56] info Using GitHub for authentication, run `code tunnel user login --provider <provider>` option to change this.
+To grant access to the server, please log into https://github.com/login/device and use code 419D-391A
+[2025-08-30 00:30:50] info Creating tunnel with the name: 791eeb747480
+
+Open this link in your browser https://vscode.dev/tunnel/791eeb747480
+

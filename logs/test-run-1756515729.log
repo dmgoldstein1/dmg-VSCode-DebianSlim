@@ -1,0 +1,15 @@
+[INFO] Starting comprehensive test suite...
+[INFO] Test log: logs/test-run-1756515729.log
+[INFO] Running test: Shell script linting
+[INFO] Testing shell scripts with shellcheck...
+[INFO] Testing shell scripts with shellcheck...
+
+In build_vscode_docker_debian_slim_secure.sh line 486:
+for i in $(seq 1 120); do
+^-^ SC2034 (warning): i appears unused. Verify use (or export if used externally).
+
+For more information:
+  https://www.shellcheck.net/wiki/SC2034 -- i appears unused. Verify use (or ...
+[ERROR] build_vscode_docker_debian_slim_secure.sh failed shellcheck
+[ERROR] build_vscode_docker_debian_slim_secure.sh failed shellcheck
+[ERROR] Shell script linting failed
