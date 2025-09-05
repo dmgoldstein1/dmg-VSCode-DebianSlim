@@ -35,7 +35,6 @@ services:
       retries: 3
       start_period: 120s
     restart: "no"
-    
   # Test database for extension testing (optional)
   test-db:
     image: postgres:15-alpine

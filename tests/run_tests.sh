@@ -143,7 +143,10 @@ run_security_tests() {
     # Validate YAML files
     log_info "Validating YAML files..."
     if command -v yamllint >/dev/null 2>&1; then
-        if find . \( -name "*.yaml" -o -name "*.yml" \) -print0 | xargs -0 yamllint -d relaxed; then
+        if find . \( -name "*.yaml" -o -name "*.yml" \) \
+           -not -path "./vscode-container-updater/node_modules/*" \
+           -not -path "./*/node_modules/*" \
+           -print0 | xargs -0 yamllint -d relaxed; then
             log_success "YAML validation passed"
         else
             log_error "YAML validation failed"
