@@ -1,9 +1,0 @@
-[INFO] Starting comprehensive test suite...
-[INFO] Test log: logs/test-run-1756513269.log
-[INFO] Running test: Shell script linting
-[INFO] Testing shell scripts with shellcheck...
-[INFO] Testing shell scripts with shellcheck...
-entrypoint.sh: entrypoint.sh: openBinaryFile: does not exist (No such file or directory)
-[ERROR] entrypoint.sh failed shellcheck
-[ERROR] entrypoint.sh failed shellcheck
-[ERROR] Shell script linting failed

@@ -1,1 +1,0 @@
-[31mERROR  [0m Status: failed to get image dmg-vs-code-debian-slim:4fcbff26643c: failed to pull image dmg-vs-code-debian-slim:4fcbff26643c: GET https://index.docker.io/v2/library/dmg-vs-code-debian-slim/manifests/4fcbff26643c: UNAUTHORIZED: authentication required; [map[Action:pull Class: Name:library/dmg-vs-code-debian-slim Type:repository]], Code: 1 

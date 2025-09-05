@@ -88,10 +88,19 @@ set -m
 get_unique_logfile() {
   local base="$1"
   local ext="$2"
-  local path="$LOGS_DIR/${base}${ext}"
+  
+  # Extract identifier from base name (string after last hyphen)
+  local identifier=$(echo "$base" | sed 's/.*-\([^-]*\)$/\1/')
+  
+  # Create directory for this identifier
+  local log_dir="$LOGS_DIR/$identifier"
+  mkdir -p "$log_dir"
+  
+  # Create unique filename within the identifier directory
+  local path="$log_dir/${base}${ext}"
   local n=1
   while [ -f "$path" ]; do
-    path="$LOGS_DIR/${base}_$n${ext}"
+    path="$log_dir/${base}_$n${ext}"
     n=$((n+1))
   done
   echo "$path"
