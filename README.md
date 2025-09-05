@@ -26,26 +26,26 @@ A secure, containerized VS Code Server environment built on Debian Slim with aut
 
 ```bash
 # Build and launch with auto-generated tunnel name
-./build_vscode_docker_debian_slim_secure.sh
+./build.sh
 
 # Build and launch with custom tunnel name
-./build_vscode_docker_debian_slim_secure.sh my_dev_tunnel
+./build.sh my_dev_tunnel
 ```
 
 ### Advanced Usage
 
 ```bash
 # Enable verbose logging for debugging
-./build_vscode_docker_debian_slim_secure.sh my_tunnel --logging
+./build.sh my_tunnel --logging
 
 # Force security analysis even if cached
-./build_vscode_docker_debian_slim_secure.sh my_tunnel --force-analysis
+./build.sh my_tunnel --force-analysis
 
 # Enable autonomous Copilot terminal commands
-./build_vscode_docker_debian_slim_secure.sh my_tunnel --copilot-is-autonomous
+./build.sh my_tunnel --copilot-is-autonomous
 
 # Combine multiple flags
-./build_vscode_docker_debian_slim_secure.sh my_tunnel --logging --copilot-is-autonomous
+./build.sh my_tunnel --logging --copilot-is-autonomous
 ```
 
 ## Command Line Options
@@ -69,7 +69,7 @@ A secure, containerized VS Code Server environment built on Debian Slim with aut
 Avoid long command lines by placing configuration in `build_variables.yaml` at the repo root, then running the script with `--use-yaml`.
 
 - Location: `./build_variables.yaml`
-- Run: `./build_vscode_docker_debian_slim_secure.sh --use-yaml`
+- Run: `./build.sh --use-yaml`
 - Behavior: When `--use-yaml` is present, the script ignores all other CLI flags/args.
 - Security: Keep secrets (like `gh_token`) out of version control. The file includes commented examples you can uncomment locally.
 
@@ -229,7 +229,7 @@ Notes:
 
 ```text
 ├── Dockerfile                                  # Container definition (Debian Slim + official VS Code apt repo)
-├── build_vscode_docker_debian_slim_secure.sh   # Main build and launch script
+├── build.sh                                    # Main build and launch script
 ├── build_variables.yaml                         # YAML config consumed by the build script (commented examples)
 ├── scripts/
 │   └── vscode-tunnel-entrypoint.sh             # Entrypoint: gh auto-auth + VS Code tunnel + update checks
@@ -342,7 +342,7 @@ docker exec -it vscode-tunnel bash -lc 'touch $HOME/APPROVE_CODE_UPDATE'
 #    Do NOT commit real secrets.
 
 # 2) Build and launch via YAML mode
-./build_vscode_docker_debian_slim_secure.sh --use-yaml
+./build.sh --use-yaml
 
 # 3) Watch logs
 docker logs -f my_team_tunnel_01   # replace with your tunnel_name

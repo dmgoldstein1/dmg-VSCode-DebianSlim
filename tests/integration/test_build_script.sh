@@ -57,12 +57,12 @@ test_shellcheck() {
     log_info "Testing shell scripts with shellcheck..."
     
     # Test main build script
-    log_info "  → Checking build_vscode_docker_debian_slim_secure.sh..."
-    if ! shellcheck build_vscode_docker_debian_slim_secure.sh; then
-        log_error "build_vscode_docker_debian_slim_secure.sh failed shellcheck"
+    log_info "  → Checking build.sh..."
+    if ! shellcheck build.sh; then
+        log_error "build.sh failed shellcheck"
         return 1
     fi
-    log_info "  ✓ build_vscode_docker_debian_slim_secure.sh passed shellcheck"
+    log_info "  ✓ build.sh passed shellcheck"
     
     # Test entrypoint scripts  
     log_info "  → Checking scripts/vscode-tunnel-entrypoint.sh..."
@@ -88,12 +88,12 @@ test_syntax() {
     log_info "Testing shell script syntax..."
     
     # Test main build script syntax
-    log_info "  → Checking syntax of build_vscode_docker_debian_slim_secure.sh..."
-    if ! bash -n build_vscode_docker_debian_slim_secure.sh; then
-        log_error "build_vscode_docker_debian_slim_secure.sh has syntax errors"
+    log_info "  → Checking syntax of build.sh..."
+    if ! bash -n build.sh; then
+        log_error "build.sh has syntax errors"
         return 1
     fi
-    log_info "  ✓ build_vscode_docker_debian_slim_secure.sh syntax OK"
+    log_info "  ✓ build.sh syntax OK"
     
     # Test entrypoint script syntax
     log_info "  → Checking syntax of scripts/vscode-tunnel-entrypoint.sh..."
@@ -150,7 +150,7 @@ approval_file: "/tmp/test_approval"
 EOF
 
     # Test the YAML parsing by running the script with dry-run simulation
-    if ! bash -n build_vscode_docker_debian_slim_secure.sh; then
+    if ! bash -n build.sh; then
         log_error "Build script has syntax errors"
         rm -f "$TEST_YAML"
         return 1

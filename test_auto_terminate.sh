@@ -11,7 +11,7 @@ if docker stop vscode-server-tunnel 2>/dev/null; then
 fi
 
 # Start the build script in background
-./build_vscode_docker_debian_slim_secure.sh --test-mode &
+./build.sh --test-mode &
 SCRIPT_PID=$!
 
 echo "Build script started with PID: $SCRIPT_PID"
