@@ -7,3 +7,16 @@ gh-tunnel-pat.sh
 *[Pp][Aa][Tt]*
 
 # The above pattern ignores any file or folder with 'pat' in its name, regardless of case.
+
+# Build artifacts
+logs/
+*.vsix
+test-package.vsix
+node_modules/
+
+# Docker Scout logs
+scout_*.log
+
+# Temporary files
+.tmp/
+tmp/

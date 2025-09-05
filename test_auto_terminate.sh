@@ -6,7 +6,9 @@
 echo "Starting test script in background..."
 
 # Clean up any existing container
-docker stop vscode-server-tunnel 2>/dev/null && docker rm vscode-server-tunnel 2>/dev/null || true
+if docker stop vscode-server-tunnel 2>/dev/null; then
+  docker rm vscode-server-tunnel 2>/dev/null || true
+fi
 
 # Start the build script in background
 ./build_vscode_docker_debian_slim_secure.sh --test-mode &

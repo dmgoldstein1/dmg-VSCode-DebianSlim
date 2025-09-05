@@ -50,7 +50,6 @@ jobs:
       - name: Lint Shell Scripts
         run: |
           find . -name "*.sh" -type f | xargs shellcheck
-          
       - name: Validate YAML files
         run: |
           pip install yamllint
