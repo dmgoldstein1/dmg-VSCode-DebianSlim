@@ -1,13 +1,13 @@
 # Example usage:
-# tunnel_name: my_dev_tunnel
+tunnel_name: 09042025test1
 # force_analysis: true
 # logging: true
 # copilot_is_autonomous: true
-# git_user_name: "Jane Developer"
-# git_user_email: "jane.dev@example.com"
+git_user_name: "dmgoldstein1"
+git_user_email: "dmgoldstein1@gmail.com"
 # gh_token: "ghp_..."
-# auto_update_on_start: false
-# update_check_interval_seconds: 1800
+auto_update_on_start: yes
+update_check_interval_seconds: 1800
 # approval_file: "/home/devuser/MY_APPROVAL_FILE"
 
 # ------------------------------------------------------------------------------

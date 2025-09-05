@@ -1,0 +1,16 @@
+-e 
+Received interrupt signal. Cleaning up...
+Killing child processes: 19479
+19480
+*
+* Visual Studio Code Server
+*
+* By using the software, you agree to
+* the Visual Studio Code Server License Terms (https://aka.ms/vscode-server-license) and
+* the Microsoft Privacy Statement (https://privacy.microsoft.com/en-US/privacystatement).
+*
+[2025-09-04 17:20:03] info Using GitHub for authentication, run `code tunnel user login --provider <provider>` option to change this.
+[2]+  Terminated: 15          ( sleep "$timeout_duration"; if kill -0 "$cmd_pid" 2> /dev/null; then
+    echo "Timeout reached, killing process $cmd_pid" 1>&2; kill -TERM "$cmd_pid" 2> /dev/null || true; sleep 2; kill -KILL "$cmd_pid" 2> /dev/null || true;
+fi )
+Cleanup complete. Exiting.
