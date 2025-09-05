@@ -66,6 +66,12 @@ run_integration_tests() {
 run_extension_tests() {
     log_info "Running VS Code extension tests..."
     
+    # Check if npm is available
+    if ! command -v npm >/dev/null 2>&1; then
+        log_warning "npm not found, skipping extension tests"
+        return 0
+    fi
+    
     cd "$PROJECT_ROOT/vscode-container-updater"
     
     # Install dependencies if needed

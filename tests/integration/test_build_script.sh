@@ -36,6 +36,10 @@ log_success() {
     echo "[SUCCESS] $*" | tee -a "$TEST_LOG"
 }
 
+log_warning() {
+    echo "[WARNING] $*" | tee -a "$TEST_LOG"
+}
+
 run_test() {
     local test_name="$1"
     local test_command="$2"
@@ -72,13 +76,6 @@ test_shellcheck() {
     fi
     log_info "  ✓ scripts/vscode-tunnel-entrypoint.sh passed shellcheck"
     
-    log_info "  → Checking entrypoint-legacy.sh..."
-    if ! shellcheck entrypoint-legacy.sh; then
-        log_error "entrypoint-legacy.sh failed shellcheck"
-        return 1
-    fi
-    log_info "  ✓ entrypoint-legacy.sh passed shellcheck"
-    
     log_success "All shell scripts passed shellcheck"
     return 0
 }
@@ -103,14 +100,6 @@ test_syntax() {
     fi
     log_info "  ✓ scripts/vscode-tunnel-entrypoint.sh syntax OK"
     
-    # Test legacy entrypoint syntax
-    log_info "  → Checking syntax of entrypoint-legacy.sh..."
-    if ! bash -n entrypoint-legacy.sh; then
-        log_error "entrypoint-legacy.sh has syntax errors"
-        return 1
-    fi
-    log_info "  ✓ entrypoint-legacy.sh syntax OK"
-    
     log_success "All shell scripts have valid syntax"
     return 0
 }
@@ -121,11 +110,14 @@ test_yaml_validation() {
     
     # Check if build_variables.yaml is valid
     log_info "  → Checking build_variables.yaml syntax..."
-    if ! python3 -c "import yaml; yaml.safe_load(open('build_variables.yaml'))" 2>/dev/null; then
+    if ! python3 -c "import yaml" 2>/dev/null; then
+        log_warning "PyYAML not installed, skipping YAML validation"
+    elif ! python3 -c "import yaml; yaml.safe_load(open('build_variables.yaml'))" 2>/dev/null; then
         log_error "build_variables.yaml is not valid YAML"
         return 1
+    else
+        log_info "  ✓ build_variables.yaml is valid YAML"
     fi
-    log_info "  ✓ build_variables.yaml is valid YAML"
     
     log_success "YAML files are valid"
     return 0

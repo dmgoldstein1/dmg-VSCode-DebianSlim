@@ -90,7 +90,8 @@ get_unique_logfile() {
   local ext="$2"
   
   # Extract identifier from base name (string after last hyphen)
-  local identifier=$(echo "$base" | sed 's/.*-\([^-]*\)$/\1/')
+  local identifier
+  identifier=${base##*-}
   
   # Create directory for this identifier
   local log_dir="$LOGS_DIR/$identifier"
@@ -280,7 +281,7 @@ else
         # Handled earlier; ensure we ignore the rest by loading and breaking
         USE_YAML=true
         shift
-        load_yaml_config "$YAML_FILE")
+        load_yaml_config "$YAML_FILE"
         break ;;
       --)
         shift; break ;;
@@ -611,7 +612,7 @@ else
 fi
 
 HOST_PORT="$START_PORT"
-while lsof -iTCP:$HOST_PORT -sTCP:LISTEN >/dev/null 2>&1; do
+while lsof -iTCP:"$HOST_PORT" -sTCP:LISTEN >/dev/null 2>&1; do
   HOST_PORT=$((HOST_PORT+1))
 done
 if [ "$VERBOSE_LOGGING" = "true" ]; then

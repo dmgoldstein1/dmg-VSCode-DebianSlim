@@ -267,9 +267,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [docker-build, security-scan, extension-tests]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    environment:
-      name: production
-      url: https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }}
+    # environment: production  # Commented out - requires 'production' environment to be defined in repo settings
     permissions:
       contents: write
       packages: write
