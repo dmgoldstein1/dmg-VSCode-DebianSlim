@@ -69,6 +69,15 @@ update_check_interval_seconds: 1800
 # approval_file: Path inside the container that, when created, authorizes a mid-run update install.
 # - string path (e.g., /home/devuser/APPROVE_CODE_UPDATE)
 #
+# port: Host port to expose the container on (default: auto-find starting at 8080)
+# - integer (e.g., 3000)
+#
+# image_name: Docker image name (default: dmg-vs-code-debian-slim)
+# - string (e.g., my-custom-vscode)
+#
+# container_name: Container name (default: based on tunnel_name or vscode-server-tunnel)
+# - string (e.g., my-custom-container)
+#
 # ----------------------
 # Example configuration:
 #
@@ -83,3 +92,6 @@ update_check_interval_seconds: 1800
 # auto_update_on_start: true
 # update_check_interval_seconds: 3600
 # approval_file: "/home/devuser/APPROVE_CODE_UPDATE"
+# port: 3000
+# image_name: my-custom-vscode
+# container_name: my-custom-container

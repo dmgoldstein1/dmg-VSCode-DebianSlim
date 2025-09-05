@@ -112,7 +112,7 @@ BUILD_LOG=$(get_unique_logfile "$BUILD_LOG_BASE" "$BUILD_LOG_EXT")
 
 set -e
 
-# Usage: ./build_vscode_docker_debian_slim_secure.sh [TunnelName] [--force-analysis] [--force-rebuild] [--logging] [--copilot-is-autonomous] [--git-user-name NAME] [--git-user-email EMAIL] [--use-yaml] [--test-mode]
+# Usage: ./build_vscode_docker_debian_slim_secure.sh [TunnelName] [--force-analysis] [--force-rebuild] [--logging] [--copilot-is-autonomous] [--git-user-name NAME] [--git-user-email EMAIL] [--use-yaml] [--test-mode] [--help] [--port PORT] [--image-name NAME] [--container-name NAME]
 #   --logging: Enables verbose logging output for debugging and detailed progress.
 #   --copilot-is-autonomous: Configures VS Code to auto-approve terminal commands for GitHub Copilot.
 #   --git-user-name: Git user.name to pass into the container (exported as GIT_USER_NAME).
@@ -120,6 +120,10 @@ set -e
 #   --use-yaml: Ignore other flags/args and load configuration from build_variables.yaml in this directory.
 #   --test-mode: Build and start container, wait for tunnel connection, then auto-terminate.
 #                Manual termination available with 'quit', 'exit', 'q', or Ctrl+C.
+#   --help: Show this help message.
+#   --port: Port to expose on host (default: auto-find free port starting at 8080).
+#   --image-name: Docker image name (default: dmg-vs-code-debian-slim).
+#   --container-name: Container name (default: based on tunnel name or vscode-server-tunnel).
 
 # Parse arguments and (optionally) a YAML config file
 # If --use-yaml is present, ignore all other flags/args and source values from build_variables.yaml
@@ -139,6 +143,9 @@ APPROVAL_FILE=""
 USE_YAML=false
 TEST_MODE=false
 YAML_FILE="build_variables.yaml"
+HOST_PORT=""  # Empty means auto-find
+IMAGE_NAME="dmg-vs-code-debian-slim"
+CONTAINER_NAME=""  # Empty means use tunnel name or default
 
 # Pre-scan to detect --use-yaml
 for pre in "$@"; do
@@ -163,7 +170,8 @@ load_yaml_config() {
   # Supported keys:
   #   tunnel_name, force_analysis, logging, copilot_is_autonomous,
   #   git_user_name, git_user_email, gh_token,
-  #   auto_update_on_start, update_check_interval_seconds, approval_file, test_mode
+  #   auto_update_on_start, update_check_interval_seconds, approval_file, test_mode,
+  #   port, image_name, container_name
   while IFS= read -r line; do
     # strip comments
     line="${line%%#*}"
@@ -189,6 +197,9 @@ load_yaml_config() {
       auto_update_on_start) AUTO_UPDATE_ON_START="$val" ;;
       update_check_interval_seconds) UPDATE_CHECK_INTERVAL_SECONDS="$val" ;;
       approval_file) APPROVAL_FILE="$val" ;;
+      port) HOST_PORT="$val" ;;
+      image_name) IMAGE_NAME="$val" ;;
+      container_name) CONTAINER_NAME="$val" ;;
       *)
         # unknown key ignored (forward compatibility)
         ;;
@@ -229,6 +240,38 @@ else
         UPDATE_CHECK_INTERVAL_SECONDS="$2"; shift 2 ;;
       --approval-file)
         APPROVAL_FILE="$2"; shift 2 ;;
+      --port)
+        HOST_PORT="$2"; shift 2 ;;
+      --image-name)
+        IMAGE_NAME="$2"; shift 2 ;;
+      --container-name)
+        CONTAINER_NAME="$2"; shift 2 ;;
+      --help)
+        echo "Usage: $0 [TunnelName] [OPTIONS]"
+        echo ""
+        echo "Options:"
+        echo "    --force-analysis              Force re-run of Docker Scout analysis"
+        echo "    --force-rebuild               Force rebuild of Docker image"
+        echo "    --logging                     Enable verbose logging"
+        echo "    --copilot-is-autonomous       Configure VS Code for autonomous Copilot"
+        echo "    --git-user-name NAME          Git user name"
+        echo "    --git-user-email EMAIL        Git user email"
+        echo "    --gh-token TOKEN              GitHub token"
+        echo "    --auto-update-on-start VAL    Auto update on start"
+        echo "    --update-check-interval-seconds SEC  Update check interval"
+        echo "    --approval-file FILE          Approval file path"
+        echo "    --use-yaml                    Load config from build_variables.yaml"
+        echo "    --test-mode                   Run in test mode"
+        echo "    --port PORT                   Host port (default: auto-find)"
+        echo "    --image-name NAME             Docker image name"
+        echo "    --container-name NAME         Container name"
+        echo "    --help                        Show this help message"
+        echo ""
+        echo "Examples:"
+        echo "    $0 my-tunnel --logging --git-user-name 'John Doe' --git-user-email 'john@example.com'"
+        echo "    $0 --use-yaml"
+        echo "    $0 --port 3000 --image-name my-vscode --container-name my-container"
+        exit 0 ;;
       --use-yaml)
         # Handled earlier; ensure we ignore the rest by loading and breaking
         USE_YAML=true
@@ -273,7 +316,22 @@ if [ "$USE_YAML" = "true" ]; then
     echo "- auto_update_on_start=$AUTO_UPDATE_ON_START"
     echo "- update_check_interval_seconds=$UPDATE_CHECK_INTERVAL_SECONDS"
     echo "- approval_file=$APPROVAL_FILE"
+    echo "- port=$HOST_PORT"
+    echo "- image_name=$IMAGE_NAME"
+    echo "- container_name=$CONTAINER_NAME"
   fi
+fi
+
+# Validate git configuration (both name and email should be provided together)
+if [[ -n "$GIT_USER_NAME" && -z "$GIT_USER_EMAIL" ]] || [[ -z "$GIT_USER_NAME" && -n "$GIT_USER_EMAIL" ]]; then
+    echo "Error: Both git user name and email must be provided together" >&2
+    exit 1
+fi
+
+# Check if Docker is running
+if ! docker info >/dev/null 2>&1; then
+    echo "Error: Docker is not running or not accessible" >&2
+    exit 1
 fi
 
 # --- Set up verbose logging redirection after argument parsing ---
@@ -288,7 +346,10 @@ fi
 
 
 DOCKERFILE=Dockerfile
-IMAGE_NAME=dmg-vs-code-debian-slim
+# Use provided image name or default
+if [ -z "$IMAGE_NAME" ]; then
+  IMAGE_NAME="dmg-vs-code-debian-slim"
+fi
 
 # Extract the base image version (debian:stable-slim)
 BASE_IMAGE=$(grep '^FROM' "$DOCKERFILE" | awk '{print $2}')
@@ -513,7 +574,10 @@ fi
 
 
 # Use a unique container name if tunnel name is provided, else default
-if [ -n "$TUNNEL_NAME_ARG" ]; then
+if [ -n "$CONTAINER_NAME" ]; then
+  # Use provided container name
+  :
+elif [ -n "$TUNNEL_NAME_ARG" ]; then
   CONTAINER_NAME="$TUNNEL_NAME_ARG"
 else
   CONTAINER_NAME="vscode-server-tunnel"
@@ -535,8 +599,14 @@ CONTAINER_SETTINGS_JSON="$CONTAINER_SETTINGS_DIR/settings.json"
 
 
 
-# Find a free host port starting at 8080
-HOST_PORT=8080
+# Find a free host port starting at specified port or 8080
+if [ -n "$HOST_PORT" ]; then
+  START_PORT="$HOST_PORT"
+else
+  START_PORT=8080
+fi
+
+HOST_PORT="$START_PORT"
 while lsof -iTCP:$HOST_PORT -sTCP:LISTEN >/dev/null 2>&1; do
   HOST_PORT=$((HOST_PORT+1))
 done
@@ -702,14 +772,14 @@ fi
 echo ""
 echo "=========================================="
 if [ "$TIMEOUT_REACHED" = "true" ]; then
-  echo "⏰ Tunnel setup is taking longer than expected."
-  echo "💡 The server may still be initializing."
-  echo "🔍 Check the full logs: docker logs $CONTAINER_NAME"
-  echo "🌐 Or visit: https://vscode.dev/tunnels"
+  echo " Tunnel setup is taking longer than expected."
+  echo " The server may still be initializing."
+  echo " Check the full logs: docker logs $CONTAINER_NAME"
+  echo " Or visit: https://vscode.dev/tunnels"
 else
-  echo "✅ VS Code Server startup process completed."
-  echo "🔍 If you don't see the tunnel link above, check: docker logs $CONTAINER_NAME"
-  echo "🌐 Or visit: https://vscode.dev/tunnels"
+  echo " VS Code Server startup process completed."
+  echo " If you don't see the tunnel link above, check: docker logs $CONTAINER_NAME"
+  echo " Or visit: https://vscode.dev/tunnels"
 fi
 
 # Clear the EXIT trap since we're handling cleanup manually now
