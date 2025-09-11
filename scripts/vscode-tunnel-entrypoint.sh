@@ -90,6 +90,7 @@ start_update_watcher() {
       else
         vlog "No VS Code CLI update available."
       fi
+    done
   ) >/dev/null 2>&1 &
 }
 
