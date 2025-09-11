@@ -6,40 +6,47 @@ Description: This report summarizes key lessons and best practices for Dockerizi
 # Dockerizing an Existing Codebase: Lessons from VSCodeServerFromDebian
 
 ## 1. **Structure and Organization**
+
 - **Separation of Concerns:** The codebase separates Dockerfiles, build scripts, configuration files, and tests into distinct directories. This improves maintainability and clarity.
 - **Version Control:** All relevant files are tracked in Git, enabling reproducibility and collaboration.
 
 ## 2. **Dockerfile Best Practices**
+
 - **Multi-Architecture Support:** Container build scripts should include instructions for both x86 and ARM architectures, ensuring portability across platforms.
 - **Layer Minimization:** Use slim base images (e.g., Debian slim) and minimize the number of layers to reduce image size and attack surface.
 - **Explicit Dependency Management:** Install only required packages and document them in configuration files (e.g., `requirements.txt`, `package.json`).
 
 ## 3. **Security Practices**
+
 - **Minimal Base Images:** Start from secure, minimal images to reduce vulnerabilities.
 - **User Privileges:** Avoid running containers as root. Use non-root users where possible.
 - **Secrets Management:** Never hardcode credentials or secrets. Use environment variables or secret management tools.
 - **Proactive Auditing:** Regularly check for `.DS_Store` and other unnecessary files, removing them and updating `.gitignore`.
 - **Error Handling:** Scripts and Dockerfiles should handle errors gracefully and provide meaningful logs.
 - **Input Parsing:** In all phases of the project, from the build script, build variables, to the code within the Docker sript (if this code is available for review and not already compiled) parse inputs whenever possible to avoid malicious input, code and prompt injections, or simple errors when a function can only accept a certain type of input.
-- **Docker Scout:** Before the image is actually deployed, use and wait for Docker Scout to perform a full analysis. Have the build script analyze the Docker Scout output 
+- **Docker Scout:** Before the image is actually deployed, use and wait for Docker Scout to perform a full analysis. Have the build script analyze the Docker Scout output
 
 ## 4. **Usability and Flexibility**
+
 - **Build Script:** Create a build script, so that even the creation of the Docker file is Infrastructure-as-Code.
 - **Environment Variables:** Use environment variables for configuration, allowing easy adaptation to different environments.
 - **Configurable Builds:** Provide YAML or other config files to customize builds without modifying code.
 - **Documentation:** Include clear README files and comments to guide users and developers.
 
 ## 5. **Debuggability**
+
 - **Verbose Logging:** Enable verbose logging in build and test scripts, saving logs in a dedicated `LOGS` directory with timestamped filenames.
 - **Testing:** Include unit, integration, and end-to-end tests. Ensure tests cover new and existing functionality.
 - **Automated Test Execution:** Provide scripts to run tests automatically after builds.
 
 ## 6. **Maintainability**
+
 - **Consistent Naming and Indentation:** Use meaningful variable names and consistent formatting.
 - **Refactoring:** When refactoring, ensure code is more efficient and readable, without introducing new bugs.
 - **Commit Hygiene:** Use descriptive commit messages and reference related issues or features.
 
 ## 7. **Extensibility**
+
 - **Modular Scripts:** Organize build and extension scripts modularly to facilitate future changes.
 - **Container Updater:** Include mechanisms for updating containers and extensions as requirements evolve.
 
