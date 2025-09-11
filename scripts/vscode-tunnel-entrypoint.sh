@@ -79,6 +79,7 @@ start_update_watcher() {
         installed="$(get_installed_code_version)"
         candidate="$(get_candidate_code_version)"
         log "Update available for VS Code CLI (installed: ${installed:-unknown}, candidate: ${candidate:-unknown})."
+        if [[ -f "$APPROVAL_FILE" ]]; then
           log "Approval file detected ($APPROVAL_FILE). Proceeding with upgrade."
           if install_code_update; then
             rm -f "$APPROVAL_FILE" || true
