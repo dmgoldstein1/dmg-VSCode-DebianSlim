@@ -100,6 +100,7 @@ if have_apt; then
     vlog "Checking for VS Code CLI updates at startup..."
     refresh_apt_indexes
     if code_update_available; then
+      local installed candidate
       installed="$(get_installed_code_version)"
       candidate="$(get_candidate_code_version)"
       log "Startup upgrade: updating VS Code CLI from ${installed:-unknown} to ${candidate:-unknown}."
