@@ -16,13 +16,13 @@ Description: This report summarizes key lessons and best practices for Dockerizi
 - **Layer Minimization:** Use slim base images (e.g., Debian slim) and minimize the number of layers to reduce image size and attack surface.
 - **Explicit Dependency Management:** Install only required packages and document them in configuration files (e.g., `requirements.txt`, `package.json`).
 - **Build Script:** Create a build script, so that even the creation of the Docker file is Infrastructure-as-Code. This build script not only passes variables to the docker build command, but performs security and usability checks, and manages logging and other functions. The dockerfile script is not intended to be used directly in the Docker CLI.
-- **Localization:** The build script should attempt to query the operating system for the local time zone and time. Print the result of this query to the logs, and use this time for when log entries and file names use timestamps.
+- **Localization:** The build script should attempt to query the operating system for the local time zone and time. Print the result of this query to the logs, and use this time for when log entries and file names use timestamps. Also pass this time and time zone information to the container.
 
 ## 3. **Security Practices**
 
 - **Minimal Base Images:** Start from secure, minimal images to reduce vulnerabilities.
 - **User Privileges:** Avoid running containers as root. Use non-root users where possible.
-- **Minimize package dependencies:** Package dependencies increase the vulnerability surface area. If a package is simple enough that it should not need to be maintained, include its code directly in the project, rather than referencing its package repository, while citing the source to give appropriate credit. If a task is of sufficient complexity that a third-party package should be used, make a note in the build script terminal output of this vulnerability, and check to see if Docker Scout analyzed whatever version of the package is pulled. If Docker Scout did not analyze the package, always print a warning of this to the terminal output, no matter the level of verbosity.
+- **Minimize package dependencies:** Package dependencies increase the vulnerability surface area. If a package is simple enough that it should not need to be maintained, include its code directly in the project, rather than referencing its package repository, while citing the source to give appropriate credit. If a task is of sufficient complexity that a third-party package should be used, make a note in the build script terminal output of this vulnerability, and have the build script check to see if Docker Scout analyzed whatever version of the package is pulled. If Docker Scout did not analyze the package, always print a warning of this to the terminal output, no matter the level of verbosity. Also print a URL to the webpage of the dependency, if possible.
 - **Secrets Management:** Never hardcode credentials or secrets. Use environment variables or secret management tools.
 - **Proactive Auditing:** Regularly check for `.DS_Store` and other unnecessary files and secrets, removing them and updating `.gitignore`.
 - **Error Handling:** Scripts and Dockerfiles should handle errors gracefully and provide meaningful logs.
@@ -46,24 +46,3 @@ Description: This report summarizes key lessons and best practices for Dockerizi
 - **Consistent Naming and Indentation:** Use meaningful variable names and consistent formatting.
 - **Refactoring:** When refactoring, ensure code is more efficient and readable, without introducing new bugs.
 - **Commit Hygiene:** Use descriptive commit messages and reference related issues or features.
-
-## 7. **Extensibility**
-
-- **Modular Scripts:** Organize build and extension scripts modularly to facilitate future changes.
-- **Container Updater:** Include mechanisms for updating containers and extensions as requirements evolve.
-
----
-
-## **Summary of Broader Lessons**
-
-- **Plan for Portability:** Support multiple architectures and environments from the start.
-- **Prioritize Security:** Use minimal images, manage secrets properly, and avoid unnecessary privileges.
-- **Make Debugging Easy:** Provide verbose logging and automated tests.
-- **Enable Flexibility:** Use environment variables and config files for easy customization.
-- **Document Everything:** Clear documentation and comments are essential for onboarding and maintenance.
-- **Automate and Audit:** Automate builds, tests, and audits to catch issues early and maintain quality.
-
----
-
-**Recommendation:**  
-For any project being Dockerized, follow these principles to ensure the resulting containers are secure, maintainable, and easy to use and debug. Regularly review and update practices as new security threats and best practices emerge.
