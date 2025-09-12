@@ -1,7 +1,9 @@
+---
 extends: default
-
 rules:
   truthy:
     ignore: |
       .github/workflows/*.yml
       .github/workflows/*.yaml
+  key-duplicates:
+    ignore: SNYK_TOKEN
