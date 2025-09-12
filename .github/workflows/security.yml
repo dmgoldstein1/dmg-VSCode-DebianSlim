@@ -153,23 +153,26 @@ jobs:
           URL="https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64"
           curl -L "$URL" -o container-structure-test-linux-amd64
           chmod +x container-structure-test-linux-amd64
-          sudo mv container-structure-test-linux-amd64 /usr/local/bin/container-structure-test
+            sudo mv \
+            container-structure-test-linux-amd64 \
+            /usr/local/bin/container-structure-test
           # Create basic structure test
           cat > container-test.yaml << 'EOF'
           schemaVersion: 2.0.0
           commandTests:
-            - name: "code command exists"
-              command: "which"
-              args: ["code"]
-              expectedOutput: ["/usr/local/bin/code"]
           fileExistenceTests:
-            - name: "VS Code installed"
-              path: "/usr/local/bin/code"
-              shouldExist: true
           EOF
           # Run the test
           container-structure-test test --image security-test:latest \
             --config container-test.yaml
+            - name: "code command exists"
+              command: "which"
+              args: ["code"]
+              expectedOutput: ["/usr/bin/code"]
+          fileExistenceTests:
+            - name: "VS Code installed"
+              path: "/usr/bin/code"
+              shouldExist: true
   # Generate security report
   security-report:
     name: Generate Security Report
