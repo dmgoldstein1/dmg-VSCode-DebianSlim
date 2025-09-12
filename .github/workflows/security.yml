@@ -16,6 +16,7 @@ permissions:
   contents: read
   security-events: write
   actions: read
+  pull-requests: write
 jobs:
   # Static Application Security Testing (SAST)
   sast-scan:
@@ -70,7 +71,10 @@ jobs:
         # remove this line to avoid context errors.
         with:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-          args: --severity-threshold=high --json-file-output=snyk-results.json
+          args: >-
+            --file=vscode-container-updater/package.json
+            --severity-threshold=high
+            --json-file-output=snyk-results.json
           command: test
       - name: Upload Snyk results to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
@@ -150,8 +154,7 @@ jobs:
         run: |
           # Install container-structure-test
           curl -LO \
-            https://storage.googleapis.com/container-structure-test/latest/\
-            container-structure-test-linux-amd64
+            https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64
           chmod +x container-structure-test-linux-amd64
           sudo mv container-structure-test-linux-amd64 \
             /usr/local/bin/container-structure-test

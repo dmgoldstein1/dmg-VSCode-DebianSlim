@@ -13,34 +13,28 @@ RUN apt-get update && \
     unattended-upgrade && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Create a non-root user for development
-RUN useradd -ms /bin/bash devuser && echo "devuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-USER devuser
-WORKDIR /home/devuser
-
 # Install official VS Code from Microsoft apt repo (provides the 'code' CLI)
-RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/microsoft.gpg && \
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null && \
-    sudo apt-get update && sudo apt-get install -y --no-install-recommends code && \
-    sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
-
-# (Microsoft GPG key added above)
+RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --batch --yes --dearmor -o /usr/share/keyrings/microsoft.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | tee /etc/apt/sources.list.d/vscode.list > /dev/null && \
+    apt-get update && apt-get install -y --no-install-recommends code && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 # Install GitHub CLI
-RUN type -p curl >/dev/null || sudo apt install curl -y && \
-    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg && \
-    sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg && \
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null && \
-    sudo apt update && sudo apt install -y --no-install-recommends gh && \
-    sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+RUN type -p curl >/dev/null || apt install curl -y && \
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg && \
+    chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null && \
+    apt update && apt install -y --no-install-recommends gh && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 # Install Node.js 22 for building the VS Code extension
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - && \
-    sudo apt-get install -y nodejs && \
-    sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
+    apt-get install -y nodejs && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
-# Switch back to root for npm operations that need global access
-USER root
+# Install additional tools for package security fixes
+RUN apt-get update && apt-get install -y --no-install-recommends jq python3 && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Update npm globally and fix security vulnerabilities
 RUN npm install -g npm@latest && \
@@ -49,16 +43,14 @@ RUN npm install -g npm@latest && \
 # Install secure versions of commonly vulnerable packages globally to override bundled versions
 RUN npm install -g handlebars@^4.7.7 ini@^1.3.6 grunt@^1.5.3 diff@^3.5.0 || true
 
-# Switch back to devuser
+# Create a non-root user for development
+RUN useradd -ms /bin/bash devuser && echo "devuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 USER devuser
+WORKDIR /home/devuser
 
 # Copy and build the VS Code Container Updater extension
 COPY --chown=devuser:devuser vscode-container-updater/ /home/devuser/vscode-container-updater/
 WORKDIR /home/devuser/vscode-container-updater
-
-# Install additional tools for package security fixes
-RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends jq python3 && \
-    sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/*
 
 # Create npm audit override config for security
 RUN npm config set audit-level high
@@ -86,6 +78,10 @@ WORKDIR /home/devuser
 
 # Expose VS Code tunnel default port (8080 is not strictly required for tunnel, but kept for compatibility)
 EXPOSE 8080
+
+# Add HEALTHCHECK instruction
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD curl --fail http://localhost:8080/ || exit 1
 
 # Copy entrypoint script that handles gh auth and starts the VS Code tunnel
 COPY --chown=devuser:devuser scripts/vscode-tunnel-entrypoint.sh /home/devuser/vscode-tunnel-entrypoint.sh
