@@ -45,4 +45,4 @@ Description: This report summarizes key lessons and best practices for Dockerizi
 
 - **Consistent Naming and Indentation:** Use meaningful variable names and consistent formatting.
 - **Refactoring:** When refactoring, ensure code is more efficient and readable, without introducing new bugs.
-- **Commit Hygiene:** Use descriptive commit messages and reference related issues or features.
+- **Commit Hygiene:** Use descriptive commit messages and reference related issues or features.- **Continuous Integration/Continuous Deployment (CI/CD):** Ensure that changes are tested and deployed automatically using a CI/CD pipeline for reliability and faster iteration.

@@ -63,13 +63,17 @@ jobs:
           name: npm-audit-results
           path: vscode-container-updater/npm-audit-results.json
           retention-days: 30
+      - name: Install Snyk CLI
+        run: npm install -g snyk
       - name: Run Snyk security scan
+        run: |
+          snyk test \
+            --severity-threshold=high \
+            --sarif > snyk-results.sarif
+        working-directory: vscode-container-updater
         continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: |
-          cd vscode-container-updater
-          npx snyk test --file=package.json --json-file-output=snyk-results.sarif
       - name: Upload Snyk results to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
         if: always()
@@ -146,12 +150,11 @@ jobs:
             goodwithtech/dockle:latest security-test:latest
       - name: Run container structure test
         run: |
-          # Install container-structure-test
-          curl -LO \
-            https://storage.googleapis.com/container-structure-test/latest/\
-            container-structure-test-linux-amd64
+          URL="https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64"
+          curl -L "$URL" -o container-structure-test-linux-amd64
           chmod +x container-structure-test-linux-amd64
-          sudo mv container-structure-test-linux-amd64 \
+            sudo mv \
+            container-structure-test-linux-amd64 \
             /usr/local/bin/container-structure-test
           # Create basic structure test
           cat > container-test.yaml << 'EOF'
@@ -160,15 +163,23 @@ jobs:
             - name: "code command exists"
               command: "which"
               args: ["code"]
-              expectedOutput: ["/usr/local/bin/code"]
+              expectedOutput: ["/usr/bin/code"]
           fileExistenceTests:
             - name: "VS Code installed"
-              path: "/usr/local/bin/code"
+              path: "/usr/bin/code"
               shouldExist: true
           EOF
           # Run the test
           container-structure-test test --image security-test:latest \
             --config container-test.yaml
+            - name: "code command exists"
+              command: "which"
+              args: ["code"]
+              expectedOutput: ["/usr/bin/code"]
+          fileExistenceTests:
+            - name: "VS Code installed"
+              path: "/usr/bin/code"
+              shouldExist: true
   # Generate security report
   security-report:
     name: Generate Security Report

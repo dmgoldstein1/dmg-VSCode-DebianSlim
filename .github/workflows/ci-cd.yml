@@ -7,6 +7,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [main, develop]
+    tags: ['v*']
   pull_request:
     branches: [main]
   schedule:
@@ -45,10 +46,10 @@ jobs:
           find . -name "*.sh" -type f | xargs shellcheck
       - name: Validate YAML files
         run: |
-  find . -type f \
-    \( -name "*.yaml" -o -name "*.yml" \) \
-    -not -path "*/node_modules/*" \
-    | xargs yamllint
+          find . -type f \
+            \( -name "*.yaml" -o -name "*.yml" \) \
+            -not -path "*/node_modules/*" \
+            | xargs yamllint
   # Run unit tests
   unit-tests:
     name: Unit Tests
@@ -103,6 +104,11 @@ jobs:
           cd tests/integration
           ./test_build_script.sh
         timeout-minutes: 30
+      - name: Test tunnel_name container naming
+        run: |
+          cd tests/integration
+          chmod +x test_tunnel_name_container.sh
+          ./test_tunnel_name_container.sh
       - name: Upload integration test logs
         if: always()
         uses: actions/upload-artifact@v4
@@ -155,10 +161,13 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          load: true
       - name: Test Docker image
         run: |
           # Test that the image runs correctly
-          docker run --rm ${{ steps.meta.outputs.tags }} code --version
+          TAG="${{ steps.meta.outputs.tags }}"
+          FIRST_TAG="${TAG%%$'\n'*}"
+          docker run --rm "$FIRST_TAG" code --version
   # Security scanning
   security-scan:
     name: Security Analysis
@@ -185,7 +194,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@0.24.0
         with:
           image-ref: "security-scan-image:latest"
           format: "sarif"
