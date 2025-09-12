@@ -1,0 +1,32 @@
+{
+  "name": "vscode-container-updater-tests",
+  "version": "1.0.0",
+  "description": "Test suite for VS Code Container Updater project",
+  "scripts": {
+    "test": "npm run test:integration && npm run test:extension",
+    "test:integration": "cd integration && ./test_build_script.sh",
+    "test:extension": "cd ../vscode-container-updater && npm test",
+    "test:unit": "mocha unit/**/*.test.js",
+    "test:docker": "docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit",
+    "lint": "shellcheck integration/*.sh && eslint extension/*.ts",
+    "lint:fix": "eslint extension/*.ts --fix"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.11.16",
+    "@types/vscode": "^1.103.0",
+    "mocha": "^10.2.0",
+    "eslint": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^6.20.0",
+    "@typescript-eslint/parser": "^6.20.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dmgoldstein1/dmg-VSCode-DebianSlim"
+  },
+  "license": "MIT"
+}
