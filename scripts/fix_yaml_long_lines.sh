@@ -4,7 +4,7 @@ set -e
 
 while true; do
   found_long_line=false
-  for file in $(find . -type f \( -name "*.yml" -o -name "*.yaml" \)); do
+  while IFS= read -r -d '' file; do
     # Use awk to process each line
     awk '{
       line = $0;
@@ -27,7 +27,7 @@ while true; do
       found_long_line=true
     fi
     mv "$file.tmp" "$file"
-  done
+  done < <(find . -type f \( -name "*.yml" -o -name "*.yaml" \) -print0)
   if ! $found_long_line; then
     break
   fi
