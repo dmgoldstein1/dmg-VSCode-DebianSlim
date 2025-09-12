@@ -180,7 +180,7 @@ jobs:
       - name: Test Docker image
         run: |
           # Test that the image runs correctly
-          docker run --rm ${{ steps.meta.outputs.tags }} --version
+          docker run --rm ${{ steps.meta.outputs.tags }} code --version
 
   # Security scanning
   security-scan:
