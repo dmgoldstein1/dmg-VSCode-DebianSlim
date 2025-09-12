@@ -46,7 +46,7 @@ jobs:
       - name: Validate YAML files
         run: |
           pip install yamllint
-          find . -name "*.yaml" -o -name "*.yml" | xargs yamllint
+          find . -type f \( -name "*.yaml" -o -name "*.yml" \) -not -path "*/node_modules/*" | xargs yamllint
   # Run unit tests
   unit-tests:
     name: Unit Tests
