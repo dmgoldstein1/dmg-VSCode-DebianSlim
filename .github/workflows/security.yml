@@ -160,7 +160,14 @@ jobs:
           cat > container-test.yaml << 'EOF'
           schemaVersion: 2.0.0
           commandTests:
+            - name: "code command exists"
+              command: "which"
+              args: ["code"]
+              expectedOutput: ["/usr/bin/code"]
           fileExistenceTests:
+            - name: "VS Code installed"
+              path: "/usr/bin/code"
+              shouldExist: true
           EOF
           # Run the test
           container-structure-test test --image security-test:latest \

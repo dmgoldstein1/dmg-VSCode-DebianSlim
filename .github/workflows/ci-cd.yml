@@ -104,6 +104,11 @@ jobs:
           cd tests/integration
           ./test_build_script.sh
         timeout-minutes: 30
+      - name: Test tunnel_name container naming
+        run: |
+          cd tests/integration
+          chmod +x test_tunnel_name_container.sh
+          ./test_tunnel_name_container.sh
       - name: Upload integration test logs
         if: always()
         uses: actions/upload-artifact@v4
