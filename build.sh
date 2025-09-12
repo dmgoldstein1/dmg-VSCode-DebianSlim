@@ -218,76 +218,66 @@ else
   # Flag parser (no YAML). Supports positional TunnelName and explicit flags
   while [ $# -gt 0 ]; do
     case "$1" in
-      --force-analysis)
-        FORCE_ANALYSIS=true
+      --force-analysis|--force-rebuild|--logging|--copilot-is-autonomous|--test-mode|--use-yaml|--help|--)
+        # Flags with no argument or handled elsewhere
+        case "$1" in
+          --force-analysis) FORCE_ANALYSIS=true ;;
+          --force-rebuild) FORCE_REBUILD=true ;;
+          --logging) VERBOSE_LOGGING=true ;;
+          --copilot-is-autonomous) COPILOT_AUTONOMOUS=true ;;
+          --test-mode) TEST_MODE=true ;;
+          --use-yaml) USE_YAML=true; load_yaml_config "$YAML_FILE"; break ;;
+          --help)
+            echo "Usage: $0 [TunnelName] [OPTIONS]"
+            echo ""
+            echo "Options:"
+            echo "    --force-analysis              Force re-run of Docker Scout analysis"
+            echo "    --force-rebuild               Force rebuild of Docker image"
+            echo "    --logging                     Enable verbose logging"
+            echo "    --copilot-is-autonomous       Configure VS Code for autonomous Copilot"
+            echo "    --git-user-name NAME          Git user name"
+            echo "    --git-user-email EMAIL        Git user email"
+            echo "    --gh-token TOKEN              GitHub token"
+            echo "    --auto-update-on-start VAL    Auto update on start"
+            echo "    --update-check-interval-seconds SEC  Update check interval"
+            echo "    --approval-file FILE          Approval file path"
+            echo "    --use-yaml                    Load config from build_variables.yaml"
+            echo "    --test-mode                   Run in test mode"
+            echo "    --port PORT                   Host port (default: auto-find)"
+            echo "    --image-name NAME             Docker image name"
+            echo "    --container-name NAME         Container name"
+            echo "    --help                        Show this help message"
+            echo ""
+            echo "Examples:"
+            echo "    $0 my-tunnel --logging --git-user-name 'John Doe' --git-user-email 'john@example.com'"
+            echo "    $0 --use-yaml"
+            echo "    $0 --port 3000 --image-name my-vscode --container-name my-container"
+            exit 0 ;;
+          --)
+            shift; break ;;
+        esac
         shift ;;
-      --force-rebuild)
-        FORCE_REBUILD=true
-        shift ;;
-      --logging)
-        VERBOSE_LOGGING=true
-        shift ;;
-      --copilot-is-autonomous)
-        COPILOT_AUTONOMOUS=true
-        shift ;;
-      --test-mode)
-        TEST_MODE=true
-        shift ;;
-      --git-user-name)
-        GIT_USER_NAME="$2"; shift 2 ;;
-      --git-user-email)
-        GIT_USER_EMAIL="$2"; shift 2 ;;
-      --gh-token)
-        GH_TOKEN="$2"; shift 2 ;;
-      --auto-update-on-start)
-        AUTO_UPDATE_ON_START="$2"; shift 2 ;;
-      --update-check-interval-seconds)
-        UPDATE_CHECK_INTERVAL_SECONDS="$2"; shift 2 ;;
-      --approval-file)
-        APPROVAL_FILE="$2"; shift 2 ;;
-      --port)
-        HOST_PORT="$2"; shift 2 ;;
-      --image-name)
-        IMAGE_NAME="$2"; shift 2 ;;
-      --container-name)
-        CONTAINER_NAME="$2"; shift 2 ;;
-      --help)
-        echo "Usage: $0 [TunnelName] [OPTIONS]"
-        echo ""
-        echo "Options:"
-        echo "    --force-analysis              Force re-run of Docker Scout analysis"
-        echo "    --force-rebuild               Force rebuild of Docker image"
-        echo "    --logging                     Enable verbose logging"
-        echo "    --copilot-is-autonomous       Configure VS Code for autonomous Copilot"
-        echo "    --git-user-name NAME          Git user name"
-        echo "    --git-user-email EMAIL        Git user email"
-        echo "    --gh-token TOKEN              GitHub token"
-        echo "    --auto-update-on-start VAL    Auto update on start"
-        echo "    --update-check-interval-seconds SEC  Update check interval"
-        echo "    --approval-file FILE          Approval file path"
-        echo "    --use-yaml                    Load config from build_variables.yaml"
-        echo "    --test-mode                   Run in test mode"
-        echo "    --port PORT                   Host port (default: auto-find)"
-        echo "    --image-name NAME             Docker image name"
-        echo "    --container-name NAME         Container name"
-        echo "    --help                        Show this help message"
-        echo ""
-        echo "Examples:"
-        echo "    $0 my-tunnel --logging --git-user-name 'John Doe' --git-user-email 'john@example.com'"
-        echo "    $0 --use-yaml"
-        echo "    $0 --port 3000 --image-name my-vscode --container-name my-container"
-        exit 0 ;;
-      --use-yaml)
-        # Handled earlier; ensure we ignore the rest by loading and breaking
-        USE_YAML=true
-        shift
-        load_yaml_config "$YAML_FILE"
-        break ;;
-      --)
-        shift; break ;;
-      -*)
-        echo "Warning: Unknown flag '$1' ignored" >&2
-        shift ;;
+      --git-user-name|--git-user-email|--gh-token|--auto-update-on-start|--update-check-interval-seconds|--approval-file|--port|--image-name|--container-name)
+        # Flags with arguments
+        if [ $# -lt 2 ]; then
+          echo "Error: Flag '$1' requires an argument." >&2
+          exit 1
+        fi
+        case "$1" in
+          --git-user-name) GIT_USER_NAME="$2" ;;
+          --git-user-email) GIT_USER_EMAIL="$2" ;;
+          --gh-token) GH_TOKEN="$2" ;;
+          --auto-update-on-start) AUTO_UPDATE_ON_START="$2" ;;
+          --update-check-interval-seconds) UPDATE_CHECK_INTERVAL_SECONDS="$2" ;;
+          --approval-file) APPROVAL_FILE="$2" ;;
+          --port) HOST_PORT="$2" ;;
+          --image-name) IMAGE_NAME="$2" ;;
+          --container-name) CONTAINER_NAME="$2" ;;
+        esac
+        shift 2 ;;
+      -* )
+        echo "Error: Flag '$1' is undefined." >&2
+        exit 1 ;;
       *)
         # first non-flag token = tunnel name (if not set yet)
         if [ -z "$TUNNEL_NAME_ARG" ]; then
@@ -580,9 +570,10 @@ fi
 
 # Use a unique container name if tunnel name is provided, else default
 if [ -n "$CONTAINER_NAME" ]; then
-  # Use provided container name
+  # Use provided container name (from YAML or flag)
   :
 elif [ -n "$TUNNEL_NAME_ARG" ]; then
+  # Always use tunnel_name as container name if set
   CONTAINER_NAME="$TUNNEL_NAME_ARG"
 else
   CONTAINER_NAME="vscode-server-tunnel"

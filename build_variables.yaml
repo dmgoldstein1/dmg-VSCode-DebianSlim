@@ -1,8 +1,9 @@
 ---
 # Example usage:
-tunnel_name: 09042025test1
-# force_analysis: true
-# logging: true
+tunnel_name: test2
+force_analysis: true
+force_rebuild: true
+logging: true
 # copilot_is_autonomous: true
 git_user_name: "dmgoldstein1"
 git_user_email: "dmgoldstein1@gmail.com"
