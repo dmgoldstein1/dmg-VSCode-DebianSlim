@@ -146,9 +146,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build test container
-        run: |
-          docker build -t security-test:latest .
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build container for security testing
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64
+          push: false
+          tags: security-test:latest
+          load: true
 
       - name: Run Dockle security linter
         run: |
