@@ -43,7 +43,6 @@ log_warning() {
 run_test() {
     local test_name="$1"
     local test_command="$2"
-    
     log_info "Running test: $test_name"
     
     # Run the test with output going to both console and log file
