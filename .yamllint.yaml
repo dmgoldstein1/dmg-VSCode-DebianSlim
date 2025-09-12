@@ -5,5 +5,7 @@ rules:
     ignore: |
       .github/workflows/*.yml
       .github/workflows/*.yaml
+      **/node_modules/**/*.yml
+      **/node_modules/**/*.yaml
   key-duplicates:
     ignore: SNYK_TOKEN

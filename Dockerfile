@@ -19,25 +19,25 @@ USER devuser
 WORKDIR /home/devuser
 
 # Install official VS Code from Microsoft apt repo (provides the 'code' CLI)
-RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/microsoft.gpg && \
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null && \
-    sudo apt-get update && sudo apt-get install -y --no-install-recommends code && \
-    sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --batch --yes --dearmor -o /usr/share/keyrings/microsoft.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | tee /etc/apt/sources.list.d/vscode.list > /dev/null && \
+    apt-get update && apt-get install -y --no-install-recommends code && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 # (Microsoft GPG key added above)
 
 # Install GitHub CLI
-RUN type -p curl >/dev/null || sudo apt install curl -y && \
-    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg && \
-    sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg && \
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null && \
-    sudo apt update && sudo apt install -y --no-install-recommends gh && \
-    sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+RUN type -p curl >/dev/null || apt-get install curl -y && \
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg && \
+    chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null && \
+    apt-get update && apt-get install -y --no-install-recommends gh && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 # Install Node.js 22 for building the VS Code extension
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - && \
-    sudo apt-get install -y nodejs && \
-    sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
+    apt-get install -y nodejs && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 # Switch back to root for npm operations that need global access
 USER root
@@ -57,8 +57,8 @@ COPY --chown=devuser:devuser vscode-container-updater/ /home/devuser/vscode-cont
 WORKDIR /home/devuser/vscode-container-updater
 
 # Install additional tools for package security fixes
-RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends jq python3 && \
-    sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends jq python3 && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Create npm audit override config for security
 RUN npm config set audit-level high
@@ -81,7 +81,6 @@ RUN npm install @vscode/vsce && npx @vscode/vsce package --out vscode-container-
 # Clean up build artifacts but keep the extension files
 RUN rm -rf node_modules && npm cache clean --force
 
-# Return to home directory
 WORKDIR /home/devuser
 
 # Expose VS Code tunnel default port (8080 is not strictly required for tunnel, but kept for compatibility)
@@ -95,3 +94,7 @@ RUN chmod +x /home/devuser/vscode-tunnel-entrypoint.sh
 # Use a simple entrypoint that first logs into gh using GH_TOKEN/GITHUB_TOKEN if provided,
 # then launches the VS Code tunnel with the same behavior as before.
 ENTRYPOINT ["/home/devuser/vscode-tunnel-entrypoint.sh"]
+
+# Add HEALTHCHECK instruction for container security compliance
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8080/ || exit 1

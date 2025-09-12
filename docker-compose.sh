@@ -19,7 +19,7 @@ docker-compose -f "$COMPOSE_FILE" up -d --build
 # Step 2: Wait for VS Code container to become healthy
 printf "\n[2/5] Waiting for VS Code container to become healthy...\n"
 HEALTH_STATUS=""
-for i in {1..20}; do
+for _ in {1..20}; do
   HEALTH_STATUS=$(docker inspect --format='{{.State.Health.Status}}' "$VS_CODE_CONTAINER" 2>/dev/null || echo "unknown")
   if [ "$HEALTH_STATUS" == "healthy" ]; then
     printf "VS Code container is healthy.\n"
@@ -35,7 +35,7 @@ if [ "$HEALTH_STATUS" != "healthy" ]; then
   DEVICE_CODE=$(docker logs "$VS_CODE_CONTAINER" 2>&1 | grep -Eo '[A-Z0-9]{4}-[A-Z0-9]{4}' | head -n1)
   if [ -n "$DEVICE_CODE" ]; then
     echo "To authenticate, go to https://github.com/login/device and enter code: $DEVICE_CODE"
-    read -p "Press Enter after you have authenticated with GitHub..."
+    read -r -p "Press Enter after you have authenticated with GitHub..."
   fi
   echo "Troubleshooting: Check healthcheck endpoint, container logs, and authentication status."
   exit 1

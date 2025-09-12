@@ -64,14 +64,14 @@ jobs:
           path: vscode-container-updater/npm-audit-results.json
           retention-days: 30
       - name: Run Snyk security scan
-        uses: snyk/actions/node@master
+        run: |
+          snyk test \
+            --severity-threshold=high \
+            --json-file-output=snyk-results.json
+        working-directory: vscode-container-updater
         continue-on-error: true
-        # Copilot generated: Ensure SNYK_TOKEN is set in repository secrets or
-        # remove this line to avoid context errors.
-        with:
+        env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-          args: --severity-threshold=high --json-file-output=snyk-results.json
-          command: test
       - name: Upload Snyk results to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
         if: always()
@@ -149,9 +149,11 @@ jobs:
       - name: Run container structure test
         run: |
           # Install container-structure-test
-          curl -LO \
-            https://storage.googleapis.com/container-structure-test/latest/\
-            container-structure-test-linux-amd64
+          curl -L \
+            "https://storage.googleapis.com/"\
+            "container-structure-test/latest/"\
+            "container-structure-test-linux-amd64" \
+            -o container-structure-test-linux-amd64
           chmod +x container-structure-test-linux-amd64
           sudo mv container-structure-test-linux-amd64 \
             /usr/local/bin/container-structure-test
