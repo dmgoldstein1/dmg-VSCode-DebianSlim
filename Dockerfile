@@ -8,7 +8,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get -y upgrade && \
     apt-get install -y --no-install-recommends \
-        curl wget sudo git openssh-client ca-certificates gpg bash coreutils \
+        curl wget git openssh-client ca-certificates gpg bash coreutils \
         unattended-upgrades apt-listchanges && \
     unattended-upgrade && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -18,14 +18,17 @@ RUN useradd -ms /bin/bash devuser && echo "devuser ALL=(ALL) NOPASSWD:ALL" >> /e
 USER devuser
 WORKDIR /home/devuser
 
+USER root
 # Install official VS Code from Microsoft apt repo (provides the 'code' CLI)
 RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --batch --yes --dearmor -o /usr/share/keyrings/microsoft.gpg && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | tee /etc/apt/sources.list.d/vscode.list > /dev/null && \
     apt-get update && apt-get install -y --no-install-recommends code && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+USER devuser
 
 # (Microsoft GPG key added above)
 
+USER root
 # Install GitHub CLI
 RUN type -p curl >/dev/null || apt-get install curl -y && \
     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg && \
@@ -33,11 +36,14 @@ RUN type -p curl >/dev/null || apt-get install curl -y && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null && \
     apt-get update && apt-get install -y --no-install-recommends gh && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+USER devuser
 
+USER root
 # Install Node.js 22 for building the VS Code extension
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
     apt-get install -y nodejs && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+USER devuser
 
 # Switch back to root for npm operations that need global access
 USER root
@@ -57,8 +63,10 @@ COPY --chown=devuser:devuser vscode-container-updater/ /home/devuser/vscode-cont
 WORKDIR /home/devuser/vscode-container-updater
 
 # Install additional tools for package security fixes
+USER root
 RUN apt-get update && apt-get install -y --no-install-recommends jq python3 && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
+USER devuser
 
 # Create npm audit override config for security
 RUN npm config set audit-level high

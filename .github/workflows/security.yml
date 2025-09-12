@@ -63,11 +63,13 @@ jobs:
           name: npm-audit-results
           path: vscode-container-updater/npm-audit-results.json
           retention-days: 30
+      - name: Install Snyk CLI
+        run: npm install -g snyk
       - name: Run Snyk security scan
         run: |
           snyk test \
             --severity-threshold=high \
-            --json-file-output=snyk-results.json
+            --sarif-file-output=snyk-results.sarif
         working-directory: vscode-container-updater
         continue-on-error: true
         env:
