@@ -41,7 +41,7 @@ get_candidate_code_version() {
 }
 
 refresh_apt_indexes() {
-  sudo apt-get update 2>&1 | sudo tee -a "$LOG_FILE" >/dev/null || true
+  sudo apt-get update >> "$LOG_FILE" 2>&1 || true
 }
 
 code_update_available() {
