@@ -198,7 +198,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ needs.docker-build.outputs.image-tag }}
+          image-ref: dmg-vscode-debianslim:latest
           format: 'sarif'
           output: 'trivy-results.sarif'
 
