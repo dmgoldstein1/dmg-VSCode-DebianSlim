@@ -41,7 +41,7 @@ get_candidate_code_version() {
 }
 
 refresh_apt_indexes() {
-  sudo apt-get update >> "$LOG_FILE" 2>&1 || true
+  sudo apt-get update 2>&1 | sudo tee -a "$LOG_FILE" >/dev/null || true
 }
 
 code_update_available() {
@@ -56,7 +56,7 @@ code_update_available() {
 
 install_code_update() {
   log "Attempting to upgrade 'code' from apt..."
-  if sudo apt-get install -y --only-upgrade code >> "$LOG_FILE" 2>&1; then
+  if sudo apt-get install -y --only-upgrade code 2>&1 | sudo tee -a "$LOG_FILE" >/dev/null; then
     log "VS Code CLI upgraded to version $(get_installed_code_version)."
     return 0
   else
@@ -100,7 +100,6 @@ if have_apt; then
     vlog "Checking for VS Code CLI updates at startup..."
     refresh_apt_indexes
     if code_update_available; then
-      local installed candidate
       installed="$(get_installed_code_version)"
       candidate="$(get_candidate_code_version)"
       log "Startup upgrade: updating VS Code CLI from ${installed:-unknown} to ${candidate:-unknown}."
