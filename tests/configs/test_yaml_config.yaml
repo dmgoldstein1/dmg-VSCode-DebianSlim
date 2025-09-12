@@ -1,3 +1,4 @@
+---
 # Test YAML configuration for debugging
 tunnel_name: test_tunnel_debug
 force_analysis: false
