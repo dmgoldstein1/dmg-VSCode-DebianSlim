@@ -69,7 +69,7 @@ jobs:
         run: |
           snyk test \
             --severity-threshold=high \
-            --sarif-file-output=snyk-results.sarif
+            --sarif > snyk-results.sarif
         working-directory: vscode-container-updater
         continue-on-error: true
         env:
@@ -78,7 +78,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
-          sarif_file: snyk-results.sarif
+          sarif_file: vscode-container-updater/snyk-results.sarif
   # Secret scanning
   secret-scan:
     name: Secret Scanning
@@ -150,15 +150,10 @@ jobs:
             goodwithtech/dockle:latest security-test:latest
       - name: Run container structure test
         run: |
-          # Install container-structure-test
-          curl -L \
-            "https://storage.googleapis.com/"\
-            "container-structure-test/latest/"\
-            "container-structure-test-linux-amd64" \
-            -o container-structure-test-linux-amd64
+          URL="https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64"
+          curl -L "$URL" -o container-structure-test-linux-amd64
           chmod +x container-structure-test-linux-amd64
-          sudo mv container-structure-test-linux-amd64 \
-            /usr/local/bin/container-structure-test
+          sudo mv container-structure-test-linux-amd64 /usr/local/bin/container-structure-test
           # Create basic structure test
           cat > container-test.yaml << 'EOF'
           schemaVersion: 2.0.0
