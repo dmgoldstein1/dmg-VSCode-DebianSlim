@@ -5,6 +5,7 @@ vscode_cli_alpine_arm64_cli.tar.gz
 .DS_Store
 gh-tunnel-pat.sh
 *[Pp][Aa][Tt]*
+*.secrets
 
 # The above pattern ignores any file or folder with 'pat' in its name, regardless of case.
 

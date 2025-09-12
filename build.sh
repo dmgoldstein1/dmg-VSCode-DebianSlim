@@ -4,6 +4,12 @@
 # Description: This script builds the VS Code Debian Slim Docker image with a deterministic tag 
 # based on the base image and dependencies. After building, it runs Docker Scout CVE and 
 # recommendations analysis, saves logs, and prints a summary of vulnerability counts.
+#
+# All code and containers use only currently supported LTS versions:
+# - Node.js 22 (LTS)
+# - Python 3.x (from Debian stable-slim)
+# - Debian stable-slim (current stable)
+# - Docker 24 (latest stable)
 
 # Safety check: require bash (the script uses bash features like arrays and process substitution)
 if [ -z "${BASH_VERSION:-}" ]; then
@@ -389,15 +395,15 @@ if ! docker image inspect "$FULL_TAG" >/dev/null 2>&1 || [ "$FORCE_REBUILD" = "t
     echo "[INFO] Docker build completed successfully"
     if [ "$VERBOSE_LOGGING" = "true" ]; then
       echo "[INFO] Docker build log saved to $DOCKER_BUILD_LOG"
-      echo "--- Last 20 lines of build log ---"
-      tail -20 "$DOCKER_BUILD_LOG"
+      echo "--- Full build log ---"
+      cat "$DOCKER_BUILD_LOG"
     fi
   else
     BUILD_EXIT_CODE=$?
     echo "[ERROR] Docker build failed with exit code $BUILD_EXIT_CODE"
     if [ "$VERBOSE_LOGGING" = "true" ]; then
-      echo "--- Last 20 lines of build log ---"
-      tail -20 "$DOCKER_BUILD_LOG"
+      echo "--- Full build log ---"
+      cat "$DOCKER_BUILD_LOG"
     fi
     exit $BUILD_EXIT_CODE
   fi

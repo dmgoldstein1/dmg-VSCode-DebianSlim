@@ -16,7 +16,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  NODE_VERSION: "18"
+  NODE_VERSION: "22"
 jobs:
   # Lint and validate code
   lint:
