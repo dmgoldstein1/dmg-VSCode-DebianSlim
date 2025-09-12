@@ -40,8 +40,6 @@ get_candidate_code_version() {
   apt-cache policy code 2>/dev/null | awk '/Candidate:/ {print $2}'
 }
 
-...existing code...
-
 # 1) Authenticate GitHub CLI if token provided
 TOKEN="${GH_TOKEN:-${GITHUB_TOKEN:-}}"
 if [[ -n "${TOKEN}" ]]; then

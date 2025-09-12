@@ -442,6 +442,8 @@ run_with_timeout() {
 }
 
 # --- Security Remediation Steps (skip if image already exists) ---
+# Always run the container after build, regardless of image existence
+# Security remediation steps (npm audit, apt upgrade) only if image was just built
 if [ "$IMAGE_ALREADY_EXISTS" = "false" ]; then
   # 1. Run npm audit fix in a temp container (if npm is present)
   NPM_AUDIT_LOG=$(get_unique_logfile "npm-audit-$TAG" ".log")
@@ -466,17 +468,17 @@ if [ "$IMAGE_ALREADY_EXISTS" = "false" ]; then
       fi' | tee "$APT_UPGRADE_LOG" || true
     echo "[INFO] Apt upgrade log saved to $APT_UPGRADE_LOG"
   else
-    run_with_timeout 300 docker run --rm "$FULL_TAG" sh -c '\
-      if command -v apt-get >/dev/null 2>&1; then \
-        apt-get update >/dev/null 2>&1 && \
-        apt-get upgrade -y >/dev/null 2>&1 || true; \
-      fi' > "$APT_UPGRADE_LOG" 2>&1 || true
+    run_with_timeout 300 docker run --rm "$FULL_TAG" sh -c 'if command -v apt-get >/dev/null 2>&1; then apt-get update >/dev/null 2>&1 && apt-get upgrade -y >/dev/null 2>&1; fi' > "$APT_UPGRADE_LOG" 2>&1 || true
   fi
 else
   if [ "$VERBOSE_LOGGING" = "true" ]; then
     echo "Skipping security remediation steps (image already exists and analyzed)."
   fi
 fi
+
+# --- Always run the container after build ---
+# (Move docker run logic here if not already)
+...existing code...
 # --- Rebuild image after remediation steps (optional: user may want to commit these changes in a Dockerfile for persistence) ---
 # (Not rebuilding here, just analyzing the original build)
 
@@ -568,12 +570,8 @@ fi
 # This section ensures the container is running and the user sees the tunnel auth code and link in the terminal output.
 
 
-# Use a unique container name if tunnel name is provided, else default
-if [ -n "$CONTAINER_NAME" ]; then
-  # Use provided container name (from YAML or flag)
-  :
-elif [ -n "$TUNNEL_NAME_ARG" ]; then
-  # Always use tunnel_name as container name if set
+# Always use tunnel_name from YAML for both tunnel and container name
+if [ -n "$TUNNEL_NAME_ARG" ]; then
   CONTAINER_NAME="$TUNNEL_NAME_ARG"
 else
   CONTAINER_NAME="vscode-server-tunnel"
