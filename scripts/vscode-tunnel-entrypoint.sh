@@ -56,7 +56,7 @@ code_update_available() {
 
 install_code_update() {
   log "Attempting to upgrade 'code' from apt..."
-  if sudo apt-get install -y --only-upgrade code 2>&1 | sudo tee -a "$LOG_FILE" >/dev/null; then
+  if sudo apt-get install -y --only-upgrade code >> "$LOG_FILE" 2>&1; then
     log "VS Code CLI upgraded to version $(get_installed_code_version)."
     return 0
   else
