@@ -64,19 +64,17 @@ jobs:
           path: vscode-container-updater/npm-audit-results.json
           retention-days: 30
       - name: Run Snyk security scan
-        uses: snyk/actions/node@master
         continue-on-error: true
-        # Copilot generated: Ensure SNYK_TOKEN is set in repository secrets or
-        # remove this line to avoid context errors.
-        with:
+        env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-          args: --severity-threshold=high --json-file-output=snyk-results.json
-          command: test
+        run: |
+          cd vscode-container-updater
+          npx snyk test --file=package.json --json-file-output=snyk-results.sarif
       - name: Upload Snyk results to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
-          sarif_file: snyk-results.sarif
+          sarif_file: vscode-container-updater/snyk-results.sarif
   # Secret scanning
   secret-scan:
     name: Secret Scanning
