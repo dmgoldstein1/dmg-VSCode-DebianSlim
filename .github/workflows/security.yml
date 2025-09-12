@@ -75,7 +75,7 @@ jobs:
         uses: snyk/actions/node@master
         continue-on-error: true
         # Copilot generated: Ensure SNYK_TOKEN is set in repository secrets or remove this line to avoid context errors.
-        # SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           args: --severity-threshold=high --json-file-output=snyk-results.json
           command: test
