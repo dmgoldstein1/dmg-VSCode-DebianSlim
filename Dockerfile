@@ -24,6 +24,7 @@ RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --batch -
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | tee /etc/apt/sources.list.d/vscode.list > /dev/null && \
     apt-get update && apt-get install -y --no-install-recommends code && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+RUN apt-get update && apt-get install -y --only-upgrade code && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 USER devuser
 
 # (Microsoft GPG key added above)

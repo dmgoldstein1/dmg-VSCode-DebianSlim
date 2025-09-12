@@ -1,6 +1,6 @@
 ---
 # Example usage:
-tunnel_name: dmg-vscode-slim1
+tunnel_name: dmg_vscode_slim1
 # force_analysis: true
 # force_rebuild: true
 logging: true
