@@ -389,15 +389,15 @@ if ! docker image inspect "$FULL_TAG" >/dev/null 2>&1 || [ "$FORCE_REBUILD" = "t
     echo "[INFO] Docker build completed successfully"
     if [ "$VERBOSE_LOGGING" = "true" ]; then
       echo "[INFO] Docker build log saved to $DOCKER_BUILD_LOG"
-      echo "--- Last 20 lines of build log ---"
-      tail -20 "$DOCKER_BUILD_LOG"
+      echo "--- Full build log ---"
+      cat "$DOCKER_BUILD_LOG"
     fi
   else
     BUILD_EXIT_CODE=$?
     echo "[ERROR] Docker build failed with exit code $BUILD_EXIT_CODE"
     if [ "$VERBOSE_LOGGING" = "true" ]; then
-      echo "--- Last 20 lines of build log ---"
-      tail -20 "$DOCKER_BUILD_LOG"
+      echo "--- Full build log ---"
+      cat "$DOCKER_BUILD_LOG"
     fi
     exit $BUILD_EXIT_CODE
   fi
@@ -449,26 +449,44 @@ if [ "$IMAGE_ALREADY_EXISTS" = "false" ]; then
   NPM_AUDIT_LOG=$(get_unique_logfile "npm-audit-$TAG" ".log")
   if [ "$VERBOSE_LOGGING" = "true" ]; then
     echo "Running npm audit fix in a temp container (if npm is present)..."
+    # Override entrypoint and skip tunnel; limit search to user workspace to avoid long scans
     # shellcheck disable=SC2016
-    run_with_timeout 300 docker run --rm "$FULL_TAG" sh -c 'if command -v npm >/dev/null 2>&1; then find / -type d -name node_modules 2>/dev/null | while read d; do cd "$d" && npm audit fix --force || true; done; fi' | tee "$NPM_AUDIT_LOG" || true
+    run_with_timeout 300 docker run --rm --entrypoint sh -e SKIP_TUNNEL=true "$FULL_TAG" -c '
+      if command -v npm >/dev/null 2>&1; then
+        # Look for package.json/package-lock.json within home/workspace and audit each
+        find /home/devuser -type f \( -name package-lock.json -o -name package.json \) 2>/dev/null | while read -r file; do
+          dir="$(dirname "$file")"
+          if [ -f "$dir/package.json" ]; then
+            cd "$dir" && npm audit fix --force || true
+          fi
+        done
+      fi' | tee "$NPM_AUDIT_LOG" || true
     echo "[INFO] NPM audit log saved to $NPM_AUDIT_LOG"
   else
     # shellcheck disable=SC2016
-    run_with_timeout 300 docker run --rm "$FULL_TAG" sh -c 'if command -v npm >/dev/null 2>&1; then find / -type d -name node_modules 2>/dev/null | while read d; do cd "$d" && npm audit fix --force || true; done; fi' > "$NPM_AUDIT_LOG" 2>&1 || true
+    run_with_timeout 300 docker run --rm --entrypoint sh -e SKIP_TUNNEL=true "$FULL_TAG" -c '
+      if command -v npm >/dev/null 2>&1; then
+        find /home/devuser -type f \( -name package-lock.json -o -name package.json \) 2>/dev/null | while read -r file; do
+          dir="$(dirname "$file")"
+          if [ -f "$dir/package.json" ]; then
+            cd "$dir" && npm audit fix --force || true
+          fi
+        done
+      fi' > "$NPM_AUDIT_LOG" 2>&1 || true
   fi
   
   # 2. Run apt-get update/upgrade in a temp container (if apt is present)
   APT_UPGRADE_LOG=$(get_unique_logfile "apt-upgrade-$TAG" ".log")
   if [ "$VERBOSE_LOGGING" = "true" ]; then
     echo "Running apt-get update/upgrade in a temp container (if apt is present)..."
-    run_with_timeout 300 docker run --rm "$FULL_TAG" sh -c '\
+    run_with_timeout 300 docker run --rm --entrypoint sh -u root -e SKIP_TUNNEL=true "$FULL_TAG" -c '\
       if command -v apt-get >/dev/null 2>&1; then \
         apt-get update && \
         apt-get upgrade -y || true; \
       fi' | tee "$APT_UPGRADE_LOG" || true
     echo "[INFO] Apt upgrade log saved to $APT_UPGRADE_LOG"
   else
-    run_with_timeout 300 docker run --rm "$FULL_TAG" sh -c 'if command -v apt-get >/dev/null 2>&1; then apt-get update >/dev/null 2>&1 && apt-get upgrade -y >/dev/null 2>&1; fi' > "$APT_UPGRADE_LOG" 2>&1 || true
+    run_with_timeout 300 docker run --rm --entrypoint sh -u root -e SKIP_TUNNEL=true "$FULL_TAG" -c 'if command -v apt-get >/dev/null 2>&1; then apt-get update >/dev/null 2>&1 && apt-get upgrade -y >/dev/null 2>&1; fi' > "$APT_UPGRADE_LOG" 2>&1 || true
   fi
 else
   if [ "$VERBOSE_LOGGING" = "true" ]; then
@@ -478,7 +496,6 @@ fi
 
 # --- Always run the container after build ---
 # (Move docker run logic here if not already)
-...existing code...
 # --- Rebuild image after remediation steps (optional: user may want to commit these changes in a Dockerfile for persistence) ---
 # (Not rebuilding here, just analyzing the original build)
 
@@ -570,11 +587,20 @@ fi
 # This section ensures the container is running and the user sees the tunnel auth code and link in the terminal output.
 
 
-# Always use tunnel_name from YAML for both tunnel and container name
-if [ -n "$TUNNEL_NAME_ARG" ]; then
-  CONTAINER_NAME="$TUNNEL_NAME_ARG"
-else
-  CONTAINER_NAME="vscode-server-tunnel"
+# Determine container name with clear precedence:
+# 1) Explicit --container-name or container_name from YAML (if provided)
+# 2) Else tunnel_name (TUNNEL_NAME_ARG)
+# 3) Else fallback to "vscode-server-tunnel"
+if [ -z "$CONTAINER_NAME" ]; then
+  if [ -n "$TUNNEL_NAME_ARG" ]; then
+    CONTAINER_NAME="$TUNNEL_NAME_ARG"
+  else
+    CONTAINER_NAME="vscode-server-tunnel"
+  fi
+fi
+
+if [ "$VERBOSE_LOGGING" = "true" ]; then
+  echo "[INFO] Effective names: tunnel_name='${TUNNEL_NAME_ARG:-}' container_name='${CONTAINER_NAME}'"
 fi
 
 # Stop and remove any previous container with the same name
