@@ -151,6 +151,7 @@ YAML_FILE="build_variables.yaml"
 HOST_PORT=""  # Empty means auto-find
 IMAGE_NAME="dmg-vs-code-debian-slim"
 CONTAINER_NAME=""  # Empty means use tunnel name or default
+HAS_SUDO=false
 
 # Pre-scan to detect --use-yaml
 for pre in "$@"; do
@@ -205,6 +206,7 @@ load_yaml_config() {
       port) HOST_PORT="$val" ;;
       image_name) IMAGE_NAME="$val" ;;
       container_name) CONTAINER_NAME="$val" ;;
+      has_sudo) HAS_SUDO=$(parse_bool "$val") ;;
       *)
         # unknown key ignored (forward compatibility)
         ;;
@@ -381,7 +383,12 @@ if ! docker image inspect "$FULL_TAG" >/dev/null 2>&1 || [ "$FORCE_REBUILD" = "t
   fi
   
   # Run docker build in background to allow signal handling
-  docker build -t "$FULL_TAG" -f "$DOCKERFILE" . > "$DOCKER_BUILD_LOG" 2>&1 &
+  if [ "$HAS_SUDO" = "true" ]; then
+    echo "[INFO] has_sudo is true: running docker build with sudo."
+    sudo docker build -t "$FULL_TAG" -f "$DOCKERFILE" . > "$DOCKER_BUILD_LOG" 2>&1 &
+  else
+    docker build -t "$FULL_TAG" -f "$DOCKERFILE" . > "$DOCKER_BUILD_LOG" 2>&1 &
+  fi
   DOCKER_BUILD_PID=$!
   
   # Wait for docker build to complete, but allow interruption
